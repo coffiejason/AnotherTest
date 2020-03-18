@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context=".HomeActivity"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/hello_developer_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/get_connected"
+                android:textColor="@color/colorTitle"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="15dp" />
+
+            <TextView
+                android:id="@+id/subtitle_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/hello_developer_text_view"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:text="@string/people_around_you"
+                android:textColor="@color/colorTitle"
+                android:textSize="14dp"
+                android:layout_marginLeft="15dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="130dp"
+                android:layout_height="45dp"
+                android:layout_below="@+id/subtitle_text_view"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                app:cardBackgroundColor="@color/colorAccent"
+                app:cardCornerRadius="22.5dp"
+                app:cardElevation="0dp"
+                android:layout_marginLeft="15dp">
+
+                <RelativeLayout
+                    android:id="@+id/login_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:text="@string/login"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/register_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="@string/you_are_not_a_member_register"
+            android:textColor="@color/colorTitle"
+            android:textSize="15dp"
+            android:layout_marginLeft="15dp" />
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">AnotherTest</string>
+    <string name="user_photo">User Photo</string>
+    <string name="title_activity_errand_map">Map</string>
+    <string name="hello_developer">Hello Developer!</string>
+    <string name="android_development_community">Android Development Community</string>
+    <string name="login">Login</string>
+    <string name="you_are_not_a_member_register">You are not a member? <b><font fgcolor='#3CDA85'>Register.</font></b></string>
+    <string name="nice_to_see_you">Nice to see you!</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="post">POST</string>
+    <string name="post2">Post</string>
+    <string name="loading_title">Loading</string>
+    <string name="success_title">Success</string>
+    <string name="try_again">Reconnect</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="post_hint">Say something ...</string>
+    <string name="cancel_btn">Discards post</string>
+    <string name="autofill_hint">A catchy post attracts more audience</string>
+    <string name="people_around_you"> Know people around you, and beyond</string>
+    <string name="get_connected">Get Connected !</string>
+    <string name="message_signup">Setting up your info ...</string>>
+    <string name="message_own_account">Been here before ? Login</string>
+    <string name="signup">Sign up</string>
+
+
+    <string name="email_title">Email</string>
+    <string name="email_hint_title">example@email.com</string>
+    <string name="password_title">Password</string>
+    <string name="password_items_title">Password should be</string>
+    <string name="p_item_1">At least 8 characters</string>
+    <string name="p_item_2">Minimum one uppercase</string>
+    <string name="p_item_3">Minimum one number</string>
+    <string name="p_item_4">Minimum one symbol</string>
+    <string name="email_error_text">The field is required</string>
+    <string name="registration_title">REGISTRATION</string>
+</resources>

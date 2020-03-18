@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#131313</color>
+    <color name="colorPrimaryDark">#131313</color>
+    <color name="colorAccent">#3CDA85</color>
+    <color name="colorTitle">#313131</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorCardViewBackground">#E9EAED</color>
+    <color name="colorSuccessful">#1ECD97</color>
+    <color name="colorUnsuccessful">#FB797E</color>
+    <color name="colorLoading">#BEBEBE</color>
+    <color name="colorLoadingTitle">#7F7F7F</color>
+
+    <color name="colorFormBackground">#242424</color>
+    <color name="colorFormText">#838287</color>
+    <color name="colorFormInputBackground">#252527</color>
+    <color name="colorCheckOk">#60D486</color>
+    <color name="colorCheckNo">#838287</color>
+    <color name="colorHint">#575758</color>
+    <color name="colorStroke">#838287</color>
+    <color name="colorError">#F36D6C</color>
+
+</resources>
