@@ -36,4 +36,6 @@
     <string name="p_item_4">Minimum one symbol</string>
     <string name="email_error_text">The field is required</string>
     <string name="registration_title">REGISTRATION</string>
+
+    <string name="api_key">AIzaSyCd0eXAB84vssg2e59kGVBcQj60XZjeUSY</string>
 </resources>

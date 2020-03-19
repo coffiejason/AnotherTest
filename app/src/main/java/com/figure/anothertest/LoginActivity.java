@@ -229,8 +229,8 @@ public class LoginActivity extends AppCompatActivity {
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.main_layout),"Login Successful ",2000);
                     snackbar.show();
 
-                    //Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                    //startActivity(intent);
+                    Intent intent = new Intent(LoginActivity.this,ErrandMapActivity.class);
+                    startActivity(intent);
                     //CustomIntent.customType(LoginActivity.this,"left-to-right");
                     finish();
                 }
