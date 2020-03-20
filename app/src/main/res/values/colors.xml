@@ -20,4 +20,10 @@
     <color name="colorStroke">#838287</color>
     <color name="colorError">#F36D6C</color>
 
+    <color name="twitterBlue">#251CA1F1</color>
+    <color name="twitterBlueDarker">#188CD3</color>
+
+    <color name="tipeeGreen">#3CDA85</color>
+    <color name="tipeeGreenDark">#2CA162</color>
+
 </resources>

@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Toolbar">
+        <item name="android:textColorSecondary">@color/twitterBlue</item>
+    </style>
+
+
 </resources>

@@ -93,6 +93,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     String loc;
 
     DatabaseReference userAvailabilityRef;
+    DatabaseReference userIndividual;
 
     LatLng defaultLocation;
 
@@ -107,6 +108,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         userAvailabilityRef = FirebaseDatabase.getInstance().getReference().child("Customers available");
+        userIndividual = userAvailabilityRef.child(userID);
+
 
 
 
@@ -129,11 +132,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         post_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
-                //mapActivity.addView(child);
-
                 Intent intent = new Intent(ErrandMapActivity.this, CreatePost.class);
                 intent.putExtra("default_l",args.getFloat("l"));
                 intent.putExtra("default_g",args.getFloat("g"));
@@ -225,7 +223,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
 
         //code to save user location to Firebase
-        new Functions().saveUserLocation(userAvailabilityRef,location,userID);
+        new Functions().saveUser(userIndividual,location,userID);
 
     }
 
