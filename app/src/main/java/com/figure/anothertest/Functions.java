@@ -1,12 +1,18 @@
 package com.figure.anothertest;
 
 import android.location.Location;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
@@ -17,26 +23,25 @@ public class Functions {
     //show posts
     //show users
 
-    public void getUsers(DatabaseReference userDB, LatLng post_location,int radius){
-
+    public void loadPosts(DatabaseReference userDB, Location location,int radius){
+        //user DB with all users
 
         GeoFire geoFire = new GeoFire(userDB);
         //show indicator for users available, say a color indicator, green for many, yellow for few red for little
 
-
-
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(post_location.latitude,post_location.longitude),radius);
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(),location.getLongitude()),radius);
         geoQuery.removeAllListeners();
 
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             boolean driverFound = false;
+            int keyid = 0;
 
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                if (!driverFound){
-                    driverFound = true;
-                    String driverFoundID = key;
-                }
+                Log.d("Key:"+keyid,""+key);
+
+
+
             }
 
             @Override
@@ -121,4 +126,6 @@ public class Functions {
 
 
     }
+
+
 }

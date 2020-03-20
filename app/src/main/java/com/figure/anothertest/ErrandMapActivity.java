@@ -45,6 +45,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -224,6 +226,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         //code to save user location to Firebase
         new Functions().saveUser(userIndividual,location,userID);
+        getPost(userIndividual);
+        new Functions().loadPosts(userAvailabilityRef,location,radius);
 
     }
 
@@ -241,6 +245,113 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    public void getPost(DatabaseReference userDBReference){
+        userDBReference.child("Posts").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                double l,g;
+                String  msg;
+                //Log.d("weback",""+dataSnapshot.child("Message").getValue().toString());
+                Log.d("weback",""+dataSnapshot.child("l").getValue().toString());
+                Log.d("weback",""+dataSnapshot.child("g").getValue().toString());
+
+                l = Double.parseDouble(dataSnapshot.child("l").getValue().toString());
+                g = Double.parseDouble(dataSnapshot.child("g").getValue().toString());
+                msg = dataSnapshot.child("Message").getValue().toString();
+
+                setMsgIcon(l,g,msg);
+
+
+
+
+
+
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void setMsgIcon(double l,double g,String message){
+        LatLng postLoc = new LatLng(l,g);
+
+        mMap.addMarker(new MarkerOptions().position(postLoc).title(message));
+
+    }
+
+    public void loadPosts(final DatabaseReference userDB, Location location, int radius,String userID){
+        //user DB with all users
+        DatabaseReference geofireUserDB = userDB.child(userID).child("Geofire"); //continue from here
+
+        GeoFire geoFire = new GeoFire(geofireUserDB);
+        //show indicator for users available, say a color indicator, green for many, yellow for few red for little
+
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(),location.getLongitude()),radius);
+        geoQuery.removeAllListeners();
+
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            boolean driverFound = false;
+            int keyid = 0;
+
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                Log.d("Key:"+keyid,""+key);
+
+                //getPost(userDB.child(key));
+
+
+
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                if(!driverFound){
+                    /*
+                    radius = radius + 1; //radius will be determined by user
+                    //recursion code below
+                    getDriver();*/
+                }
+
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+        });
     }
 
 

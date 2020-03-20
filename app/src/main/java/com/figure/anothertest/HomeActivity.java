@@ -21,6 +21,12 @@ public class HomeActivity extends AppCompatActivity {
         setType();
         loginOnClick();
         registerOnClick();
+
+        if(SharedPrefs.getDefaults("Loggedin",getApplication()) != null){
+            Intent intent = new Intent(HomeActivity.this, ErrandMapActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void setType() {
