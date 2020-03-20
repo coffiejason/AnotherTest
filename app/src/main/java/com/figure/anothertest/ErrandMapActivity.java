@@ -227,7 +227,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //code to save user location to Firebase
         new Functions().saveUser(userIndividual,location,userID);
         getPost(userIndividual);
-        new Functions().loadPosts(userAvailabilityRef,location,radius);
+        getAllKeys(userAvailabilityRef);
 
     }
 
@@ -302,7 +302,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     }
 
-    public void loadPosts(final DatabaseReference userDB, Location location, int radius,String userID){
+    public void loadPosts(DatabaseReference userDB, Location location, int radius,String userID){
         //user DB with all users
         DatabaseReference geofireUserDB = userDB.child(userID).child("Geofire"); //continue from here
 
@@ -313,13 +313,10 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         geoQuery.removeAllListeners();
 
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-            boolean driverFound = false;
-            int keyid = 0;
+
 
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                Log.d("Key:"+keyid,""+key);
-
                 //getPost(userDB.child(key));
 
 
@@ -352,6 +349,38 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
             }
         });
+    }
+
+    public void getAllKeys(DatabaseReference allusersDB){
+        final int keyid = 0;
+        allusersDB.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d("AllKeys :", ""+dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 
