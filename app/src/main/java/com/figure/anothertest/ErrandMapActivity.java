@@ -85,7 +85,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     private DatabaseReference customerDatabaseRef;
     private LatLng customerRequestLocation;
     private RelativeLayout post_button;
-    private RelativeLayout post_fb;
+    private RelativeLayout mapLayout;
 
     private DatabaseReference driveraLocationRef;
     private int radius = 1; //should be custom adjusted by user via UI, determines the range of other Users avaialable
@@ -110,7 +110,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_errand_map);
 
@@ -118,6 +118,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         userAvailabilityRef = FirebaseDatabase.getInstance().getReference().child("Customers available");
         userIndividual = userAvailabilityRef.child(userID);
+
+        mapLayout = findViewById(R.id.maplayoutRelative);
 
 
 
@@ -377,6 +379,9 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         for(PostClusterItem p: pCluster){
             Log.d("GotAllMsg",""+p.getTitle());
         }
+
+        View child = getLayoutInflater().inflate(R.layout.post_popup,null);
+        mapLayout.addView(child);
         return true;
     }
 }
