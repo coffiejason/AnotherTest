@@ -52,6 +52,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 /* POSSIBLE BUGS
  **APP CANT DIFFERENTIATE B/N USERS
@@ -227,7 +228,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //code to save user location to Firebase
         new Functions().saveUser(userIndividual,location,userID);
         getPost(userIndividual);
-        getAllKeys(userAvailabilityRef);
+        getAllPosts(userAvailabilityRef);
 
     }
 
@@ -254,22 +255,14 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 double l,g;
                 String  msg;
                 //Log.d("weback",""+dataSnapshot.child("Message").getValue().toString());
-                Log.d("weback",""+dataSnapshot.child("l").getValue().toString());
-                Log.d("weback",""+dataSnapshot.child("g").getValue().toString());
+                //.d("weback",""+dataSnapshot.child("l").getValue().toString());
+                //Log.d("weback",""+dataSnapshot.child("g").getValue().toString());
 
                 l = Double.parseDouble(dataSnapshot.child("l").getValue().toString());
                 g = Double.parseDouble(dataSnapshot.child("g").getValue().toString());
                 msg = dataSnapshot.child("Message").getValue().toString();
 
                 setMsgIcon(l,g,msg);
-
-
-
-
-
-
-
-
             }
 
             @Override
@@ -351,12 +344,42 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         });
     }
 
-    public void getAllKeys(DatabaseReference allusersDB){
-        final int keyid = 0;
+
+    //load posts only around users region
+    public void getAllPosts(DatabaseReference allusersDB){
+
         allusersDB.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d("AllKeys :", ""+dataSnapshot);
+                Log.d("AllKeys :", ""+dataSnapshot.child("Posts"));
+                String msg;
+                double l,g;
+
+                HashMap<String, Object> hashMap = new HashMap<>();
+
+                for(DataSnapshot childSnapshot: dataSnapshot.child("Posts").getChildren()){
+
+                    for(DataSnapshot finaSnapShot: childSnapshot.getChildren()){
+                        //gets data and saves them in hashMap with respective key value pairs
+                        hashMap.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
+
+
+                    }
+
+                }
+                //reading key value pairs, ocCHildAdded is already a loop so code below gets all values with key : Mesage etc
+                //Log.d("HashMapWorking2",""+hashMap.get("Message"));
+
+
+
+                l = Double.parseDouble(""+hashMap.get("l"));
+                g = Double.parseDouble(""+hashMap.get("g"));
+                msg = ""+hashMap.get("Message");
+
+                //Log.d("HashMapWorking3",""+l+" "+" "+g+" "+msg);
+
+                setMsgIcon(l,g,msg);
+
 
             }
 
