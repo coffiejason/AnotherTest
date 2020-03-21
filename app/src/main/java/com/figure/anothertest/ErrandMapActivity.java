@@ -81,8 +81,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     private RelativeLayout post_button;
     private RelativeLayout post_fb;
 
-    private RelativeLayout mapActivity;
-
     private DatabaseReference driveraLocationRef;
     private int radius = 1; //should be custom adjusted by user via UI, determines the range of other Users avaialable
 
@@ -123,8 +121,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         post_button = findViewById(R.id.post_errand);
 
-        mapActivity = findViewById(R.id.maplayoutRelative);
-
         args = new Bundle();
 
 
@@ -139,7 +135,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 intent.putExtra("default_l",args.getFloat("l"));
                 intent.putExtra("default_g",args.getFloat("g"));
                 startActivity(intent);
-                //CustomIntent.customType(ErrandMapActivity.this,"left-to-right");
 
                 /*
                 GeoFire geoFire = new GeoFire(customerDatabaseRef);
@@ -293,55 +288,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         mMap.addMarker(new MarkerOptions().position(postLoc).title(message));
 
-    }
-
-    public void loadPosts(DatabaseReference userDB, Location location, int radius,String userID){
-        //user DB with all users
-        DatabaseReference geofireUserDB = userDB.child(userID).child("Geofire"); //continue from here
-
-        GeoFire geoFire = new GeoFire(geofireUserDB);
-        //show indicator for users available, say a color indicator, green for many, yellow for few red for little
-
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(),location.getLongitude()),radius);
-        geoQuery.removeAllListeners();
-
-        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-
-
-            @Override
-            public void onKeyEntered(String key, GeoLocation location) {
-                //getPost(userDB.child(key));
-
-
-
-            }
-
-            @Override
-            public void onKeyExited(String key) {
-
-            }
-
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {
-
-            }
-
-            @Override
-            public void onGeoQueryReady() {
-                if(!driverFound){
-                    /*
-                    radius = radius + 1; //radius will be determined by user
-                    //recursion code below
-                    getDriver();*/
-                }
-
-            }
-
-            @Override
-            public void onGeoQueryError(DatabaseError error) {
-
-            }
-        });
     }
 
 
