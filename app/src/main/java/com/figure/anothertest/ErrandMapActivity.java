@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
@@ -50,9 +51,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Vector;
 
 /* POSSIBLE BUGS
  **APP CANT DIFFERENTIATE B/N USERS
@@ -61,7 +67,7 @@ import java.util.HashMap;
 public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        com.google.android.gms.location.LocationListener{
+        com.google.android.gms.location.LocationListener,ClusterManager.OnClusterClickListener<PostClusterItem>{
 
     public static boolean makeErrand = false;
     private LatLng senderErrandLocation;// same aas customer Pickup location
@@ -99,6 +105,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     LatLng defaultLocation;
 
     Bundle args;
+
+    private ClusterManager<PostClusterItem> mClusterManager;
 
 
     @Override
@@ -182,6 +190,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         buildGoogleApiClient();
 
+        mClusterManager = new ClusterManager<>(this, mMap);
         //request for User permission
         mMap.setMyLocationEnabled(true);
     }
@@ -225,6 +234,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         getPost(userIndividual);
         getAllPosts(userAvailabilityRef);
 
+        mClusterManager.setOnClusterClickListener(this);
     }
 
     protected synchronized void buildGoogleApiClient(){
@@ -286,7 +296,14 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     public void setMsgIcon(double l,double g,String message){
         LatLng postLoc = new LatLng(l,g);
 
-        mMap.addMarker(new MarkerOptions().position(postLoc).title(message));
+        //code below for regular posts
+        mClusterManager.addItem(new PostClusterItem(message,postLoc));
+
+        mClusterManager.cluster();
+
+
+        //code below for errands
+        //mMap.addMarker(new MarkerOptions().position(postLoc).title(message));
 
     }
 
@@ -352,6 +369,14 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     }
 
+    @Override
+    public boolean onClusterClick(Cluster<PostClusterItem> cluster) {
+        Toast.makeText(this, "Cluster clicked", Toast.LENGTH_SHORT).show();
+        Collection<PostClusterItem> pCluster = cluster.getItems();
 
-
+        for(PostClusterItem p: pCluster){
+            Log.d("GotAllMsg",""+p.getTitle());
+        }
+        return true;
+    }
 }
