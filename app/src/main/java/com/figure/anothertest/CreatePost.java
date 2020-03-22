@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,7 +53,7 @@ public class CreatePost extends AppCompatActivity {
         Closebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CreatePost.this, ErrandMapActivity.class));
+                onBackPressed();
                 finish();
             }
         });
@@ -76,5 +77,6 @@ public class CreatePost extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+        Animatoo.animateSlideRight(CreatePost.this);
     }
 }

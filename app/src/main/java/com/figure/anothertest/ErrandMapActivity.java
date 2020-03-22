@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -54,6 +56,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -145,6 +148,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 intent.putExtra("default_l",args.getFloat("l"));
                 intent.putExtra("default_g",args.getFloat("g"));
                 startActivity(intent);
+                Animatoo.animateSlideLeft(ErrandMapActivity.this);
 
                 /*
                 GeoFire geoFire = new GeoFire(customerDatabaseRef);
@@ -376,12 +380,25 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         Toast.makeText(this, "Cluster clicked", Toast.LENGTH_SHORT).show();
         Collection<PostClusterItem> pCluster = cluster.getItems();
 
+        //cast pcluster back to Collection<> in the new activity
+
+        Bundle bundle = new Bundle();
+
+
+        int i = 0;
+
         for(PostClusterItem p: pCluster){
             Log.d("GotAllMsg",""+p.getTitle());
+            bundle.putString("Key"+i,p.getTitle());
+            i++;
         }
 
-        View child = getLayoutInflater().inflate(R.layout.post_popup,null);
-        mapLayout.addView(child);
+        bundle.putInt("iterator",i);
+
+        Intent intent = new Intent(ErrandMapActivity.this, OpenPostsCluster.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
         return true;
     }
 }
