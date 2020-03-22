@@ -8,22 +8,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import java.util.Collection;
 
 public class OpenPostsCluster extends AppCompatActivity {
     private RecyclerView openCLusterList;
 
     String postMsgs[];
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         setContentView(R.layout.activity_open_posts_cluster);
 
         openCLusterList = findViewById(R.id.openCLusterRecycler);
 
         Bundle bundle = getIntent().getExtras();
         int i = bundle.getInt("iterator");
+
+        postMsgs = new String[i+1];
 
         Log.d("Bundledeywork",""+i);
 
