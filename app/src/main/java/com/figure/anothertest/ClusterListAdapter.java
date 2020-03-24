@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ClusterListAdapter extends RecyclerView.Adapter<ClusterListAdapter.CLViewHolder> {
 
-    Context context;
-    String mMessage[];
+    private Context context;
+    private String[] mMessage;
 
 
-    public ClusterListAdapter(Context c, String message[]){
+    ClusterListAdapter(Context c, String[] message){
         this.mMessage = message;
         this.context = c;
 
@@ -42,9 +42,9 @@ public class ClusterListAdapter extends RecyclerView.Adapter<ClusterListAdapter.
         return mMessage.length;
     }
 
-    public class CLViewHolder extends RecyclerView.ViewHolder{
+    static class CLViewHolder extends RecyclerView.ViewHolder{
         TextView postText;
-        public CLViewHolder(@NonNull View itemView) {
+        CLViewHolder(@NonNull View itemView) {
             super(itemView);
 
             postText = itemView.findViewById(R.id.tv_tp_post);

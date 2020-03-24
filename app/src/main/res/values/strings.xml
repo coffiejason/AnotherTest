@@ -5,7 +5,7 @@
     <string name="hello_developer">Hello Developer!</string>
     <string name="android_development_community">Android Development Community</string>
     <string name="login">Login</string>
-    <string name="you_are_not_a_member_register">You are not a member? <b><font fgcolor='#3CDA85'>Register.</font></b></string>
+    <string name="you_are_not_a_member_register">Are you new here ? <b><font fgcolor='#3CDA85'>Register.</font></b></string>
     <string name="nice_to_see_you">Nice to see you!</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
@@ -36,6 +36,11 @@
     <string name="p_item_4">Minimum one symbol</string>
     <string name="email_error_text">The field is required</string>
     <string name="registration_title">REGISTRATION</string>
+    <string name="name_placeholder">NAME</string>
+    <string name="username_placeholder">\@name</string>
+    <string name="post_placeholder">THIS IS A POST</string>
+    <string name="edited">EDITED</string>
+    <string name="fast_travel">Fast Travel </string>
 
     <string name="api_key">AIzaSyCd0eXAB84vssg2e59kGVBcQj60XZjeUSY</string>
 </resources>

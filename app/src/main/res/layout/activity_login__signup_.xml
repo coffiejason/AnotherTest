@@ -8,10 +8,6 @@
     android:fillViewport="true"
     tools:context=".Login_Signup_Activity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,13 +44,14 @@
                             android:background="@null"
                             android:hint="@string/email_hint_title"
                             android:textColorHint="@color/colorFormText"
-                            android:inputType="text"
+                            android:inputType="textEmailAddress"
                             android:maxLines="1"
                             android:paddingStart="10dp"
                             android:textColor="@color/colorHint"
-                            android:textSize="15dp"
+                            android:textSize="15sp"
                             android:textStyle="bold"
-                            android:paddingLeft="10dp" />
+                            android:paddingLeft="10dp"
+                            android:autofillHints="email_hint_title" />
 
                     </RelativeLayout>
 
@@ -72,7 +69,7 @@
                     android:lines="1"
                     android:text="@string/email_error_text"
                     android:textColor="@color/colorError"
-                    android:textSize="13dp"
+                    android:textSize="13sp"
                     android:visibility="gone" />
 
             </RelativeLayout>
@@ -111,7 +108,7 @@
                             android:inputType="textPassword"
                             android:maxLines="1"
                             android:textColor="@color/colorHint"
-                            android:textSize="15dp"
+                            android:textSize="15sp"
                             android:textStyle="bold"
                             android:paddingLeft="10dp" />
 
@@ -131,7 +128,7 @@
                     android:lines="1"
                     android:text="@string/email_error_text"
                     android:textColor="@color/colorError"
-                    android:textSize="13dp"
+                    android:textSize="13sp"
                     android:visibility="gone" />
 
                 <RelativeLayout
@@ -150,7 +147,7 @@
                         android:lines="1"
                         android:text="@string/password_items_title"
                         android:textColor="@color/colorFormText"
-                        android:textSize="15dp" />
+                        android:textSize="15sp" />
 
                     <RelativeLayout
                         android:id="@+id/p_item_1_parent"
@@ -280,7 +277,7 @@
                             android:lines="1"
                             android:text="@string/p_item_3"
                             android:textColor="@color/colorFormText"
-                            android:textSize="13dp" />
+                            android:textSize="13sp" />
 
                     </RelativeLayout>
 
@@ -297,7 +294,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
                 android:elevation="0dp"
-                app:cardBackgroundColor="@color/colorCheckNo">
+                app:cardBackgroundColor="@color/colorCardViewBackground">
 
                 <RelativeLayout
                     android:id="@+id/registration_button"
@@ -316,7 +313,7 @@
                         android:lines="1"
                         android:text="@string/registration_title"
                         android:textColor="@color/colorWhite"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
@@ -324,7 +321,5 @@
             </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
-
-    </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>

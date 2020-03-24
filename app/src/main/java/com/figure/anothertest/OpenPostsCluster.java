@@ -4,25 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
-import java.util.Collection;
 
 public class OpenPostsCluster extends AppCompatActivity {
-    private RecyclerView openCLusterList;
 
-    String postMsgs[];
+    String[] postMsgs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fresco.initialize(this);
         setContentView(R.layout.activity_open_posts_cluster);
 
-        openCLusterList = findViewById(R.id.openCLusterRecycler);
+        RecyclerView openCLusterList = findViewById(R.id.openCLusterRecycler);
 
         Bundle bundle = getIntent().getExtras();
         int i = bundle.getInt("iterator");
@@ -31,7 +29,7 @@ public class OpenPostsCluster extends AppCompatActivity {
 
         Log.d("Bundledeywork",""+i);
 
-        for(int j = 0; j<=i;j++){
+        for(int j = i; j >= 0; j--){
             postMsgs[j] = bundle.getString("Key"+j);
         }
 
@@ -39,6 +37,8 @@ public class OpenPostsCluster extends AppCompatActivity {
         ClusterListAdapter adapter = new ClusterListAdapter(this,postMsgs);
         openCLusterList.setAdapter(adapter);
         openCLusterList.setLayoutManager(new LinearLayoutManager(this));
+
+        DefaultClusterRenderer<PostClusterItem> dr;
 
     }
 }

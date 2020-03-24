@@ -26,7 +26,7 @@
                 android:maxLines="2"
                 android:text="@string/get_connected"
                 android:textColor="@color/colorTitle"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:layout_marginLeft="15dp" />
 
@@ -40,7 +40,7 @@
                 android:ellipsize="end"
                 android:text="@string/people_around_you"
                 android:textColor="@color/colorTitle"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:layout_marginLeft="15dp" />
 
             <androidx.cardview.widget.CardView
@@ -73,7 +73,7 @@
                         android:lines="1"
                         android:text="@string/login"
                         android:textColor="@color/colorWhite"
-                        android:textSize="18dp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
@@ -93,7 +93,7 @@
             android:lines="1"
             android:text="@string/you_are_not_a_member_register"
             android:textColor="@color/colorTitle"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_marginLeft="15dp" />
 
     </RelativeLayout>

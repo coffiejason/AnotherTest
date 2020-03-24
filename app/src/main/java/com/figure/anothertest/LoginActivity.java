@@ -7,19 +7,14 @@ import androidx.cardview.widget.CardView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -32,14 +27,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 
 
 public class LoginActivity extends AppCompatActivity {
-
-    private RelativeLayout mainLayout;
-
-    private Button ownAccountBtn;
 
     private RelativeLayout loginBtn;
     private CardView login_button_card_view;
@@ -96,12 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
                 else{
-                    if(email.isEmpty() && password.isEmpty()){
-
-                    }else{
-                        loginUser(email,password);
-                    }
-
+                    loginUser(email,password);
                 }
 
 
@@ -170,8 +155,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void forgotPasswordOnClick() {
         forgot_password_text_view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,9 +206,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    SharedPrefs.setDefaults("Loggedin","true",getApplication());
+                    SharedPrefs.setDefaults(getApplication());
 
-                    //Toast.makeText(LoginActivity.this,"Login Successful ", Toast.LENGTH_SHORT).show();
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.main_layout),"Login Successful ",2000);
                     snackbar.show();
 
@@ -236,8 +218,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else{
                     setButtonStyle(BUTTON_TYPES.ERROR);
-                    FirebaseAuthException e = (FirebaseAuthException)task.getException();
-                    //Toast.makeText(LoginActivity.this,"Failed:"+e.getMessage(), Toast.LENGTH_SHORT).show();
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.main_layout),"Failed: Email / Password combination is invalid",3000);
                     snackbar.show();
 
@@ -252,15 +232,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //CustomIntent.customType(LoginActivity.this,"right-to-left");
     }
 
     boolean internet_connection(){
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        return isConnected;
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     private void buttonErrorIconIsVisible(boolean isVisible) {

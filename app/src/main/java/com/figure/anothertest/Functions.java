@@ -4,17 +4,17 @@ import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.HashMap;
 
@@ -56,12 +56,6 @@ public class Functions {
 
             @Override
             public void onGeoQueryReady() {
-                if(!driverFound){
-                    /*
-                    radius = radius + 1; //radius will be determined by user
-                    //recursion code below
-                    getDriver();*/
-                }
 
             }
 
@@ -87,7 +81,7 @@ public class Functions {
                 });
     }
 
-    public void saveUser(DatabaseReference userDBReference, Location userLocation, String userID){
+    void saveUser(DatabaseReference userDBReference, Location userLocation, String userID){
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("l",userLocation.getLatitude());
         hashMap.put("g",userLocation.getLongitude());
@@ -107,12 +101,7 @@ public class Functions {
                 });
     }
 
-    public void removeUser(DatabaseReference userDBReference,String userID){
-        GeoFire geoFire = new GeoFire(userDBReference);
-        geoFire.removeLocation(userID);
-    }
-
-    public void creatPostText(DatabaseReference userDB,String userID,String message,float l,float g,int radius){
+    void creatPostText(DatabaseReference userDB, String userID, String message, float l, float g, int radius){
         //add location parameter to Hashmap
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("Message",message);
@@ -125,6 +114,61 @@ public class Functions {
 
 
 
+    }
+
+    void getAllPosts(DatabaseReference userDB, final ClusterManager cl){
+        //use Location.distanceBetween() to check if coordinates are in a given radius
+
+        userDB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                String msg;
+                double l,g;
+
+                for(DataSnapshot d: dataSnapshot.getChildren()){
+                    Log.d("Igotthekeyskeyskeys",""+d.getKey());
+
+                    //use location.distancebetween here to get only the keys in users location
+
+
+                    for(DataSnapshot childSnapshot: d.child("Posts").getChildren()){
+
+                        for(DataSnapshot finaSnapShot: childSnapshot.getChildren()){
+
+                            Log.d("AllMsgsFinallyyy",finaSnapShot+"");
+                            hashMap.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
+                        }
+                        Log.d("HashMapWorking3",""+hashMap.get("Message"));
+                        l = Double.parseDouble(""+hashMap.get("l"));
+                        g = Double.parseDouble(""+hashMap.get("g"));
+                        msg = ""+hashMap.get("Message");
+
+                        //Log.d("HashMapWorking3",""+l+" "+" "+g+" "+msg);
+
+                        setMsgIcon(cl,l,g,msg);
+
+                    }
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    void setMsgIcon(ClusterManager cm, double l, double g, String message){
+        LatLng pl = new LatLng(l,g);
+
+        //code below for regular posts
+        cm.addItem(new PostClusterItem(message,pl));
+        cm.cluster();
     }
 
 

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,7 +21,7 @@ public class HomeActivity extends AppCompatActivity {
         loginOnClick();
         registerOnClick();
 
-        if(SharedPrefs.getDefaults("Loggedin",getApplication()) != null){
+        if(SharedPrefs.getDefaults(getApplication()) != null){
             Intent intent = new Intent(HomeActivity.this, ErrandMapActivity.class);
             startActivity(intent);
             finish();

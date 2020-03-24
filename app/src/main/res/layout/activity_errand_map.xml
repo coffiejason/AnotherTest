@@ -9,17 +9,67 @@
     android:layout_height="match_parent"
     tools:context=".ErrandMapActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="start"
+            app:placeholderImage="@drawable/default_photo"
+            app:roundAsCircle="true"
+            android:layout_marginLeft="10dp" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            app:placeholderImage="@drawable/default_photo"
+            app:roundAsCircle="true"
+            android:layout_marginRight="10dp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/email_input_parent"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            app:cardBackgroundColor="@color/colorCardViewBackground"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/fast_travel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@null"
+                    android:hint="@string/fast_travel"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="15dp"
+                    tools:ignore="TextFields" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.appcompat.widget.Toolbar>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/maplayoutRelative">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:paddingTop="620dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="130dp"
@@ -27,6 +77,9 @@
                 android:layout_marginTop="30dp"
                 app:cardBackgroundColor="@color/colorAccent"
                 app:cardCornerRadius="22.5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
                 app:cardElevation="0dp"
                 android:layout_marginLeft="15dp">
 
@@ -55,7 +108,6 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
-        </RelativeLayout>
     </RelativeLayout>
 
 

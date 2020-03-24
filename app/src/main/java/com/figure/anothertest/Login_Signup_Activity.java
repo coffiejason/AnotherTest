@@ -14,12 +14,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +36,7 @@ public class Login_Signup_Activity extends AppCompatActivity {
     private CardView isAtLeast8Parent, hasUppercaseParent, hasNumberParent;
     private RelativeLayout registration_button;
     private CardView registration_button_parent;
-    private boolean isAtLeast8 = false, hasUppercase = false, hasNumber = false, hasSymbol = false, isRegistrationClickable = false;
+    private boolean isAtLeast8 = false, hasUppercase = false, hasNumber = false, isRegistrationClickable = false;
 
     private FirebaseAuth mAuth;
 
@@ -104,9 +100,8 @@ public class Login_Signup_Activity extends AppCompatActivity {
     boolean internet_connection(){
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        return isConnected;
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     private void setType() {
@@ -168,14 +163,6 @@ public class Login_Signup_Activity extends AppCompatActivity {
             hasNumber = false;
             hasNumberParent.setCardBackgroundColor(Color.parseColor(getString(R.color.colorCheckNo)));
         }
-        /*
-        if (password.matches("^(?=.*[_.()]).*$")) {
-            hasSymbol = true;
-            hasSymbolParent.setCardBackgroundColor(Color.parseColor(getString(R.color.colorCheckOk)));
-        } else {
-            hasSymbol = false;
-            hasSymbolParent.setCardBackgroundColor(Color.parseColor(getString(R.color.colorCheckNo)));
-        }*/
 
         checkAllData(email);
     }

@@ -8,7 +8,7 @@ public class PostClusterItem implements ClusterItem {
     private String title;
     private LatLng latLng;
 
-    public PostClusterItem(String title, LatLng latLng) {
+    PostClusterItem(String title, LatLng latLng) {
         this.title = title;
         this.latLng = latLng;
     }

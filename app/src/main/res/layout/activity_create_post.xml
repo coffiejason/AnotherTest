@@ -25,7 +25,7 @@
             android:background="@drawable/btn_round_blue"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="Post"
+            android:text="@string/post2"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="15sp" />
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/drawee_user_photo"
             android:background="@android:color/transparent"
-            android:hint="Say Something"
+            android:hint="@string/post_hint"
             android:textColor="@color/colorFormInputBackground"
             android:textColorHint="@color/colorHint"
             android:maxLines="10"
