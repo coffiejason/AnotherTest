@@ -3,6 +3,7 @@ package com.figure.anothertest;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Context;
@@ -22,8 +23,10 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,6 +34,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -40,8 +47,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
+
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 
 /* POSSIBLE BUGS
  **APP CANT DIFFERENTIATE B/N USERS
@@ -57,9 +65,11 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     Location lastLocation;
     LocationRequest locationRequest;
 
-    private int radius = 1; //should be custom adjusted by user via UI, determines the range of other Users avaialable
+    //private int radius = 1; //should be custom adjusted by user via UI, determines the range of other Users avaialable
 
     String userID;
+
+    Toolbar toolbar;
 
     DatabaseReference userAvailabilityRef;
     DatabaseReference userIndividual;
@@ -67,6 +77,10 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     LatLng defaultLocation;
 
     Bundle args;
+
+    AutocompleteSupportFragment autocompleteFragment;
+
+
 
     private ClusterManager<PostClusterItem> mClusterManager;
 
@@ -76,35 +90,14 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         Fresco.initialize(this);
         setContentView(R.layout.activity_errand_map);
 
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        userAvailabilityRef = FirebaseDatabase.getInstance().getReference().child("Customers available");
-        userIndividual = userAvailabilityRef.child(userID);
-
-        RelativeLayout post_button = findViewById(R.id.post_errand);
-
-        args = new Bundle();
-
-        post_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ErrandMapActivity.this, CreatePost.class);
-                intent.putExtra("default_l",args.getFloat("l"));
-                intent.putExtra("default_g",args.getFloat("g"));
-                startActivity(intent);
-                Animatoo.animateSlideLeft(ErrandMapActivity.this);
-                /*
-                customerRequestLocation = new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(customerRequestLocation).title("Errand Location here")); //make marker movable
-                 */
-            }
-
-        });
+        init();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
     @Override
@@ -129,7 +122,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         buildGoogleApiClient();
 
-        mClusterManager = new ClusterManager<>(this, mMap);
+        //mClusterManager = new ClusterManager<>(this, mMap);
         //request for User permission
         mMap.setMyLocationEnabled(true);
     }
@@ -164,12 +157,13 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         args.putFloat("g", (float) location.getLongitude());
 
         //code to save user location to Firebase
+        //getPost(userIndividual);
         new Functions().saveUser(userIndividual,location,userID);
-        new Functions().getAllPosts(userAvailabilityRef,mClusterManager);
+        new Functions().getAllPosts(userAvailabilityRef,mMap);
         //put theres in oncreate
-        TPClusterRenderer renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
-        mClusterManager.setOnClusterClickListener(this);
-        mClusterManager.setRenderer(renderer);
+        //TPClusterRenderer renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
+        //mClusterManager.setOnClusterClickListener(this);
+        //mClusterManager.setRenderer(renderer);
     }
 
     protected synchronized void buildGoogleApiClient(){
@@ -245,7 +239,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         return true;
     }
-
+    /*
     private Bitmap layoutToBitmap(int layout) {
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -271,4 +265,76 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         return bitmap;
     }
+    */
+    void init(){
+
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        userAvailabilityRef = FirebaseDatabase.getInstance().getReference().child("Customers available");
+        userIndividual = userAvailabilityRef.child(userID);
+
+        RelativeLayout post_button = findViewById(R.id.post_errand);
+
+        SimpleDraweeView profile = findViewById(R.id.profile_settings);
+
+        args = new Bundle();
+
+        //hide api
+        Places.initialize(getApplicationContext(),"AIzaSyAYWdmSCJ9MyVh0bvBFbrQb9ELgmu3LYu8");
+
+        autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        assert autocompleteFragment != null;
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("PlacesGot", "Place: " + place.getName() + ", " + place.getId());
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                // TODO: Handle the error.
+                Log.i("PlacesError", "An error occurred: " + status);
+            }
+        });
+
+
+
+
+
+        post_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ErrandMapActivity.this, CreatePost.class);
+                intent.putExtra("default_l",args.getFloat("l"));
+                intent.putExtra("default_g",args.getFloat("g"));
+                startActivity(intent);
+                Animatoo.animateSlideLeft(ErrandMapActivity.this);
+                /*
+                customerRequestLocation = new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(customerRequestLocation).title("Errand Location here")); //make marker movable
+                 */
+            }
+
+        });
+
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ErrandMapActivity.this,SettingsActivity.class));
+                Animatoo.animateSlideRight(ErrandMapActivity.this);
+
+            }
+        });
+
+
+
+
+
+    }
+
 }

@@ -7,9 +7,9 @@ import androidx.annotation.NonNull;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
-import com.firebase.geofire.GeoQuery;
-import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,10 +18,12 @@ import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.HashMap;
 
-public class Functions {
+class Functions {
 
     //show posts
     //show users
+
+    /*
 
     public void loadPosts(DatabaseReference userDB, Location location,int radius){
         //user DB with all users
@@ -81,6 +83,8 @@ public class Functions {
                 });
     }
 
+    */
+
     void saveUser(DatabaseReference userDBReference, Location userLocation, String userID){
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("l",userLocation.getLatitude());
@@ -116,7 +120,7 @@ public class Functions {
 
     }
 
-    void getAllPosts(DatabaseReference userDB, final ClusterManager cl){
+    void getAllPosts(DatabaseReference userDB, final GoogleMap map){
         //use Location.distanceBetween() to check if coordinates are in a given radius
 
         userDB.addValueEventListener(new ValueEventListener() {
@@ -146,7 +150,7 @@ public class Functions {
 
                         //Log.d("HashMapWorking3",""+l+" "+" "+g+" "+msg);
 
-                        setMsgIcon(cl,l,g,msg);
+                        setMsgIcon2(map,l,g,msg);
 
                     }
 
@@ -163,12 +167,18 @@ public class Functions {
         });
     }
 
-    void setMsgIcon(ClusterManager cm, double l, double g, String message){
+    void setMsgIcon(ClusterManager<PostClusterItem> cm, double l, double g, String message){
         LatLng pl = new LatLng(l,g);
 
         //code below for regular posts
-        cm.addItem(new PostClusterItem(message,pl));
+        cm.addItem(new PostClusterItem(message, pl));
         cm.cluster();
+    }
+
+    private void setMsgIcon2(GoogleMap map, double l, double g, String message){
+        LatLng pl = new LatLng(l,g);
+
+        map.addMarker(new MarkerOptions().position(pl).title(message));
     }
 
 

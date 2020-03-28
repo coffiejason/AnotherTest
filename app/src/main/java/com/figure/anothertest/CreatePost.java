@@ -6,25 +6,22 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CreatePost extends AppCompatActivity {
 
-    private Button Postbtn;
+    private RelativeLayout Postbtn;
     private Toolbar Closebtn;
-    int postRadius=1;
     float l,g;
-    LatLng postLocation;
-    String userID;
-    DatabaseReference userDB;
 
     EditText postEditText;
 
@@ -34,19 +31,11 @@ public class CreatePost extends AppCompatActivity {
         Fresco.initialize(this);
         setContentView(R.layout.activity_create_post);
 
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        userDB = FirebaseDatabase.getInstance().getReference().child("Customers available");
-
         Intent intent = getIntent();
 
         l = intent.getFloatExtra("default_l",(float)0.00000);
 
         g = intent.getFloatExtra("default_g",(float)0.00000);
-
-        postLocation = new LatLng(l,g);
-
-        //check if l and g were got
-        //Log.d("posloc",l+" "+g);
 
         init();
 
@@ -61,8 +50,19 @@ public class CreatePost extends AppCompatActivity {
         Postbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Functions().creatPostText(userDB,userID,postEditText.getText().toString(),l,g,postRadius);
-                finish();
+
+                if(postEditText.getText().toString().isEmpty()){
+                    Snackbar snackbar = Snackbar.make(v,"I can post your idea if you dont say anything",3000);
+                    snackbar.show();
+                }
+                else{
+                    Intent i = new Intent(CreatePost.this,ChooseLocationActivity.class);
+                    i.putExtra("default_l",l);
+                    i.putExtra("default_g",g);
+                    i.putExtra("message",postEditText.getText().toString());
+                    startActivity(i);
+                    finish();
+                }
             }
         });
     }

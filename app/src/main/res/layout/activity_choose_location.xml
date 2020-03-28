@@ -1,0 +1,67 @@
+ <!-- Map and ImageView in center for simulating the map marker -->
+ <fragment
+     android:id="@+id/map"
+     android:name="com.google.android.gms.maps.SupportMapFragment"
+     android:layout_width="match_parent"
+     tools:context=".ChooseLocationActivity"
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/confirm_address_map_custom_marker"
+            android:layout_centerInParent="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_set_location"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="130dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="30dp"
+            app:cardBackgroundColor="@color/colorAccent"
+            app:cardCornerRadius="22.5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            app:cardElevation="0dp"
+            android:layout_marginLeft="15dp"
+            tools:ignore="RtlHardcoded">
+
+            <RelativeLayout
+                android:id="@+id/lc_done"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/post"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+
+
+
+
+</fragment>
