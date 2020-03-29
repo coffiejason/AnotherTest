@@ -48,7 +48,11 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
         msg = intent.getStringExtra("message");
         defaultLocation = new LatLng(l,g);
 
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if( FirebaseAuth.getInstance().getCurrentUser() != null){
+            userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+
+
         userDB = FirebaseDatabase.getInstance().getReference().child("Customers available");
 
         postBtn = findViewById(R.id.lc_done);

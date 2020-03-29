@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
 
 public class OpenPostsCluster extends AppCompatActivity {
@@ -23,6 +22,7 @@ public class OpenPostsCluster extends AppCompatActivity {
         RecyclerView openCLusterList = findViewById(R.id.openCLusterRecycler);
 
         Bundle bundle = getIntent().getExtras();
+        assert bundle != null;
         int i = bundle.getInt("iterator");
 
         postMsgs = new String[i+1];
@@ -37,8 +37,6 @@ public class OpenPostsCluster extends AppCompatActivity {
         ClusterListAdapter adapter = new ClusterListAdapter(this,postMsgs);
         openCLusterList.setAdapter(adapter);
         openCLusterList.setLayoutManager(new LinearLayoutManager(this));
-
-        DefaultClusterRenderer<PostClusterItem> dr;
 
     }
 }

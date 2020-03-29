@@ -14,7 +14,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.HashMap;
 
@@ -166,7 +165,7 @@ class Functions {
             }
         });
     }
-
+    /*
     void setMsgIcon(ClusterManager<PostClusterItem> cm, double l, double g, String message){
         LatLng pl = new LatLng(l,g);
 
@@ -174,7 +173,7 @@ class Functions {
         cm.addItem(new PostClusterItem(message, pl));
         cm.cluster();
     }
-
+    */
     private void setMsgIcon2(GoogleMap map, double l, double g, String message){
         LatLng pl = new LatLng(l,g);
 

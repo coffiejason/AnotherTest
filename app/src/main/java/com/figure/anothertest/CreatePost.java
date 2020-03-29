@@ -11,12 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 public class CreatePost extends AppCompatActivity {
 
     private RelativeLayout Postbtn;

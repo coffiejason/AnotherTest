@@ -3,20 +3,15 @@ package com.figure.anothertest;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -34,16 +29,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
@@ -69,20 +65,16 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     String userID;
 
-    Toolbar toolbar;
-
     DatabaseReference userAvailabilityRef;
     DatabaseReference userIndividual;
 
     LatLng defaultLocation;
-
     Bundle args;
 
     AutocompleteSupportFragment autocompleteFragment;
 
 
-
-    private ClusterManager<PostClusterItem> mClusterManager;
+    //private ClusterManager<PostClusterItem> mClusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -90,11 +82,21 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         Fresco.initialize(this);
         setContentView(R.layout.activity_errand_map);
 
+        new TPMessagingService();
+
+
+
         init();
+
+        getToken();
+
+        Log.d("SharedPrefsToken22222",SharedPrefs.getInstance(ErrandMapActivity.this).getToken()+"");
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
 
@@ -132,7 +134,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         locationRequest = new LocationRequest();
         //locationRequest.setInterval(1000);  //update location every secend
         //locationRequest.setFastestInterval(1000);
-        locationRequest.setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY); //change for better accuracy
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY); //change for better accuracy
+        //noinspection deprecation
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
 
@@ -167,6 +170,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     }
 
     protected synchronized void buildGoogleApiClient(){
+        //noinspection deprecation
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -182,6 +186,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         super.onStop();
     }
 
+    /*
     public void getPost(DatabaseReference userDBReference){
         userDBReference.child("Posts").addChildEventListener(new ChildEventListener() {
             @Override
@@ -190,12 +195,13 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 String  msg;
                 //Log.d("weback",""+dataSnapshot.child("Message").getValue().toString());
 
+                //noinspection JoinDeclarationAndAssignmentJava
                 l = Double.parseDouble(dataSnapshot.child("l").getValue().toString());
                 g = Double.parseDouble(dataSnapshot.child("g").getValue().toString());
                 msg = dataSnapshot.child("Message").getValue().toString();
 
                 Log.d("Checkingmsgs",""+msg);
-                new Functions().setMsgIcon(mClusterManager,l,g,msg);
+                //new Functions().setMsgIcon(mClusterManager,l,g,msg);
             }
 
             @Override
@@ -215,6 +221,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
             }
         });
     }
+    */
 
     @Override
     public boolean onClusterClick(Cluster<PostClusterItem> cluster) {
@@ -268,10 +275,21 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     */
     void init(){
 
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
 
         userAvailabilityRef = FirebaseDatabase.getInstance().getReference().child("Customers available");
         userIndividual = userAvailabilityRef.child(userID);
+
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("wouldthisowrkeverytime", SharedPrefs.getInstance(ErrandMapActivity.this).getToken() + "");
+            }
+        };
+
+        registerReceiver(broadcastReceiver,new IntentFilter(TPMessagingService.TOKEN_BROADCAST));
 
         RelativeLayout post_button = findViewById(R.id.post_errand);
 
@@ -335,6 +353,33 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
 
 
+    }
+
+    // for new devices sake, save the token in TPMessagingservice, if already generated do this . all must be dont on start
+    private void getToken(){
+        Log.d("Testttttt","dsfsf");
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(ErrandMapActivity.this, new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String token = instanceIdResult.getToken();
+                Log.d("FCM Token", token);
+                //saveToken(token);
+
+                SharedPrefs.getInstance(ErrandMapActivity.this).storeToken(token);
+
+            }
+
+        });
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("reasssonnnnnn",""+e);
+            }
+        });
+
+        Log.d("SharedPrefsToken",SharedPrefs.getInstance(ErrandMapActivity.this).getToken()+"");
     }
 
 }

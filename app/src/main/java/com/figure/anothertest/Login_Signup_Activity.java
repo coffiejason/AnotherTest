@@ -87,6 +87,7 @@ public class Login_Signup_Activity extends AppCompatActivity {
                     }
                     else{
                         FirebaseAuthException e = (FirebaseAuthException)task.getException();
+                        assert e != null;
                         Toast.makeText(Login_Signup_Activity.this,"Failed:"+e.getMessage(), Toast.LENGTH_LONG).show();
 
                     }
@@ -99,6 +100,7 @@ public class Login_Signup_Activity extends AppCompatActivity {
 
     boolean internet_connection(){
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
