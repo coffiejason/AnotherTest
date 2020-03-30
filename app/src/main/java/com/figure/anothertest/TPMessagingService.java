@@ -75,7 +75,10 @@ public class TPMessagingService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent);
 
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
-            builder=builder.setContent(getCustomDesign(title,message));
+            //builder=builder.setContent(getCustomDesign(title,message));
+            builder=builder.setContentTitle(title)
+                    .setContentText(message)
+                    .setSmallIcon(R.drawable.web_hi_res_512);
         }
         else{
             builder=builder.setContentTitle(title)
