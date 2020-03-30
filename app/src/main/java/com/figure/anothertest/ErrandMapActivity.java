@@ -35,14 +35,15 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
-
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,6 +51,9 @@ import java.util.Collection;
 /* POSSIBLE BUGS
  **APP CANT DIFFERENTIATE B/N USERS
  * */
+
+
+//add code to http post request to show notification when a user posts data
 
 public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -279,6 +283,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
             userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
 
+        FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
+
         userAvailabilityRef = FirebaseDatabase.getInstance().getReference().child("Customers available");
         userIndividual = userAvailabilityRef.child(userID);
 
@@ -381,5 +387,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         Log.d("SharedPrefsToken",SharedPrefs.getInstance(ErrandMapActivity.this).getToken()+"");
     }
+
 
 }
