@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -166,7 +167,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //code to save user location to Firebase
         //getPost(userIndividual);
         new Functions().saveUser(userIndividual,location,userID);
-        new Functions().getAllPosts(userAvailabilityRef,mMap);
+        new Functions().getAllPosts(ErrandMapActivity.this,userAvailabilityRef,mMap);
         //put theres in oncreate
         //TPClusterRenderer renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
         //mClusterManager.setOnClusterClickListener(this);
@@ -275,8 +276,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         view.draw(canvas);
 
         return bitmap;
-    }
-    */
+    }*/
+
     void init(){
 
         if(FirebaseAuth.getInstance().getCurrentUser() != null){

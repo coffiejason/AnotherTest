@@ -100,6 +100,7 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
     protected void post(){
         if(finalLocation != null){
             new Functions().creatPostText(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude,radius);
+            new Functions().notifyUsers(ChooseLocationActivity.this,msg,msg);
             finish();
         }
 
