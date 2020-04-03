@@ -27,4 +27,6 @@ public class PostClusterItem implements ClusterItem {
     public String getSnippet() {
         return null;
     }
+
+
 }

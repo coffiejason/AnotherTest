@@ -57,4 +57,7 @@
 
     <string name="home_second">Home Second</string>
     <string name="title_activity_choose_location">Map</string>
+
+    <string name="Close">Close</string>
+    <string name="Open">Open</string>
 </resources>

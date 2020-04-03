@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
@@ -146,7 +147,7 @@ class Functions {
 
     }
 
-    void getAllPosts(final Context c,DatabaseReference userDB, final GoogleMap map){
+    void getAllPosts(final ClusterManager<PostClusterItem>cm,DatabaseReference userDB){
         //use Location.distanceBetween() to check if coordinates are in a given radius
 
         userDB.addValueEventListener(new ValueEventListener() {
@@ -176,7 +177,7 @@ class Functions {
 
                         //Log.d("HashMapWorking3",""+l+" "+" "+g+" "+msg);
 
-                        setMsgIcon2(map,c,l,g,msg);
+                        setMsgIcon(cm,l,g,msg);
 
                     }
 
@@ -192,22 +193,22 @@ class Functions {
             }
         });
     }
-    /*
-    void setMsgIcon(ClusterManager<PostClusterItem> cm, double l, double g, String message){
+
+    private void setMsgIcon(ClusterManager<PostClusterItem> cm, double l, double g, String message){
         LatLng pl = new LatLng(l,g);
 
         //code below for regular posts
         cm.addItem(new PostClusterItem(message, pl));
         cm.cluster();
     }
-    */
+
     private void setMsgIcon2(GoogleMap map,Context c, double l, double g, String message){
         LatLng pl = new LatLng(l,g);
 
         map.addMarker(new MarkerOptions().position(pl).title(message).icon(BitmapDescriptorFactory.fromBitmap(layoutToBitmap(R.layout.post_icon,c))));
     }
 
-    private Bitmap layoutToBitmap(int layout, Context c) {
+    Bitmap layoutToBitmap(int layout, Context c) {
 
         LayoutInflater layoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(layout, null);

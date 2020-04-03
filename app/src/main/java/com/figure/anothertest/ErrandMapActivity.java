@@ -3,6 +3,7 @@ package com.figure.anothertest;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.BroadcastReceiver;
@@ -19,7 +20,6 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
@@ -45,6 +45,15 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -65,6 +74,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     GoogleApiClient googleApiClient;
     Location lastLocation;
     LocationRequest locationRequest;
+    Toolbar tb;
 
     //private int radius = 1; //should be custom adjusted by user via UI, determines the range of other Users avaialable
 
@@ -79,7 +89,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     AutocompleteSupportFragment autocompleteFragment;
 
 
-    //private ClusterManager<PostClusterItem> mClusterManager;
+    private ClusterManager<PostClusterItem> mClusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -129,9 +139,15 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         buildGoogleApiClient();
 
-        //mClusterManager = new ClusterManager<>(this, mMap);
+        mClusterManager = new ClusterManager<>(ErrandMapActivity.this, mMap);
         //request for User permission
         mMap.setMyLocationEnabled(true);
+        mMap.setOnCameraIdleListener(mClusterManager);
+        //mMap.setOnMarkerClickListener(mClusterManager);
+        TPClusterRenderer renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
+        //mClusterManager.setOnClusterClickListener(this);
+        mClusterManager.setRenderer(renderer);
+        mClusterManager.cluster();
     }
 
     @Override
@@ -167,11 +183,9 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //code to save user location to Firebase
         //getPost(userIndividual);
         new Functions().saveUser(userIndividual,location,userID);
-        new Functions().getAllPosts(ErrandMapActivity.this,userAvailabilityRef,mMap);
+        new Functions().getAllPosts(mClusterManager,userAvailabilityRef);
         //put theres in oncreate
-        //TPClusterRenderer renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
-        //mClusterManager.setOnClusterClickListener(this);
-        //mClusterManager.setRenderer(renderer);
+
     }
 
     protected synchronized void buildGoogleApiClient(){
@@ -280,6 +294,32 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     void init(){
 
+        tb = findViewById(R.id.mapToolbar);
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Username Settings");
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Notification Settings");
+
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.color.colorAccent)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Mike Penz").withIcon(getResources().getDrawable(R.drawable.egg))
+                )
+                .build();
+
+//create the drawer and remember the `Drawer` result object
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(tb)
+                .withAccountHeader(headerResult)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        new SecondaryDrawerItem().withName("Dark Mode")
+                )
+                .build();
+
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
@@ -299,8 +339,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         registerReceiver(broadcastReceiver,new IntentFilter(TPMessagingService.TOKEN_BROADCAST));
 
         RelativeLayout post_button = findViewById(R.id.post_errand);
-
-        SimpleDraweeView profile = findViewById(R.id.profile_settings);
 
         args = new Bundle();
 
@@ -326,10 +364,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
             }
         });
 
-
-
-
-
         post_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -346,15 +380,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         });
 
-
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ErrandMapActivity.this,SettingsActivity.class));
-                Animatoo.animateSlideRight(ErrandMapActivity.this);
-
-            }
-        });
+        //new DrawerBuilder().withActivity(this).withToolbar().build();
 
 
 
