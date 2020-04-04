@@ -53,7 +53,6 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -78,6 +77,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     //private int radius = 1; //should be custom adjusted by user via UI, determines the range of other Users avaialable
 
+    int stat = 0;
+
     String userID;
 
     DatabaseReference userAvailabilityRef;
@@ -99,14 +100,13 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         new TPMessagingService();
 
-
-
         init();
 
         getToken();
 
         Log.d("SharedPrefsToken22222",SharedPrefs.getInstance(ErrandMapActivity.this).getToken()+"");
 
+        //new Functions().getAllPosts(mClusterManager,userAvailabilityRef);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -145,7 +145,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         mMap.setOnCameraIdleListener(mClusterManager);
         //mMap.setOnMarkerClickListener(mClusterManager);
         TPClusterRenderer renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
-        //mClusterManager.setOnClusterClickListener(this);
+        mClusterManager.setOnClusterClickListener(this);
         mClusterManager.setRenderer(renderer);
         mClusterManager.cluster();
     }
@@ -182,9 +182,12 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         //code to save user location to Firebase
         //getPost(userIndividual);
+
+
         new Functions().saveUser(userIndividual,location,userID);
+
         new Functions().getAllPosts(mClusterManager,userAvailabilityRef);
-        //put theres in oncreate
+
 
     }
 
@@ -313,10 +316,14 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 .withToolbar(tb)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        item1,
-                        new DividerDrawerItem(),
-                        item2,
-                        new SecondaryDrawerItem().withName("Dark Mode")
+                        item1,item2,
+                        new DividerDrawerItem()
+                        ,
+                        new SecondaryDrawerItem().withName("World").withIcon(R.drawable.ic_world),
+                        new SecondaryDrawerItem().withName("Errands").withIcon(R.drawable.ic_errands),
+                        new SecondaryDrawerItem().withName("My Posts").withIcon(R.drawable.ic_myposts),
+                        new SecondaryDrawerItem().withName("My Replies").withIcon(R.drawable.ic_replies),
+                        new SecondaryDrawerItem().withIcon(R.drawable.ic_moon)
                 )
                 .build();
 
@@ -367,6 +374,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         post_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //new Functions().getAllPosts(mClusterManager,userAvailabilityRef);
+
                 Intent intent = new Intent(ErrandMapActivity.this, CreatePost.class);
                 intent.putExtra("default_l",args.getFloat("l"));
                 intent.putExtra("default_g",args.getFloat("g"));

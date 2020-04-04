@@ -31,4 +31,11 @@ public class TPClusterRenderer extends DefaultClusterRenderer {
 
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new Functions().layoutToBitmap(R.layout.post_icon,c)));
     }
+
+    @Override
+    protected boolean shouldRenderAsCluster(Cluster cluster) {
+        return cluster.getSize() > 1;
+    }
+
+
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,8 +11,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:paddingBottom="30dp"
             android:layout_centerVertical="true">
 
             <RelativeLayout
@@ -23,7 +21,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/email_input_box_parent"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
@@ -42,7 +40,7 @@
                             android:layout_height="match_parent"
                             android:layout_centerVertical="true"
                             android:background="@null"
-                            android:hint="@string/email_hint_title"
+                            android:hint="@string/email_hint"
                             android:textColorHint="@color/colorFormText"
                             android:inputType="textEmailAddress"
                             android:maxLines="1"
@@ -84,7 +82,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/password_input_box_parent"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="15dp"
@@ -104,7 +102,7 @@
                             android:layout_centerVertical="true"
                             android:background="@null"
                             android:textColorHint="@color/colorFormText"
-                            android:hint="@string/password_title"
+                            android:hint="@string/password_hint"
                             android:inputType="textPassword"
                             android:maxLines="1"
                             android:textColor="@color/colorHint"
@@ -322,4 +320,4 @@
 
         </RelativeLayout>
 
-</androidx.core.widget.NestedScrollView>
+</RelativeLayout>

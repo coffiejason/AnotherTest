@@ -31,6 +31,7 @@ public class OpenPostsCluster extends AppCompatActivity {
 
         for(int j = i; j >= 0; j--){
             postMsgs[j] = bundle.getString("Key"+j);
+            Log.d("Fandthaeumtymessageost",""+postMsgs[j]);
         }
 
 

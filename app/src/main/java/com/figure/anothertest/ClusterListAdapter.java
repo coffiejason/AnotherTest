@@ -32,14 +32,13 @@ public class ClusterListAdapter extends RecyclerView.Adapter<ClusterListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CLViewHolder holder, int position) {
-
         holder.postText.setText(mMessage[position]);
 
     }
 
     @Override
     public int getItemCount() {
-        return mMessage.length;
+        return mMessage.length-1;
     }
 
     static class CLViewHolder extends RecyclerView.ViewHolder{
