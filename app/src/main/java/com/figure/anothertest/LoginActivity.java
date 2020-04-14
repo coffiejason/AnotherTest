@@ -3,10 +3,13 @@ package com.figure.anothertest;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -39,11 +42,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private TextView forgot_password_text_view;
+    private TextView login_to_register;
 
     private EditText lUsername;
     private EditText lPassword;
 
     private FirebaseAuth mAuth;
+
+    private Boolean permissionGranted = false;
 
     public enum BUTTON_TYPES {
         RESET,
@@ -57,22 +63,26 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         internet_connection();
 
+        ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+
         mAuth = FirebaseAuth.getInstance();
 
         loginBtn = findViewById(R.id.login);
         login_button_card_view = findViewById(R.id.login_button_card_view);
+
         forgot_password_text_view = findViewById(R.id.forgot_password_text_view);
+        login_to_register = findViewById(R.id.lRegister_text_view);
 
         button_title = findViewById(R.id.button_title);
         button_progress = findViewById(R.id.button_progress);
         button_error_icon = findViewById(R.id.button_error_icon);
-
 
         lUsername = findViewById(R.id.lUsername);
         lPassword = findViewById(R.id.lPasword);
 
         forgotPasswordOnClick();
         inputChange();
+        registerOnClick();
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,13 +96,20 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
                 else{
-                    loginUser(email,password);
+                    if(permissionGranted){
+                        loginUser(email,password);
+                    }else{
+                        Toast.makeText(LoginActivity.this,"We need you location to proceed",Toast.LENGTH_SHORT).show();
+                        ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+                    }
+
                 }
 
 
 
             }
         });
+
 
 
 
@@ -160,6 +177,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(LoginActivity.this, getString(R.string.forgot_password), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void registerOnClick() {
+        login_to_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this,Login_Signup_Activity.class));
             }
         });
     }
@@ -232,6 +258,18 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //make a boolean here where intent checks before proceeding
+                permissionGranted = true;
+            } else {
+                Toast.makeText(LoginActivity.this, "We need you location to proceed", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     boolean internet_connection(){

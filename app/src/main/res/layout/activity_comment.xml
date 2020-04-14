@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:padding="20dp"
     android:layout_height="wrap_content"
-    android:id="@+id/row_item_layout">
+    tools:context=".CommentActivity"
+    android:id="@+id/comment_layout">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/profile_photo"
@@ -16,7 +18,7 @@
         app:roundAsCircle="true" />
 
     <TextView
-        android:id="@+id/tv_name"
+        android:id="@+id/tv_name_comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name_placeholder"
@@ -25,22 +27,22 @@
         android:textSize="15sp"/>
 
     <TextView
-        android:id="@+id/tv_username"
+        android:id="@+id/tv_username_comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/username_placeholder"
-        android:layout_toRightOf="@id/tv_name"
+        android:layout_toRightOf="@id/tv_name_comments"
         android:layout_marginLeft="10dp"
         android:textStyle="normal"
         android:textSize="15sp"/>
 
     <TextView
-        android:id="@+id/tv_tp_post"
+        android:id="@+id/tv_tp_post_comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/post_placeholder"
         android:layout_toRightOf="@id/profile_photo"
-        android:layout_below="@id/tv_name"
+        android:layout_below="@id/tv_name_comments"
         android:textStyle="normal"
         android:layout_marginTop="5dp"
         android:textSize="15sp"/>
@@ -51,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="@string/edited"
         android:layout_toRightOf="@id/profile_photo"
-        android:layout_below="@id/tv_tp_post"
+        android:layout_below="@id/tv_tp_post_comments"
         android:textStyle="normal"
         android:layout_marginTop="2dp"
         android:visibility="gone"
@@ -59,8 +61,9 @@
         android:textSize="13sp"/>
 
     <RelativeLayout
+        android:id="@+id/useful_btns"
         android:layout_width="wrap_content"
-        android:layout_below="@id/tv_tp_post"
+        android:layout_below="@id/tv_tp_post_comments"
         android:layout_marginTop="25dp"
         android:layout_toRightOf="@id/profile_photo"
         android:layout_height="wrap_content">
@@ -98,4 +101,28 @@
 
     </RelativeLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/useful_btns"/>
+
+    <EditText
+        android:id="@+id/comment_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="70dp"
+        android:background="@null"
+        android:layout_alignParentBottom="true"
+        android:hint="Dont keep em waiting"/>
+
+    <Button
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:text="Post"
+        android:textColor="@color/colorAccent"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="15dp"/>
 </RelativeLayout>

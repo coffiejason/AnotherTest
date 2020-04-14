@@ -21,7 +21,7 @@ public class TPClusterRenderer extends DefaultClusterRenderer {
     protected void onBeforeClusterRendered(Cluster cluster, MarkerOptions markerOptions) {
         super.onBeforeClusterRendered(cluster, markerOptions);
 
-        //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new Functions().layoutToBitmap(R.layout.clustericon,c)));
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new Functions().layoutToBitmap(R.layout.clustericon,c)));
     }
 
     @Override

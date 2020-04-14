@@ -45,14 +45,6 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -77,12 +69,11 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     //private int radius = 1; //should be custom adjusted by user via UI, determines the range of other Users avaialable
 
-    int stat = 0;
-
     String userID;
 
     DatabaseReference userAvailabilityRef;
     DatabaseReference userIndividual;
+    TPClusterRenderer renderer;
 
     LatLng defaultLocation;
     Bundle args;
@@ -106,15 +97,11 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         Log.d("SharedPrefsToken22222",SharedPrefs.getInstance(ErrandMapActivity.this).getToken()+"");
 
-        //new Functions().getAllPosts(mClusterManager,userAvailabilityRef);
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
-
-
     }
 
     @Override
@@ -144,9 +131,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         mMap.setMyLocationEnabled(true);
         mMap.setOnCameraIdleListener(mClusterManager);
         //mMap.setOnMarkerClickListener(mClusterManager);
-        TPClusterRenderer renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
         mClusterManager.setOnClusterClickListener(this);
-        mClusterManager.setRenderer(renderer);
         mClusterManager.cluster();
     }
 
@@ -183,12 +168,14 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //code to save user location to Firebase
         //getPost(userIndividual);
 
+        renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
+        mClusterManager.setRenderer(renderer);
 
         new Functions().saveUser(userIndividual,location,userID);
 
         new Functions().getAllPosts(mClusterManager,userAvailabilityRef);
 
-
+        new Functions().getMyPosts(userAvailabilityRef.child(userID));
     }
 
     protected synchronized void buildGoogleApiClient(){
@@ -207,43 +194,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     protected void onStop() {
         super.onStop();
     }
-
-    /*
-    public void getPost(DatabaseReference userDBReference){
-        userDBReference.child("Posts").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                double l,g;
-                String  msg;
-                //Log.d("weback",""+dataSnapshot.child("Message").getValue().toString());
-
-                //noinspection JoinDeclarationAndAssignmentJava
-                l = Double.parseDouble(dataSnapshot.child("l").getValue().toString());
-                g = Double.parseDouble(dataSnapshot.child("g").getValue().toString());
-                msg = dataSnapshot.child("Message").getValue().toString();
-
-                Log.d("Checkingmsgs",""+msg);
-                //new Functions().setMsgIcon(mClusterManager,l,g,msg);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-    }
-    */
 
     @Override
     public boolean onClusterClick(Cluster<PostClusterItem> cluster) {
@@ -268,64 +218,12 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         return true;
     }
-    /*
-    private Bitmap layoutToBitmap(int layout) {
-
-        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(layout, null);
-
-        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-
-        view.buildDrawingCache();
-
-        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(),
-                Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(bitmap);
-        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
-
-        Drawable drawable = view.getBackground();
-        if (drawable != null)
-            drawable.draw(canvas);
-
-        view.draw(canvas);
-
-        return bitmap;
-    }*/
 
     void init(){
 
         tb = findViewById(R.id.mapToolbar);
 
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Username Settings");
-        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Notification Settings");
-
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.color.colorAccent)
-                .addProfiles(
-                        new ProfileDrawerItem().withName("Mike Penz").withIcon(getResources().getDrawable(R.drawable.egg))
-                )
-                .build();
-
-//create the drawer and remember the `Drawer` result object
-        Drawer result = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(tb)
-                .withAccountHeader(headerResult)
-                .addDrawerItems(
-                        item1,item2,
-                        new DividerDrawerItem()
-                        ,
-                        new SecondaryDrawerItem().withName("World").withIcon(R.drawable.ic_world),
-                        new SecondaryDrawerItem().withName("Errands").withIcon(R.drawable.ic_errands),
-                        new SecondaryDrawerItem().withName("My Posts").withIcon(R.drawable.ic_myposts),
-                        new SecondaryDrawerItem().withName("My Replies").withIcon(R.drawable.ic_replies),
-                        new SecondaryDrawerItem().withIcon(R.drawable.ic_moon)
-                )
-                .build();
+        new Functions().sideMenu(ErrandMapActivity.this,tb);
 
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -388,13 +286,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
             }
 
         });
-
-        //new DrawerBuilder().withActivity(this).withToolbar().build();
-
-
-
-
-
     }
 
     // for new devices sake, save the token in TPMessagingservice, if already generated do this . all must be dont on start

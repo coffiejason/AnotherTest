@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfileActivity">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/editable_user_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:placeholderImage="@drawable/egg"
+        android:layout_centerHorizontal="true"
+        app:roundedCornerRadius="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"/>
+
+    <TextView
+        android:id="@+id/profile_email_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email_title"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/editable_user_image"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/profile_email_title"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentRight="true"
+        android:textAlignment="textEnd"
+        android:text="@string/email_hint_title"
+        android:layout_below="@id/editable_user_image"/>
+
+    <TextView
+        android:id="@+id/profile_username_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_email_title"
+        android:text="Username:"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/profile_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Axymmkiodkmnfkodhbd"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@id/profile_username_title"
+        android:textAlignment="textEnd"
+        android:layout_below="@id/profile_email_title"/>
+
+</RelativeLayout>

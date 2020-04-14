@@ -32,7 +32,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 public class Login_Signup_Activity extends AppCompatActivity {
 
     private EditText sEmail,sPassword;
-    private TextView email_error_text, password_error_text;
+    private TextView email_error_text, password_error_text,registerbtn_tv;
     private CardView isAtLeast8Parent, hasUppercaseParent, hasNumberParent;
     private RelativeLayout registration_button;
     private CardView registration_button_parent;
@@ -90,6 +90,10 @@ public class Login_Signup_Activity extends AppCompatActivity {
                         assert e != null;
                         Toast.makeText(Login_Signup_Activity.this,"Failed:"+e.getMessage(), Toast.LENGTH_LONG).show();
 
+                        isRegistrationClickable = true;
+                        registration_button_parent.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+                        registerbtn_tv.setText("REGISTRATION");
+
                     }
                 }
             });
@@ -116,6 +120,7 @@ public class Login_Signup_Activity extends AppCompatActivity {
         hasNumberParent = findViewById(R.id.p_item_3_icon_parent);
         registration_button = findViewById(R.id.registration_button);
         registration_button_parent = findViewById(R.id.registration_button_parent);
+        registerbtn_tv = findViewById(R.id.registerbtn_tv);
     }
 
     private void checkEmpty(String email, String password) {
@@ -207,6 +212,7 @@ public class Login_Signup_Activity extends AppCompatActivity {
 
     private void setOnClickRegistration() {
         registration_button.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 String email = sEmail.getText().toString().trim(), password = sPassword.getText().toString();
@@ -221,6 +227,11 @@ public class Login_Signup_Activity extends AppCompatActivity {
                         }
                         else{
                             registerUser(email,password);
+                            isRegistrationClickable = false;
+                            registration_button_parent.setCardBackgroundColor(Color.parseColor(getString(R.color.colorCardViewBackground)));
+                            registerbtn_tv.setText("Please Wait ...");
+
+
 
                         }                    }
                 } else {
