@@ -18,10 +18,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.firebase.geofire.GeoFire;
@@ -33,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonObject;
 import com.google.maps.android.clustering.ClusterManager;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -44,11 +47,15 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -93,9 +100,18 @@ class Functions {
 
         DatabaseReference ref = userDB.child(userID);
         ref.child("Posts").push().setValue(hashMap);
+    }
 
+    void creatErrand(DatabaseReference userDB, String userID, String message, float l, float g){
+        //add location parameter to Hashmap
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("Message",message);
+        hashMap.put("l",l);
+        hashMap.put("g",g);
+        hashMap.put("UserID",userID);
 
-
+        DatabaseReference ref = userDB.child(userID);
+        ref.child("Errands").push().setValue(hashMap);
     }
 
     void comment(DatabaseReference userDB, String postUserID, String text){
@@ -128,6 +144,10 @@ class Functions {
 
             }
         });
+    }
+
+    void getErrands(){
+
     }
 
     void getMyPosts(DatabaseReference userDB){
@@ -208,11 +228,57 @@ class Functions {
 
     }
 
+    void notifyUserswithTopic(Context c,String title, String message){
+        RequestQueue queue = Volley.newRequestQueue(c);
+        String URL = "https://fcm.googleapis.com/fcm/send";
+
+        JSONObject  mainObj = new JSONObject();
+
+        //write topic to all user in post range
+
+
+        try {
+            mainObj.put("to", "/topics/" + "topicsname");
+            JSONObject notification = new JSONObject();
+            notification.put("title", "noti dey work "+title);
+            notification.put("body", "noti dey workkkbsh "+message);
+            mainObj.put("notification", notification);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                    mainObj,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("sucesssss", "" + response);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("failllleedd", "" + error);
+                }
+            }
+            ){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String,String> header = new HashMap<>();
+                    header.put("Content-Type","application/json");
+                    header.put("Authorization","key=AAAAtEBMzJ4:APA91bGmAnHTXM1D0TMl4xWO-cKB3dqCVqg8bR8Ncf64GQJgJP-SRNzo9bQ-6WwtBNimHU72JAbIKnL8Rj1BIqEL99TUOCJd4PGxKdBV7vOYd1tRi1NgzE5zxeRvRngv2LNCxy1LxLm_");
+                    return header;
+                }
+            };
+
+            queue.add(request);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
+
     void sideMenu(final Activity a, Toolbar tb){
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Profile Options").withIcon(R.drawable.ic_profile);
         SecondaryDrawerItem item2,item3, world, errands, myposts,myreplies;
 
-        item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Create Errand");
+        item3 = new SecondaryDrawerItem().withIdentifier(2).withName("Create Errand");
 
         item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Notification Options").withIcon(R.drawable.ic_bell);
 
@@ -228,6 +294,14 @@ class Functions {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 a.startActivity(new Intent(a,EditProfileActivity.class));
+                return false;
+            }
+        });
+
+        item3.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                a.startActivity(new Intent(a,Tper1Activity.class));
                 return false;
             }
         });
@@ -279,7 +353,7 @@ class Functions {
                 .withToolbar(tb)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        item1,item2,
+                        item1,item2,item3,
                         new DividerDrawerItem()
                         ,
                         world,

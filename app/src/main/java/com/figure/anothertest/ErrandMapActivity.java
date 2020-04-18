@@ -14,6 +14,7 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -66,6 +67,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     Location lastLocation;
     LocationRequest locationRequest;
     Toolbar tb;
+
+    RelativeLayout mapLayoutSub;
 
     //private int radius = 1; //should be custom adjusted by user via UI, determines the range of other Users avaialable
 
@@ -223,13 +226,15 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         tb = findViewById(R.id.mapToolbar);
 
+        mapLayoutSub = findViewById(R.id.notifyer_space);
+
         new Functions().sideMenu(ErrandMapActivity.this,tb);
 
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
 
-        FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
+        FirebaseMessaging.getInstance().subscribeToTopic("topicsname");
 
         userAvailabilityRef = FirebaseDatabase.getInstance().getReference().child("Customers available");
         userIndividual = userAvailabilityRef.child(userID);
@@ -269,20 +274,24 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
             }
         });
 
+        //LayoutInflater inflater = this.getLayoutInflater();
+        //final View child = inflater.inflate(R.layout.errand_notifyer,null);
+
         post_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new Functions().getAllPosts(mClusterManager,userAvailabilityRef);
+
+
+                //mapLayoutSub.addView(child);
+
+
 
                 Intent intent = new Intent(ErrandMapActivity.this, CreatePost.class);
                 intent.putExtra("default_l",args.getFloat("l"));
                 intent.putExtra("default_g",args.getFloat("g"));
                 startActivity(intent);
                 Animatoo.animateSlideLeft(ErrandMapActivity.this);
-                /*
-                customerRequestLocation = new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(customerRequestLocation).title("Errand Location here")); //make marker movable
-                 */
+
             }
 
         });

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="20dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/row_item_layout">
+
+    <TextView
+        android:id="@+id/request_in_process_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="request in process ..."
+        android:textColor="@color/colorTitle"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"/>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_below="@+id/request_in_process_text"
+        android:id="@+id/profile_photo"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
+        android:layout_marginRight="20dp"
+        app:placeholderImage="@drawable/egg"
+        app:roundAsCircle="true" />
+
+    <TextView
+        android:layout_below="@+id/request_in_process_text"
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name_placeholder"
+        android:layout_toRightOf="@id/profile_photo"
+        android:textStyle="bold"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:layout_below="@+id/request_in_process_text"
+        android:id="@+id/tv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username_placeholder"
+        android:layout_toRightOf="@id/tv_name"
+        android:layout_marginLeft="10dp"
+        android:textStyle="normal"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/tv_tp_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your request will be completed soon"
+        android:layout_toRightOf="@id/profile_photo"
+        android:layout_below="@id/tv_name"
+        android:textStyle="normal"
+        android:layout_marginTop="5dp"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/tv_tweet_edited"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edited"
+        android:layout_toRightOf="@id/profile_photo"
+        android:layout_below="@id/tv_tp_post"
+        android:textStyle="normal"
+        android:layout_marginTop="2dp"
+        android:visibility="gone"
+        android:textColor="@color/twitterBlueDarker"
+        android:textSize="13sp"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_below="@id/tv_tp_post"
+        android:layout_marginTop="25dp"
+        android:layout_toRightOf="@id/profile_photo"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:id="@+id/tweet_action_reply"
+            android:src="@drawable/ic_twitter_comment" />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_toRightOf="@id/tweet_action_reply"
+            android:layout_marginLeft="45dp"
+            android:id="@+id/tweet_action_retweet"
+            android:src="@drawable/ic_twitter_retweet" />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_toRightOf="@id/tweet_action_retweet"
+            android:layout_marginLeft="45dp"
+            android:id="@+id/tweet_action_like"
+            android:src="@drawable/ic_twitter_like_outline" />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_toRightOf="@id/tweet_action_like"
+            android:layout_marginLeft="45dp"
+            android:id="@+id/tweet_action_edit"
+            android:visibility="gone"
+            android:src="@drawable/ic_edit_tweet" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

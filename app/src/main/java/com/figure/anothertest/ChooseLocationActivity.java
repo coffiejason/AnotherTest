@@ -24,6 +24,8 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
     int radius;
     String msg;
 
+    boolean errand;
+
     LatLng defaultLocation, finalLocation;
 
     String userID;
@@ -46,7 +48,10 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
         l = intent.getFloatExtra("default_l",(float)0.00000);
         g = intent.getFloatExtra("default_g",(float)0.00000);
         msg = intent.getStringExtra("message");
+        errand = intent.getBooleanExtra("errand",false);
         defaultLocation = new LatLng(l,g);
+
+        Log.d("boolvalue",""+errand);
 
         if( FirebaseAuth.getInstance().getCurrentUser() != null){
             userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -99,9 +104,19 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
 
     protected void post(){
         if(finalLocation != null){
-            new Functions().creatPostText(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude,radius);
-            new Functions().notifyUsers(ChooseLocationActivity.this,msg,msg);
-            finish();
+
+            if(errand){
+                //send notification to users close to the post location
+                new Functions().creatErrand(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude);
+                new Functions().notifyUserswithTopic(ChooseLocationActivity.this,msg,msg);
+                finish();
+                //startActivity(new Intent(ChooseLocationActivity.this,Tper2Activity.class));
+            }else{
+                new Functions().creatPostText(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude,radius);
+                new Functions().notifyUserswithTopic(ChooseLocationActivity.this,msg,msg);
+                finish();
+            }
+
         }
 
     }

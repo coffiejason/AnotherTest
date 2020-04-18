@@ -8,52 +8,61 @@
     android:layout_height="match_parent"
     tools:context=".ErrandMapActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/mapToolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhite">
+        android:layout_height="match_parent">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="end"
-            app:placeholderImage="@drawable/default_photo"
-            app:roundAsCircle="true"
-            android:layout_marginRight="10dp" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/email_input_parent"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/mapToolbar"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            app:cardBackgroundColor="@color/colorCardViewBackground"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp">
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                app:placeholderImage="@drawable/default_photo"
+                app:roundAsCircle="true"
+                android:layout_marginRight="10dp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/email_input_parent"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                app:cardBackgroundColor="@color/colorCardViewBackground"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <fragment
+                        android:id="@+id/autocomplete_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:name=
+                            "com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
+
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.appcompat.widget.Toolbar>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/mapToolbar"
+            android:id="@+id/maplayoutRelative">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <fragment
-                    android:id="@+id/autocomplete_fragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:name=
-                        "com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
-
-
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </androidx.appcompat.widget.Toolbar>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/maplayoutRelative">
+                android:layout_height="150dp"
+                android:id="@+id/notifyer_space"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="130dp"
@@ -92,8 +101,8 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
     </RelativeLayout>
-
-
 
 </fragment>

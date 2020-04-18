@@ -27,6 +27,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
+        <activity android:name=".Tper1Activity" />
+        <activity android:name=".Tper3Activity"/>
+        <activity android:name=".Tper2Activity" />
         <activity
             android:name=".CommentActivity"
             android:label="Comments"
