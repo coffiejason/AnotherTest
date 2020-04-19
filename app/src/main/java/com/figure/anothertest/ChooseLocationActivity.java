@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,6 +19,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class ChooseLocationActivity extends FragmentActivity implements OnMapReadyCallback {
 
     float l,g;
@@ -28,7 +32,7 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
 
     LatLng defaultLocation, finalLocation;
 
-    String userID;
+    String userID,topic;
     DatabaseReference userDB;
 
     RelativeLayout postBtn;
@@ -50,6 +54,11 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
         msg = intent.getStringExtra("message");
         errand = intent.getBooleanExtra("errand",false);
         defaultLocation = new LatLng(l,g);
+
+        Date ct = Calendar.getInstance().getTime();
+        topic = userID+ct;
+
+
 
         Log.d("boolvalue",""+errand);
 
@@ -105,15 +114,17 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
     protected void post(){
         if(finalLocation != null){
 
+            TPPost post = new TPPost(msg,(float) finalLocation.latitude, (float) finalLocation.longitude);
+
             if(errand){
                 //send notification to users close to the post location
                 new Functions().creatErrand(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude);
-                new Functions().notifyUserswithTopic(ChooseLocationActivity.this,msg,msg);
+                new Functions().notifyUserswithTopic(ChooseLocationActivity.this,post,topic,errand);
                 finish();
                 //startActivity(new Intent(ChooseLocationActivity.this,Tper2Activity.class));
             }else{
                 new Functions().creatPostText(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude,radius);
-                new Functions().notifyUserswithTopic(ChooseLocationActivity.this,msg,msg);
+                new Functions().notifyUserswithTopic(ChooseLocationActivity.this,post,topic,errand);
                 finish();
             }
 

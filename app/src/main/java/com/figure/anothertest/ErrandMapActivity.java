@@ -48,7 +48,9 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 /* POSSIBLE BUGS
  **APP CANT DIFFERENTIATE B/N USERS
@@ -98,7 +100,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         getToken();
 
-        Log.d("SharedPrefsToken22222",SharedPrefs.getInstance(ErrandMapActivity.this).getToken()+"");
+        //Log.d("SharedPrefsToken22222",SharedPrefs.getInstance(ErrandMapActivity.this).getToken()+"");
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

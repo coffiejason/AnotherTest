@@ -35,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonObject;
 import com.google.maps.android.clustering.ClusterManager;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -68,6 +69,7 @@ class Functions {
 
     private static List<TPPost> list = new ArrayList<>();
     private static List<TPPost> myList = new ArrayList<>();
+    private List<HashMap<String,Object>> allusersloc = new ArrayList<>();
 
     void saveUser(DatabaseReference userDBReference, Location userLocation, String userID){
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -125,15 +127,26 @@ class Functions {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 HashMap<String, Object> hashMap = new HashMap<>();
-                String msg;
+                String userid;
                 double l,g;
+                int i = 0;
 
                 for(DataSnapshot d: dataSnapshot.getChildren()){
                     Log.d("Igotthekeyskeyskeys",""+d.getKey());
 
                     //use location.distancebetween here to get only the keys in users location
                     redundantCode(d,list,true,cm);
-                    Log.d("checkhashmap",""+hashMap.get("Message"));
+
+                    g = (double) d.child("Location").child("g").getValue();
+                    l = (double) d.child("Location").child("l").getValue();
+                    userid = d.getKey();
+
+                    hashMap.put("l",l);
+                    hashMap.put("g",g);
+                    hashMap.put("userid",userid);
+
+                    allusersloc.add(hashMap);
+
 
                 }
 
@@ -228,20 +241,29 @@ class Functions {
 
     }
 
-    void notifyUserswithTopic(Context c,String title, String message){
+    void notifyUserswithTopic(Context c,TPPost post,String topic, boolean errand){
         RequestQueue queue = Volley.newRequestQueue(c);
         String URL = "https://fcm.googleapis.com/fcm/send";
+
+        String nt;
+
+        if(errand){
+            nt = "New Task !";
+        }else{
+            nt = "New Messages around you";
+        }
 
         JSONObject  mainObj = new JSONObject();
 
         //write topic to all user in post range
 
 
+
         try {
-            mainObj.put("to", "/topics/" + "topicsname");
+            mainObj.put("to", "/topics/" + topic);
             JSONObject notification = new JSONObject();
-            notification.put("title", "noti dey work "+title);
-            notification.put("body", "noti dey workkkbsh "+message);
+            notification.put("title", nt);
+            notification.put("body", ""+post.getpMessage());
             mainObj.put("notification", notification);
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
@@ -396,6 +418,53 @@ class Functions {
 
         }
 
+    }
+
+    private void whoGetsNotified(TPPost post,int radius,String topic){
+        //distances are in meters
+
+        Location loc = new Location("loc");
+
+        Location loc2 = new Location("loc2");
+        loc2.setLatitude(post.getLocation().latitude);
+        loc2.setLongitude(post.getLocation().longitude);
+
+        HashMap<String, Object> hm;
+        Double l,g;
+        String userid;
+
+        int distance;
+
+        for(int i = 0; i <= allusersloc.size(); i++){
+            hm = allusersloc.get(i);
+            l = (Double) hm.get("l");
+            g = (Double) hm.get("g");
+
+            loc.setLatitude(l); //if this returns null then create a class for the coordinates and user name and add to the the all userlist instead
+            loc.setLongitude(g);
+
+             distance = (int) loc2.distanceTo(loc);
+
+             if(distance <= radius){
+                 //add topic to the user node
+                 //FirebaseDBReference.child("Errands").setValue(topic);
+             }
+
+
+
+
+
+
+        }
+
+    }
+
+    private void getNotifyTopics(){
+        //suscribes user to errand topics available to them
+
+        String topic =  "";//read topics from database and pass to string topic
+
+        FirebaseMessaging.getInstance().subscribeToTopic(topic);
     }
 
     List<TPPost> getWorldPosts(){

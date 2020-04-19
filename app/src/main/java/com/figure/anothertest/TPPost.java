@@ -10,6 +10,7 @@ public class TPPost {
     //private Timestamp pTime;
     private String pMessage;
     private LatLng pLocation;
+    private int radius;
 
     TPPost(String message,double l, double g){
         pLocation = new LatLng(l,g);
@@ -24,11 +25,18 @@ public class TPPost {
         this.pLocation = new LatLng(l,g);
     }
 
-    public String getpMessage(){
+    public void setRadius(int radius){
+        this.radius = radius;
+    }
+
+    String getpMessage(){
         return this.pMessage;
     }
 
-    public LatLng getLocation(){
+    LatLng getLocation(){
         return this.pLocation;
     }
+
+    public int getRadius(){ return this.radius;}
+
 }
