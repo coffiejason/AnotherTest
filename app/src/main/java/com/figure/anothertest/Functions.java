@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -28,12 +32,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonObject;
@@ -54,6 +60,7 @@ import org.json.JSONObject;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +76,8 @@ class Functions {
 
     private static List<TPPost> list = new ArrayList<>();
     private static List<TPPost> myList = new ArrayList<>();
-    private List<HashMap<String,Object>> allusersloc = new ArrayList<>();
+    private static List<TPPost> allusersloc = new ArrayList<>();
+    private static Collection<PostClusterItem> postsfrmDB = new ArrayList<>();
 
     void saveUser(DatabaseReference userDBReference, Location userLocation, String userID){
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -116,36 +124,48 @@ class Functions {
         ref.child("Errands").push().setValue(hashMap);
     }
 
-    void comment(DatabaseReference userDB, String postUserID, String text){
-       // userDB.child(postUserID).child("Posts").
+    void comment(DatabaseReference commentDBref, String postUserID, String message) {
+       //commentDBref passed to this fun
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("Message",message);
+        hashMap.put("UserID",postUserID);
+
+        commentDBref.child("Comments").push().setValue(hashMap);
+
+
     }
 
-    void getAllPosts(final ClusterManager<PostClusterItem>cm,DatabaseReference userDB){
-        //use Location.distanceBetween() to check if coordinates are in a given radius
+    void getComments(DatabaseReference postDBref, final List<TPPost> commentList) {
 
-        userDB.addValueEventListener(new ValueEventListener() {
+        postDBref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                String userid;
-                double l,g;
-                int i = 0;
 
-                for(DataSnapshot d: dataSnapshot.getChildren()){
-                    Log.d("Igotthekeyskeyskeys",""+d.getKey());
+                HashMap<String, Object> h = new HashMap<>();
+                String userid,postid;
+                String msg;
 
-                    //use location.distancebetween here to get only the keys in users location
-                    redundantCode(d,list,true,cm);
+                commentList.clear();
+                for(DataSnapshot p: dataSnapshot.child("Comments").getChildren()){
 
-                    g = (double) d.child("Location").child("g").getValue();
-                    l = (double) d.child("Location").child("l").getValue();
-                    userid = d.getKey();
+                    h.put("PostID",p.getKey());
 
-                    hashMap.put("l",l);
-                    hashMap.put("g",g);
-                    hashMap.put("userid",userid);
+                    for(DataSnapshot finaSnapShot: p.getChildren()){
 
-                    allusersloc.add(hashMap);
+                        Log.d("ypyppypypAllMsgsFinallyyy",finaSnapShot+"");
+                        h.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
+                    }
+                    msg = ""+h.get("Message");
+                    userid = ""+h.get("UserID");
+                    postid = ""+h.get("PostID");
+
+                    Log.d("commmenttt",""+msg);
+
+
+                    commentList.add(new TPPost(msg,userid,postid));
+
+
 
 
                 }
@@ -157,18 +177,52 @@ class Functions {
 
             }
         });
-    }
-
-    void getErrands(){
 
     }
 
-    void getMyPosts(DatabaseReference userDB){
+    void getAllPosts(final GoogleMap mMap,final ClusterManager<PostClusterItem>cm,DatabaseReference userDB){
+        //use Location.distanceBetween() to check if coordinates are in a given radius
 
         userDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                redundantCode(dataSnapshot,myList,false,null);
+                HashMap<String, Object> hashMap = new HashMap<>();
+                String userid;
+                double l,g;
+                int i = 0;
+
+                list.clear();
+                for(DataSnapshot d: dataSnapshot.getChildren()){
+                    Log.d("Igotthekeyskeyskeys",""+d.getKey());
+
+                    //use location.distancebetween here to get only the keys in users location
+                    redundantCode(mMap,d,list,true,cm);
+
+                    //g = (double) d.child("Location").child("g").getValue();
+                    //l = (double) d.child("Location").child("l").getValue();
+                    //userid = (String) d.child("UserID").child("UserID").getValue();
+
+                    //allusersloc.add(new TPPost(userid,l,g,userid));
+
+                    //Log.d("qwertpo",""+l+" "+g+" "+userid);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    void getMyPosts(final GoogleMap mMap, DatabaseReference userDB){
+
+        userDB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myList.clear();
+                redundantCode(mMap,dataSnapshot,myList,false,null);
             }
 
             @Override
@@ -179,12 +233,21 @@ class Functions {
 
     }
 
-    private void setMsgIcon(ClusterManager<PostClusterItem> cm, double l, double g, String message){
+    private void setMsgIcon(GoogleMap mMap, ClusterManager<PostClusterItem> cm, double l, double g, String message, String userid, String postid){
         LatLng pl = new LatLng(l,g);
 
-        //code below for regular posts
-        cm.addItem(new PostClusterItem(message, pl));
+        mMap.clear();
+        cm.addItem(new PostClusterItem(message, pl,userid,postid));
         cm.cluster();
+
+    }
+
+    private void setMsgIcon2(GoogleMap mMap, ClusterManager<PostClusterItem> cm, Collection<PostClusterItem> posts){
+
+        mMap.clear();
+        cm.addItems(posts);
+        cm.cluster();
+
     }
 
     Bitmap layoutToBitmap(int layout, Context c) {
@@ -214,34 +277,7 @@ class Functions {
         return bitmap;
     }
 
-    void notifyUsers(Context c,String title, String message){
-        RequestQueue queue = Volley.newRequestQueue(c);
-
-        //change from Apache localhost server to a cloud server
-        String url2 = "https://192.168.42.22/sennndddd/sendd.php?title="+title+"&message="+message;
-
-        handleSSLHandshake();
-
-        Log.d("doesthisevenwork","gjhkjlm");
-
-        StringRequest myReq = new StringRequest(Request.Method.GET,
-                url2, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("Wegothere", "sthhh");
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Sthwentwrong",""+error);
-            }
-        });
-
-        queue.add(myReq);
-
-    }
-
-    void notifyUserswithTopic(Context c,TPPost post,String topic, boolean errand){
+    void notifyUserswithTopic(Context c,TPPost post, boolean errand){
         RequestQueue queue = Volley.newRequestQueue(c);
         String URL = "https://fcm.googleapis.com/fcm/send";
 
@@ -253,6 +289,9 @@ class Functions {
             nt = "New Messages around you";
         }
 
+
+        //whoGetsNotified(db,post,1000,topic,errand);
+
         JSONObject  mainObj = new JSONObject();
 
         //write topic to all user in post range
@@ -260,9 +299,9 @@ class Functions {
 
 
         try {
-            mainObj.put("to", "/topics/" + topic);
+            mainObj.put("to", "/topics/" +"topicsname");
             JSONObject notification = new JSONObject();
-            notification.put("title", nt);
+            notification.put("title", ""+nt);
             notification.put("body", ""+post.getpMessage());
             mainObj.put("notification", notification);
 
@@ -365,7 +404,7 @@ class Functions {
                 .withActivity(a)
                 .withHeaderBackground(R.color.colorAccent)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Mike Penz").withIcon(a.getResources().getDrawable(R.drawable.egg))
+                        new ProfileDrawerItem().withName("Jasonn").withIcon(a.getResources().getDrawable(R.drawable.egg))
                 )
                 .build();
 
@@ -387,40 +426,45 @@ class Functions {
                 .build();
     }
 
-    private void redundantCode(DataSnapshot dataSnapshot, List<TPPost> list, boolean setIcon, ClusterManager cm){
+    private void redundantCode(GoogleMap mMap, DataSnapshot dataSnapshot, List<TPPost> list, boolean setIcon, ClusterManager cm){
 
         HashMap<String, Object> h = new HashMap<>();
+        String userid;
+        String postid;
         String msg;
         double l,g;
         for(DataSnapshot p: dataSnapshot.child("Posts").getChildren()){
 
+            h.put("PostID",""+p.getKey());
+
             for(DataSnapshot finaSnapShot: p.getChildren()){
 
                 Log.d("ypyppypypAllMsgsFinallyyy",finaSnapShot+"");
+
                 h.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
             }
-            l = Double.parseDouble(""+h.get("l"));
-            g = Double.parseDouble(""+h.get("g"));
-            msg = ""+h.get("Message");
 
-            Log.d("hsdhdhjsdhj",l+" "+g+" "+" "+msg);
+            if(h.get("l") != null){
+                l = Double.parseDouble(""+h.get("l"));
+                g = Double.parseDouble(""+h.get("g"));
+                msg = ""+h.get("Message");
+                userid = ""+h.get("UserID");
+                postid = ""+h.get("PostID");
 
-            if(setIcon){
-                setMsgIcon(cm,l,g,msg);
+                Log.d("hsdhdhjsdhj",l+" "+g+" "+" "+msg);
+
+                list.add(new TPPost(msg,l,g,userid,postid));
+                postsfrmDB.add(new PostClusterItem(msg,new LatLng(l,g),userid,postid));
+
+                if(setIcon){
+                    setMsgIcon2(mMap,cm,postsfrmDB);
+                    postsfrmDB.clear();
+                }
             }
-
-            list.add(new TPPost(msg,l,g));
-
-
-
-
-
-
         }
-
     }
 
-    private void whoGetsNotified(TPPost post,int radius,String topic){
+    static void whoGetsNotified(DatabaseReference db, TPPost post, int radius, String topic, boolean errand){
         //distances are in meters
 
         Location loc = new Location("loc");
@@ -429,26 +473,48 @@ class Functions {
         loc2.setLatitude(post.getLocation().latitude);
         loc2.setLongitude(post.getLocation().longitude);
 
-        HashMap<String, Object> hm;
+       TPPost hm;
         Double l,g;
         String userid;
+        LatLng lg;
+
+        String errand_or_post;
+
+        if(errand){
+            errand_or_post = "ErrandsNearBy";
+        }else{
+            errand_or_post = "PostsNearBy";
+        }
+
+
 
         int distance;
 
-        for(int i = 0; i <= allusersloc.size(); i++){
+        Log.d("jsjsdjkdjhjjh"," "+allusersloc.size());
+
+        for(int i = 0; i < allusersloc.size(); i++){
             hm = allusersloc.get(i);
-            l = (Double) hm.get("l");
-            g = (Double) hm.get("g");
+
+            lg = hm.getLocation();
+            l = lg.latitude;
+            g = lg.longitude;
+            userid = hm.getpMessage();
 
             loc.setLatitude(l); //if this returns null then create a class for the coordinates and user name and add to the the all userlist instead
             loc.setLongitude(g);
 
              distance = (int) loc2.distanceTo(loc);
 
+
+
              if(distance <= radius){
                  //add topic to the user node
-                 //FirebaseDBReference.child("Errands").setValue(topic);
+                 db.child(""+userid).child(""+errand_or_post).setValue(""+topic);
              }
+
+
+
+
 
 
 
@@ -465,6 +531,101 @@ class Functions {
         String topic =  "";//read topics from database and pass to string topic
 
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
+    }
+
+    void waitAndShow(DatabaseReference userDB,List<TPPost> commentList, RecyclerView rv,Context c){
+        new LoadComments(userDB,commentList,rv,c).execute();
+    }
+
+    private class LoadComments extends AsyncTask<Void,Void,List<TPPost>>{
+        DatabaseReference userDB; List<TPPost> list; RecyclerView rv; Context c;
+
+        LoadComments( DatabaseReference userDB,List<TPPost> commentList, RecyclerView rv,Context c){
+            this.userDB = userDB;
+            this.list = commentList;
+            this.rv = rv;
+            this.c = c;
+        }
+
+        @Override
+        protected List<TPPost> doInBackground(Void... voids) {
+            userDB.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    HashMap<String, Object> h = new HashMap<>();
+                    String userid,postid;
+                    String msg;
+
+                    list.clear();
+                    for(DataSnapshot p: dataSnapshot.child("Comments").getChildren()){
+
+                        h.put("PostID",p.getKey());
+
+                        for(DataSnapshot finaSnapShot: p.getChildren()){
+
+                            Log.d("ypyppypypAllMsgsFinallyyy",finaSnapShot+"");
+                            h.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
+                        }
+                        msg = ""+h.get("Message");
+                        userid = ""+h.get("UserID");
+                        postid = ""+h.get("PostID");
+
+                        Log.d("commmenttt",""+msg);
+
+
+                        list.add(new TPPost(msg,userid,postid));
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            Log.d("wedeyhereohyo",list.size()+"");
+            return list;
+        }
+
+        @Override
+        protected void onPostExecute(List<TPPost> tpPosts) {
+            super.onPostExecute(tpPosts);
+
+            Log.d("wedeyh12345o","wedeyhereohyo134");
+
+            String[] postMsgs,postUserids,postids;
+
+            postMsgs = new String[tpPosts.size()+1];
+            postUserids = new String[tpPosts.size()+1];
+            postids = new String[tpPosts.size()+1];
+
+            TPPost post;
+
+            int j = 0;
+
+            for(int i = 0; i<= tpPosts.size()-1; i++){
+
+                post = tpPosts.get(i);
+
+                postMsgs[i] = post.getpMessage();
+                postUserids[i] = post.getpUserID();
+                postids[i] = post.getpPostID();
+
+                Log.d("whatthamessage",j+" :"+postMsgs[i]);
+                j++;
+            }
+
+            ClusterListAdapter adapter = new ClusterListAdapter(c,postMsgs,postUserids,postids);
+            rv.setAdapter(adapter);
+            rv.setLayoutManager(new LinearLayoutManager(c));
+            tpPosts.clear();
+        }
+    }
+
+    private void enableDarkmode(boolean choice){
+
     }
 
     List<TPPost> getWorldPosts(){

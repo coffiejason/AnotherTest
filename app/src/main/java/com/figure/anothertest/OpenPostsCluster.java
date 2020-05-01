@@ -1,6 +1,7 @@
 package com.figure.anothertest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,9 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 public class OpenPostsCluster extends AppCompatActivity {
 
     String[] postMsgs;
+    String[] postUserids;
+    String[] postids;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,16 +30,23 @@ public class OpenPostsCluster extends AppCompatActivity {
         int i = bundle.getInt("iterator");
 
         postMsgs = new String[i+1];
+        postUserids = new String[i+1];
+        postids = new String[i+1];
 
         Log.d("Bundledeywork",""+i);
 
+        //user you if userid == firebase.instance,getuid
+
         for(int j = i; j >= 0; j--){
             postMsgs[j] = bundle.getString("Key"+j);
-            Log.d("Fandthaeumtymessageost",""+postMsgs[j]);
+            postUserids[j] = bundle.getString("IDKey"+j);
+            postids[j] = bundle.getString("postIDKey"+j);
+            Log.d("Fandthaeumtymessageost",""+postids[j]);
         }
 
 
-        ClusterListAdapter adapter = new ClusterListAdapter(this,postMsgs);
+
+        ClusterListAdapter adapter = new ClusterListAdapter(this,postMsgs,postUserids,postids);
         openCLusterList.setAdapter(adapter);
         openCLusterList.setLayoutManager(new LinearLayoutManager(this));
 

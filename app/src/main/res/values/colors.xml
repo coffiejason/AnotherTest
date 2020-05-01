@@ -25,5 +25,6 @@
 
     <color name="tipeeGreen">#3CDA85</color>
     <color name="tipeeGreenDark">#2CA162</color>
+    <color name="colorBadge">#ff4c4c</color>
 
 </resources>

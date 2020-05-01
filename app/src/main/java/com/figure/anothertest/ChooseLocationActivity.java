@@ -55,8 +55,8 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
         errand = intent.getBooleanExtra("errand",false);
         defaultLocation = new LatLng(l,g);
 
-        Date ct = Calendar.getInstance().getTime();
-        topic = userID+ct;
+        String tim = ""+System.currentTimeMillis();
+        topic = userID+tim;
 
 
 
@@ -119,12 +119,12 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
             if(errand){
                 //send notification to users close to the post location
                 new Functions().creatErrand(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude);
-                new Functions().notifyUserswithTopic(ChooseLocationActivity.this,post,topic,errand);
+                new Functions().notifyUserswithTopic(ChooseLocationActivity.this,post,errand);
                 finish();
                 //startActivity(new Intent(ChooseLocationActivity.this,Tper2Activity.class));
             }else{
                 new Functions().creatPostText(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude,radius);
-                new Functions().notifyUserswithTopic(ChooseLocationActivity.this,post,topic,errand);
+                new Functions().notifyUserswithTopic(ChooseLocationActivity.this,post,errand);
                 finish();
             }
 

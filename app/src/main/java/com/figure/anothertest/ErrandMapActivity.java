@@ -4,15 +4,19 @@ package com.figure.anothertest;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
@@ -69,6 +74,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     Location lastLocation;
     LocationRequest locationRequest;
     Toolbar tb;
+    CardView newNotif;
+    RelativeLayout notifIcon;
 
     RelativeLayout mapLayoutSub;
 
@@ -100,9 +107,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         getToken();
 
-        //Log.d("SharedPrefsToken22222",SharedPrefs.getInstance(ErrandMapActivity.this).getToken()+"");
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
@@ -120,7 +124,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
             // in a raw resource file.
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
-                            this, R.raw.mapstyle));
+                            this, R.raw.));
 
             if (!success) {
                 Log.e("Maps Activity", "Style parsing failed.");
@@ -178,9 +182,14 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         new Functions().saveUser(userIndividual,location,userID);
 
-        new Functions().getAllPosts(mClusterManager,userAvailabilityRef);
+        mMap.clear();
+        mClusterManager.clearItems();
+        new Functions().getAllPosts(mMap,mClusterManager,userAvailabilityRef);
+        new Functions().getMyPosts(mMap,userAvailabilityRef.child(userID));
 
-        new Functions().getMyPosts(userAvailabilityRef.child(userID));
+        TPPost p = new TPPost("heyy",5.209,0.2994);
+
+        Functions.whoGetsNotified(userAvailabilityRef,p,1000,"sometopic",true);
     }
 
     protected synchronized void buildGoogleApiClient(){
@@ -212,6 +221,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         for(PostClusterItem p: pCluster){
             Log.d("GotAllMsg",""+p.getTitle());
             bundle.putString("Key"+i,p.getTitle());
+            bundle.putString("IDKey"+i,p.getUserID());
+            bundle.putString("postIDKey"+i,p.getPostid());
             i++;
         }
 
@@ -228,6 +239,17 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         tb = findViewById(R.id.mapToolbar);
 
+        newNotif = findViewById(R.id.toolbar_badge_parent);
+        notifIcon  = findViewById(R.id.toolbar_body_parent);
+
+        notifIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setNewNotification(false);
+                startActivity(new Intent(ErrandMapActivity.this,NotificationsActivity.class));
+            }
+        });
+
         mapLayoutSub = findViewById(R.id.notifyer_space);
 
         new Functions().sideMenu(ErrandMapActivity.this,tb);
@@ -239,6 +261,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         FirebaseMessaging.getInstance().subscribeToTopic("topicsname");
 
         userAvailabilityRef = FirebaseDatabase.getInstance().getReference().child("Customers available");
+        userAvailabilityRef.keepSynced(true);
         userIndividual = userAvailabilityRef.child(userID);
 
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -326,5 +349,23 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         Log.d("SharedPrefsToken",SharedPrefs.getInstance(ErrandMapActivity.this).getToken()+"");
     }
 
+    void setNewNotification(final Boolean choice){
 
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                if(choice){
+                    newNotif.setVisibility(View.VISIBLE);
+                }else{
+                    newNotif.setVisibility(View.GONE);
+
+                }
+
+            }
+        });
+
+
+
+    }
 }

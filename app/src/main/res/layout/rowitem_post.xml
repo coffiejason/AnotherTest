@@ -9,9 +9,10 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/profile_photo"
-        android:layout_width="53dp"
-        android:layout_height="53dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginRight="20dp"
+        android:scaleType="fitCenter"
         app:placeholderImage="@drawable/egg"
         app:roundAsCircle="true" />
 
@@ -26,6 +27,7 @@
 
     <TextView
         android:id="@+id/tv_username"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/username_placeholder"
@@ -62,6 +64,8 @@
         android:layout_width="wrap_content"
         android:layout_below="@id/tv_tp_post"
         android:layout_marginTop="25dp"
+        android:visibility="gone"
+        android:id="@+id/comment_count"
         android:layout_toRightOf="@id/profile_photo"
         android:layout_height="wrap_content">
 
@@ -71,31 +75,13 @@
             android:id="@+id/tweet_action_reply"
             android:src="@drawable/ic_twitter_comment" />
 
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_toRightOf="@id/tweet_action_reply"
-            android:layout_marginLeft="45dp"
-            android:id="@+id/tweet_action_retweet"
-            android:src="@drawable/ic_twitter_retweet" />
-
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_toRightOf="@id/tweet_action_retweet"
-            android:layout_marginLeft="45dp"
-            android:id="@+id/tweet_action_like"
-            android:src="@drawable/ic_twitter_like_outline" />
-
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_toRightOf="@id/tweet_action_like"
-            android:layout_marginLeft="45dp"
-            android:id="@+id/tweet_action_edit"
-            android:visibility="gone"
-            android:src="@drawable/ic_edit_tweet" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"
+            android:layout_toRightOf="@+id/tweet_action_reply"/>
 
     </RelativeLayout>
+
 
 </RelativeLayout>

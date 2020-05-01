@@ -17,9 +17,13 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.security.SecureRandom;
+import java.util.Random;
+
 public class TPMessagingService extends FirebaseMessagingService {
 
     public static final String TOKEN_BROADCAST = "fcmtokenbroadcast";
+    final int nID = 100;
 
     @Override
     public void onNewToken(@NonNull String s) {
@@ -95,8 +99,20 @@ public class TPMessagingService extends FirebaseMessagingService {
         }
 
         assert notificationManager != null;
-        notificationManager.notify(0,builder.build());
+        notificationManager.notify(createRandomCode(7),builder.build());
 
+    }
+
+    public int createRandomCode(int codeLength){
+        char[] chars = "1234567890".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new SecureRandom();
+        for(int i = 0; i < codeLength; i++){
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+
+        return Integer.parseInt(sb.toString());
     }
 
 

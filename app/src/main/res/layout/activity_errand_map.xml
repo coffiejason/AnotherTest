@@ -18,13 +18,13 @@
             android:layout_height="wrap_content"
             android:background="@color/colorWhite">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="end"
-                app:placeholderImage="@drawable/default_photo"
-                app:roundAsCircle="true"
-                android:layout_marginRight="10dp" />
+            <include
+                android:id="@+id/toolbar_badge"
+                layout="@layout/toolbar_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="15dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/email_input_parent"
