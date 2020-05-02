@@ -254,12 +254,15 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         new Functions().sideMenu(ErrandMapActivity.this,tb);
 
+        //get UserID from login and pass it as intent
+
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
 
         FirebaseMessaging.getInstance().subscribeToTopic("topicsname");
 
+        //this too should be acquired at login
         userAvailabilityRef = FirebaseDatabase.getInstance().getReference().child("Customers available");
         userAvailabilityRef.keepSynced(true);
         userIndividual = userAvailabilityRef.child(userID);

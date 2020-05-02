@@ -22,7 +22,7 @@ public class WorldActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_world);
 
-        list = new Functions().getWorldPosts();
+        //list = new Functions().getWorldPosts();
 
         RecyclerView rv = findViewById(R.id.world_recyclerview);
 

@@ -16,9 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,21 +26,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.JsonObject;
 import com.google.maps.android.clustering.ClusterManager;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -74,7 +68,7 @@ import javax.net.ssl.X509TrustManager;
 
 class Functions {
 
-    private static List<TPPost> list = new ArrayList<>();
+    //private static List<TPPost> list = new ArrayList<>();
     private static List<TPPost> myList = new ArrayList<>();
     private static List<TPPost> allusersloc = new ArrayList<>();
     private static Collection<PostClusterItem> postsfrmDB = new ArrayList<>();
@@ -182,7 +176,7 @@ class Functions {
 
     void getAllPosts(final GoogleMap mMap,final ClusterManager<PostClusterItem>cm,DatabaseReference userDB){
         //use Location.distanceBetween() to check if coordinates are in a given radius
-
+        //list.clear();
         userDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -191,12 +185,12 @@ class Functions {
                 double l,g;
                 int i = 0;
 
-                list.clear();
+                //list.clear();
                 for(DataSnapshot d: dataSnapshot.getChildren()){
                     Log.d("Igotthekeyskeyskeys",""+d.getKey());
 
                     //use location.distancebetween here to get only the keys in users location
-                    redundantCode(mMap,d,list,true,cm);
+                    redundantCode(mMap,d,true,cm);
 
                     //g = (double) d.child("Location").child("g").getValue();
                     //l = (double) d.child("Location").child("l").getValue();
@@ -222,7 +216,7 @@ class Functions {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myList.clear();
-                redundantCode(mMap,dataSnapshot,myList,false,null);
+                redundantCode(mMap,dataSnapshot,false,null);
             }
 
             @Override
@@ -426,13 +420,18 @@ class Functions {
                 .build();
     }
 
-    private void redundantCode(GoogleMap mMap, DataSnapshot dataSnapshot, List<TPPost> list, boolean setIcon, ClusterManager cm){
+    private void redundantCode(GoogleMap mMap, DataSnapshot dataSnapshot, boolean setIcon, ClusterManager cm){
 
         HashMap<String, Object> h = new HashMap<>();
         String userid;
         String postid;
         String msg;
         double l,g;
+
+        //list.clear();
+        myList.clear();
+        //rList.clear();
+        postsfrmDB.clear();
         for(DataSnapshot p: dataSnapshot.child("Posts").getChildren()){
 
             h.put("PostID",""+p.getKey());
@@ -453,7 +452,7 @@ class Functions {
 
                 Log.d("hsdhdhjsdhj",l+" "+g+" "+" "+msg);
 
-                list.add(new TPPost(msg,l,g,userid,postid));
+                //rList.add(new TPPost(msg,l,g,userid,postid));
                 postsfrmDB.add(new PostClusterItem(msg,new LatLng(l,g),userid,postid));
 
                 if(setIcon){
@@ -535,10 +534,13 @@ class Functions {
 
     void waitAndShow(DatabaseReference userDB,List<TPPost> commentList, RecyclerView rv,Context c){
         new LoadComments(userDB,commentList,rv,c).execute();
+
     }
 
     private class LoadComments extends AsyncTask<Void,Void,List<TPPost>>{
         DatabaseReference userDB; List<TPPost> list; RecyclerView rv; Context c;
+
+        LoadComments(){}
 
         LoadComments( DatabaseReference userDB,List<TPPost> commentList, RecyclerView rv,Context c){
             this.userDB = userDB;
@@ -556,6 +558,7 @@ class Functions {
                     HashMap<String, Object> h = new HashMap<>();
                     String userid,postid;
                     String msg;
+                    List<TPPost> updatedlist = new ArrayList<>();
 
                     list.clear();
                     for(DataSnapshot p: dataSnapshot.child("Comments").getChildren()){
@@ -577,13 +580,21 @@ class Functions {
                         list.add(new TPPost(msg,userid,postid));
                     }
 
+                    Log.d("jsahjqwgh",""+list.size());
+
                 }
+
+
+
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
             });
+
+           // new LoadComments().onPostExecute(list);
 
             Log.d("wedeyhereohyo",list.size()+"");
             return list;
@@ -593,7 +604,7 @@ class Functions {
         protected void onPostExecute(List<TPPost> tpPosts) {
             super.onPostExecute(tpPosts);
 
-            Log.d("wedeyh12345o","wedeyhereohyo134");
+            Log.d("wedeyh12345o"," "+tpPosts.size());
 
             String[] postMsgs,postUserids,postids;
 
@@ -628,9 +639,10 @@ class Functions {
 
     }
 
+    /*
     List<TPPost> getWorldPosts(){
         return list;
-    }
+    }*/
 
     List<TPPost> getMyPostsList(){
         return myList;
