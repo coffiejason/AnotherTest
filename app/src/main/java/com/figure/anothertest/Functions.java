@@ -72,6 +72,9 @@ class Functions {
     private static List<TPPost> myList = new ArrayList<>();
     private static List<TPPost> allusersloc = new ArrayList<>();
     private static Collection<PostClusterItem> postsfrmDB = new ArrayList<>();
+    int redcodenum = 0;
+    int allpostsnum = 0;
+    int allpostsinner = 0;
 
     void saveUser(DatabaseReference userDBReference, Location userLocation, String userID){
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -159,9 +162,6 @@ class Functions {
 
                     commentList.add(new TPPost(msg,userid,postid));
 
-
-
-
                 }
 
             }
@@ -174,7 +174,7 @@ class Functions {
 
     }
 
-    void getAllPosts(final GoogleMap mMap,final ClusterManager<PostClusterItem>cm,DatabaseReference userDB){
+    void getAllPosts(DatabaseReference userDB, final Collection<PostClusterItem> postsfrmDB, final ClusterManager cm){
         //use Location.distanceBetween() to check if coordinates are in a given radius
         //list.clear();
         userDB.addValueEventListener(new ValueEventListener() {
@@ -185,12 +185,15 @@ class Functions {
                 double l,g;
                 int i = 0;
 
+                allpostsinner++;
+                Log.d("allpostinnerrr",""+allpostsinner);
                 //list.clear();
                 for(DataSnapshot d: dataSnapshot.getChildren()){
+
                     Log.d("Igotthekeyskeyskeys",""+d.getKey());
 
                     //use location.distancebetween here to get only the keys in users location
-                    redundantCode(mMap,d,true,cm);
+                    redundantCode(d,postsfrmDB,cm);
 
                     //g = (double) d.child("Location").child("g").getValue();
                     //l = (double) d.child("Location").child("l").getValue();
@@ -216,7 +219,7 @@ class Functions {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myList.clear();
-                redundantCode(mMap,dataSnapshot,false,null);
+                //redundantCode(mMap,dataSnapshot,false,null);
             }
 
             @Override
@@ -236,12 +239,10 @@ class Functions {
 
     }
 
-    private void setMsgIcon2(GoogleMap mMap, ClusterManager<PostClusterItem> cm, Collection<PostClusterItem> posts){
+    private void setMsgIcon2(ClusterManager<PostClusterItem> cm, Collection<PostClusterItem> posts){
 
-        mMap.clear();
         cm.addItems(posts);
         cm.cluster();
-
     }
 
     Bitmap layoutToBitmap(int layout, Context c) {
@@ -420,7 +421,7 @@ class Functions {
                 .build();
     }
 
-    private void redundantCode(GoogleMap mMap, DataSnapshot dataSnapshot, boolean setIcon, ClusterManager cm){
+    private void redundantCode(DataSnapshot dataSnapshot,Collection<PostClusterItem> postsfrmDB,ClusterManager cm){
 
         HashMap<String, Object> h = new HashMap<>();
         String userid;
@@ -429,9 +430,11 @@ class Functions {
         double l,g;
 
         //list.clear();
-        myList.clear();
+        //myList.clear();
         //rList.clear();
-        postsfrmDB.clear();
+        //postsfrmDB.clear();
+        Log.d("redcodemun",""+redcodenum);
+        redcodenum++;
         for(DataSnapshot p: dataSnapshot.child("Posts").getChildren()){
 
             h.put("PostID",""+p.getKey());
@@ -454,13 +457,12 @@ class Functions {
 
                 //rList.add(new TPPost(msg,l,g,userid,postid));
                 postsfrmDB.add(new PostClusterItem(msg,new LatLng(l,g),userid,postid));
-
-                if(setIcon){
-                    setMsgIcon2(mMap,cm,postsfrmDB);
-                    postsfrmDB.clear();
-                }
             }
         }
+        Log.d("postdsdkjs",""+postsfrmDB.size());
+        setMsgIcon2(cm,postsfrmDB);
+
+
     }
 
     static void whoGetsNotified(DatabaseReference db, TPPost post, int radius, String topic, boolean errand){
@@ -638,6 +640,8 @@ class Functions {
     private void enableDarkmode(boolean choice){
 
     }
+
+
 
     /*
     List<TPPost> getWorldPosts(){

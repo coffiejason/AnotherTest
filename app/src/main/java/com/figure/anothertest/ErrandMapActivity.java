@@ -8,6 +8,8 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +27,9 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.figure.anothertest.bottomvavigation.BadgeBottomNavigtion;
+import com.figure.anothertest.bottomvavigation.BottomAdapter;
+import com.figure.anothertest.bottomvavigation.BottomItem;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
@@ -44,30 +49,30 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 
-/* POSSIBLE BUGS
- **APP CANT DIFFERENTIATE B/N USERS
- * */
-
-
-//add code to http post request to show notification when a user posts data
+//add layout to to map activity that shows when there's a new tip available
 
 public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        com.google.android.gms.location.LocationListener,ClusterManager.OnClusterClickListener<PostClusterItem>{
+        com.google.android.gms.location.LocationListener,ClusterManager.OnClusterClickListener<PostClusterItem>, BottomAdapter.BottomItemClickInterface, TipBSDialogue.BottomSheetListner {
 
     private GoogleMap mMap;
     GoogleApiClient googleApiClient;
@@ -78,6 +83,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     RelativeLayout notifIcon;
 
     RelativeLayout mapLayoutSub;
+
+    private BadgeBottomNavigtion badgeBottomNavigtion;
 
     //private int radius = 1; //should be custom adjusted by user via UI, determines the range of other Users avaialable
 
@@ -92,8 +99,17 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     AutocompleteSupportFragment autocompleteFragment;
 
+    //bottom nav stuff, might delete
+    private final int HOME = 0;
+    private final int NOTIFICATIONS = 1;
+    private final int FRIENDS = 2;
+    private final int SETTINGS = 3;
+    private final int CART = 4;
+    private int selectedId = 0;
+
 
     private ClusterManager<PostClusterItem> mClusterManager;
+    private static Collection<PostClusterItem> postsfrmDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -103,14 +119,26 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         new TPMessagingService();
 
+        badgeBottomNavigtion = new BadgeBottomNavigtion(findViewById(R.id.BottomNavigation), ErrandMapActivity.this, ErrandMapActivity.this);
+        initBottomItems();
+
         init();
 
         getToken();
+
+        getAllPosts();
+
+        onpenTipBottoSheet();
+        //new Functions().getAllPosts(userAvailabilityRef,postsfrmDB,mClusterManager);
+        //new Functions().getMyPosts(mMap,userAvailabilityRef.child(userID));
+
+        Log.d("qwertrewqwer",""+postsfrmDB.size());
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
+
     }
 
     @Override
@@ -133,15 +161,21 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
             Log.e("Maps Activity", "Can't find style. Error: ", e);
         }*/
 
+
+
         buildGoogleApiClient();
 
-        mClusterManager = new ClusterManager<>(ErrandMapActivity.this, mMap);
+
         //request for User permission
         mMap.setMyLocationEnabled(true);
         mMap.setOnCameraIdleListener(mClusterManager);
         //mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager = new ClusterManager<>(ErrandMapActivity.this, mMap);
         mClusterManager.setOnClusterClickListener(this);
         mClusterManager.cluster();
+
+        renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
+        mClusterManager.setRenderer(renderer);
     }
 
     @Override
@@ -177,19 +211,20 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //code to save user location to Firebase
         //getPost(userIndividual);
 
-        renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
-        mClusterManager.setRenderer(renderer);
+        readCameraChanges();
+
+
 
         new Functions().saveUser(userIndividual,location,userID);
+        mClusterManager.cluster();
 
-        mMap.clear();
-        mClusterManager.clearItems();
-        new Functions().getAllPosts(mMap,mClusterManager,userAvailabilityRef);
-        new Functions().getMyPosts(mMap,userAvailabilityRef.child(userID));
+        //mMap.clear();
+        //mClusterManager.clearItems();
 
-        TPPost p = new TPPost("heyy",5.209,0.2994);
 
-        Functions.whoGetsNotified(userAvailabilityRef,p,1000,"sometopic",true);
+        //TPPost p = new TPPost("heyy",5.209,0.2994);
+
+        //Functions.whoGetsNotified(userAvailabilityRef,p,1000,"sometopic",true);
     }
 
     protected synchronized void buildGoogleApiClient(){
@@ -236,6 +271,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     }
 
     void init(){
+
+        postsfrmDB = new ArrayList<>();
 
         tb = findViewById(R.id.mapToolbar);
 
@@ -362,7 +399,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                     newNotif.setVisibility(View.VISIBLE);
                 }else{
                     newNotif.setVisibility(View.GONE);
-
                 }
 
             }
@@ -370,5 +406,136 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
 
 
+    }
+
+    @Override
+    public void itemSelect(int itemId) {
+
+    }
+
+    @SuppressLint("ResourceType")
+    private void initBottomItems() {
+        BottomItem home = new BottomItem(HOME, R.drawable.ic_home, "Home", true);
+        BottomItem notifications = new BottomItem(NOTIFICATIONS, R.drawable.ic_notifications, "Notifications", true);
+        //BottomItem friends = new BottomItem(FRIENDS, R.drawable.ic_people, "Friends", false);
+        //BottomItem cart = new BottomItem(CART, R.drawable.ic_cart, "Cart", true);
+        BottomItem settings = new BottomItem(SETTINGS, R.drawable.ic_settings, "Settings", false);
+
+        badgeBottomNavigtion.addBottomItem(home);
+        badgeBottomNavigtion.addBottomItem(notifications);
+        //badgeBottomNavigtion.addBottomItem(friends);
+        //badgeBottomNavigtion.addBottomItem(cart);
+        badgeBottomNavigtion.addBottomItem(settings);
+
+        badgeBottomNavigtion.apply(selectedId, getString(R.color.colorWhite), getString(R.color.colorCheckNo));
+        itemSelect(selectedId);
+    }
+
+    void getAllPosts(){
+        //use Location.distanceBetween() to check if coordinates are in a given radius
+        //list.clear();
+        userAvailabilityRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                String userid;
+                double l,g;
+                int i = 0;
+                postsfrmDB.clear();
+                mClusterManager.clearItems();
+                for(DataSnapshot d: dataSnapshot.getChildren()){
+
+                    Log.d("Igotthekeyskeyskeys",""+d.getKey());
+
+                    //use location.distancebetween here to get only the keys in users location
+                    redundantCode(d);
+
+                    //g = (double) d.child("Location").child("g").getValue();
+                    //l = (double) d.child("Location").child("l").getValue();
+                    //userid = (String) d.child("UserID").child("UserID").getValue();
+
+                    //allusersloc.add(new TPPost(userid,l,g,userid));
+
+                    //Log.d("qwertpo",""+l+" "+g+" "+userid);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void setMsgIcon2(ClusterManager<PostClusterItem> cm, Collection<PostClusterItem> posts){
+
+        cm.addItems(posts);
+        cm.cluster();
+    }
+
+    private void redundantCode(DataSnapshot dataSnapshot){
+
+        HashMap<String, Object> h = new HashMap<>();
+        String userid;
+        String postid;
+        String msg;
+        double l,g;
+        for(DataSnapshot p: dataSnapshot.child("Posts").getChildren()){
+
+            h.put("PostID",""+p.getKey());
+
+            for(DataSnapshot finaSnapShot: p.getChildren()){
+
+                Log.d("ypyppypypAllMsgsFinallyyy",finaSnapShot+"");
+
+                h.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
+            }
+
+            if(h.get("l") != null){
+                l = Double.parseDouble(""+h.get("l"));
+                g = Double.parseDouble(""+h.get("g"));
+                msg = ""+h.get("Message");
+                userid = ""+h.get("UserID");
+                postid = ""+h.get("PostID");
+
+                Log.d("hsdhdhjsdhj",l+" "+g+" "+" "+msg);
+
+                postsfrmDB.add(new PostClusterItem(msg,new LatLng(l,g),userid,postid));
+            }
+        }
+        Log.d("postdsdkjs",""+postsfrmDB.size());
+        setMsgIcon2(mClusterManager,postsfrmDB);
+    }
+
+    private void readCameraChanges(){
+        final float zoom = mMap.getCameraPosition().zoom;
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                mClusterManager.cluster();
+                //mClusterManager.setRenderer(renderer);
+
+            }
+        });
+
+    }
+
+    private void onpenTipBottoSheet(){
+        TipBSDialogue t = new TipBSDialogue();
+        t.show(getSupportFragmentManager(),"hfhf");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getAllPosts();
+    }
+
+
+    @Override
+    public void buttonClicked(Boolean choice) {
+        //open tip activity here
+        Log.d("0 for false 1 for true",""+choice);
     }
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_item_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/bottom_bar_parent_height"
+    android:clickable="true"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:id="@+id/bottom_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <RelativeLayout
+            android:id="@+id/bottom_icon_parent"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/bottom_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_home" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/notification_badge"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/colorNotification"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="0dp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_below="@+id/bottom_icon_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLength="14"
+            android:text="Item"
+            android:textColor="@color/unselectedColor"
+            android:textSize="10dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

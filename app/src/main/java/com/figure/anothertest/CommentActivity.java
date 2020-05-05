@@ -2,28 +2,22 @@ package com.figure.anothertest;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
@@ -64,9 +59,6 @@ public class CommentActivity extends AppCompatActivity {
         String userid = getIntent().getStringExtra("id");
         String postid = getIntent().getStringExtra("postid");
 
-        Log.d("userid",""+userid);
-        Log.d("postid",""+postid);
-
         list = new ArrayList<>();
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -77,7 +69,45 @@ public class CommentActivity extends AppCompatActivity {
             mainPost.setText(mainPostString);
         }
 
-        new Functions().waitAndShow(userDB,list,rv,CommentActivity.this);
+
+
+        userDB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String, Object> h = new HashMap<>();
+                String userid,postid;
+                String msg;
+
+                list.clear();
+                for(DataSnapshot p: dataSnapshot.child("Comments").getChildren()){
+
+                    h.put("PostID",p.getKey());
+
+                    for(DataSnapshot finaSnapShot: p.getChildren()){
+
+                        Log.d("ypyppypypAllMsgsFinallyyy",finaSnapShot+"");
+                        h.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
+                    }
+                    msg = ""+h.get("Message");
+                    userid = ""+h.get("UserID");
+                    postid = ""+h.get("PostID");
+
+                    Log.d("commmenttt",""+msg);
+
+
+                    list.add(new TPPost(msg,userid,postid));
+
+                }
+
+                Log.d("listsize",""+list.size());
+                refreshCode(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         postBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,18 +118,7 @@ public class CommentActivity extends AppCompatActivity {
                     new Functions().comment(userDB,userID,msg);
                 }
                 cEditText.getText().clear();
-                Log.d("doeslistclearwork1",""+list.size());
-                list.clear();
-                Log.d("doeslistclearwork2",""+list.size());
-                new Functions().getComments(userDB,list);
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshCode();
-                    }
-                },1000);
-
+                hideKeyboardFrom(getApplicationContext(),v);
             }
         });
 
@@ -107,29 +126,29 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
 
-                refreshCode();
+                //refreshCode();
                 swipe.setRefreshing(false);
             }
         });
     }
 
-    private void refreshCode(){
+    private void refreshCode(List<TPPost> newlist){
         String[] postMsgs,postUserids,postids;
 
-        if(list.size() != 0){
+        if(newlist.size() != 0){
             Log.d("Wekechhereee","Wekechhereee");
 
-            postMsgs = new String[list.size()+1];
-            postUserids = new String[list.size()+1];
-            postids = new String[list.size()+1];
+            postMsgs = new String[newlist.size()+1];
+            postUserids = new String[newlist.size()+1];
+            postids = new String[newlist.size()+1];
 
             TPPost post;
 
             int j = 0;
 
-            for(int i = 0; i<= list.size()-1; i++){
+            for(int i = 0; i<= newlist.size()-1; i++){
 
-                post = list.get(i);
+                post = newlist.get(i);
 
                 postMsgs[i] = post.getpMessage();
                 postUserids[i] = post.getpUserID();
@@ -142,36 +161,13 @@ public class CommentActivity extends AppCompatActivity {
             ClusterListAdapter adapter = new ClusterListAdapter(CommentActivity.this,postMsgs,postUserids,postids);
             rv.setAdapter(adapter);
             rv.setLayoutManager(new LinearLayoutManager(CommentActivity.this));
-            list.clear();
+            newlist.clear();
         }
     }
 
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    private class WaitAndShow extends AsyncTask<Void,Void,Void>{
-        DatabaseReference userDB; String userID;
-
-        WaitAndShow( DatabaseReference userDB,String userID){
-            this.userDB = userDB;
-            this.userID = userID;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            new Functions().getComments(userDB,list);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            refreshCode();
-        }
-
-
     }
 
 

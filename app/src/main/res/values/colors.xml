@@ -27,4 +27,10 @@
     <color name="tipeeGreenDark">#2CA162</color>
     <color name="colorBadge">#ff4c4c</color>
 
+    <color name="colorBottomBar">#FAFAFA</color>
+    <color name="colorNotification">#EA4855</color>
+    <color name="colorDivider">#E6E6E6</color>
+    <color name="selectedColor">#E23523</color>
+    <color name="unselectedColor">#2A2A2A</color>
+
 </resources>
