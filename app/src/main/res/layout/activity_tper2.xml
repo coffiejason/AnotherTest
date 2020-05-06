@@ -74,44 +74,114 @@
         android:textColor="@color/twitterBlueDarker"
         android:textSize="13sp"/>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_below="@id/tv_tp_post"
-        android:layout_marginTop="25dp"
-        android:layout_toRightOf="@id/profile_photo"
-        android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:id="@+id/tweet_action_reply"
-            android:src="@drawable/ic_twitter_comment" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="100dp"
+        android:id="@+id/post_pic"
+        android:layout_height="100dp"
+        android:layout_below="@+id/tv_tweet_edited"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="30dp"
+        app:cardBackgroundColor="@color/colorAccent"
+        app:cardCornerRadius="22.5dp"
+        app:cardElevation="0dp"
+        android:layout_marginLeft="15dp">
 
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_toRightOf="@id/tweet_action_reply"
-            android:layout_marginLeft="45dp"
-            android:id="@+id/tweet_action_retweet"
-            android:src="@drawable/ic_twitter_retweet" />
+        <RelativeLayout
+            android:id="@+id/post_pic_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_toRightOf="@id/tweet_action_retweet"
-            android:layout_marginLeft="45dp"
-            android:id="@+id/tweet_action_like"
-            android:src="@drawable/ic_twitter_like_outline" />
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_camera"/>
 
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_toRightOf="@id/tweet_action_like"
-            android:layout_marginLeft="45dp"
-            android:id="@+id/tweet_action_edit"
-            android:visibility="gone"
-            android:src="@drawable/ic_edit_tweet" />
+        </RelativeLayout>
 
-    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="100dp"
+        android:id="@+id/post_vid"
+        android:layout_height="100dp"
+        android:layout_below="@+id/tv_tweet_edited"
+        android:layout_toRightOf="@+id/post_pic"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="30dp"
+        app:cardBackgroundColor="@color/colorAccent"
+        app:cardCornerRadius="22.5dp"
+        app:cardElevation="0dp"
+        android:layout_marginLeft="15dp">
 
+        <RelativeLayout
+            android:id="@+id/post_video_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_video" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="100dp"
+        android:id="@+id/post_audio"
+        android:layout_height="100dp"
+        android:layout_below="@+id/tv_tweet_edited"
+        android:layout_toRightOf="@+id/post_vid"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="30dp"
+        app:cardBackgroundColor="@color/colorAccent"
+        app:cardCornerRadius="22.5dp"
+        app:cardElevation="0dp"
+        android:layout_marginLeft="15dp">
+
+        <RelativeLayout
+            android:id="@+id/post_audio_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_mic" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:layout_below="@+id/post_pic"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/testimage"/>
+
+    <VideoView
+        android:id="@+id/testvideo"
+        android:layout_below="@+id/testimage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"/>
 </RelativeLayout>

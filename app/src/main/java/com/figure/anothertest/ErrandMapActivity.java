@@ -536,6 +536,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     @Override
     public void buttonClicked(Boolean choice) {
         //open tip activity here
-        Log.d("0 for false 1 for true",""+choice);
+        if(choice){
+            startActivity(new Intent(ErrandMapActivity.this,Tper2Activity.class));
+        }
     }
 }
