@@ -173,15 +173,10 @@
 
     </androidx.cardview.widget.CardView>
 
-    <ImageView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_data_collected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/post_pic"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:id="@+id/testimage"/>
-
-    <VideoView
-        android:id="@+id/testvideo"
-        android:layout_below="@+id/testimage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"/>
+        android:layout_marginTop="20dp"/>
 </RelativeLayout>

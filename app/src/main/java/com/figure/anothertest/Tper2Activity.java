@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,9 @@ public class Tper2Activity extends AppCompatActivity {
     RelativeLayout camerabtn;
     RelativeLayout videobtn;
     RelativeLayout audiobtn;
+
+    RecyclerView rv;
+
     static final int REQUEST_VIDEO_CAPTURE = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Boolean ispicure;
@@ -39,12 +44,14 @@ public class Tper2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tper2);
 
+        rv = findViewById(R.id.rv_data_collected);
+
         camerabtn = findViewById(R.id.post_pic_button);
         audiobtn = findViewById(R.id.post_audio_btn);
         videobtn = findViewById(R.id.post_video_btn);
 
-        testimg = findViewById(R.id.testimage);
-        testvideo = findViewById(R.id.testvideo);
+        //testimg = findViewById(R.id.testimage);
+        //testvideo = findViewById(R.id.testvideo);
 
 
         camerabtn.setOnClickListener(new View.OnClickListener() {
@@ -61,20 +68,6 @@ public class Tper2Activity extends AppCompatActivity {
             }
         });
 
-        testimg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(zoomout){
-                    testimg.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT));
-                    testimg.setAdjustViewBounds(true);
-                    zoomout = false;
-                }
-                else{
-                    testimg.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT));
-                    testimg.setScaleType(ImageView.ScaleType.FIT_XY);
-                }
-            }
-        });
 
 
     }
@@ -87,14 +80,15 @@ public class Tper2Activity extends AppCompatActivity {
             if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
                 Uri videoUri = intent.getData();
                 videolist.add(videoUri);
-                testvideo.setVideoURI(videoUri);
+                //testvideo.setVideoURI(videoUri);
+                /*
                 testvideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         mp.setLooping(true);
                         testvideo.start();
                     }
-                });
+                });*/
             }
         }
         else{
@@ -102,11 +96,14 @@ public class Tper2Activity extends AppCompatActivity {
                 Bundle extras = intent.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 imagelist.add(imageBitmap);
-                testimg.setImageBitmap(imageBitmap);
+                //testimg.setImageBitmap(imageBitmap);
             }
         }
 
         Log.d("iwqehjd","images: "+imagelist.size()+" videos: "+videolist.size());
+        DataCollecionRVAdapter adapter = new DataCollecionRVAdapter(this,imagelist);
+        rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void dispatchTakePictureIntent() {

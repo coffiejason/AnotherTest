@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:padding="20dp"
     android:layout_height="wrap_content"
-    android:id="@+id/row_item_layout">
+    android:id="@+id/row_dc_layout">
 
     <ImageView
-        android:id="@+id/profile_photo"
+        android:id="@+id/live_img"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginRight="20dp"
@@ -16,6 +16,18 @@
         android:src="@drawable/egg"
         app:roundAsCircle="true" />
 
+    <TextView
+        android:layout_toRightOf="@+id/live_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="img_000"
+        android:textSize="18sp"/>
 
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cancel"
+        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>
