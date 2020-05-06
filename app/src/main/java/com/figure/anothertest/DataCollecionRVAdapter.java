@@ -3,12 +3,14 @@ package com.figure.anothertest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,13 +20,13 @@ import java.util.List;
 public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRVAdapter.DCViewHolder> {
 
     private Context context;
-    private List<Bitmap> images;
+    private List<RP> rpList;
     List<String> names;
 
 
-    DataCollecionRVAdapter(Context c, List<Bitmap> imgs){
+    DataCollecionRVAdapter(Context c, List<RP> rps){
         this.context = c;
-        this.images = imgs;
+        this.rpList = rps;
     }
 
     @NonNull
@@ -37,23 +39,30 @@ public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRV
 
     @Override
     public void onBindViewHolder(@NonNull DCViewHolder holder, int position) {
-        holder.imageView.setImageBitmap(images.get(position));
+        if(rpList.get(position).getIsPicture()){
+            holder.videoViewl.setVisibility(View.GONE);
+            holder.imageView.setImageBitmap(rpList.get(position).getBitmap());
+        }else{
+            holder.imageView.setVisibility(View.GONE);
+            holder.videoViewl.setVideoURI(rpList.get(position).getVideouri());
+        }
+
 
     }
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return rpList.size();
     }
 
     static class DCViewHolder extends RecyclerView.ViewHolder {
-        //TextView postText;
         ImageView imageView;
         RelativeLayout rowlayout;
+        VideoView videoViewl;
 
         DCViewHolder(@NonNull View itemView) {
             super(itemView);
-            //postText = itemView.findViewById(R.id.live_img);
+            videoViewl = itemView.findViewById(R.id.live_video);
             rowlayout = itemView.findViewById(R.id.row_dc_layout);
             imageView = itemView.findViewById(R.id.live_img);
         }

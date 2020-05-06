@@ -36,8 +36,7 @@ public class Tper2Activity extends AppCompatActivity {
     private VideoView testvideo;
     private boolean zoomout = false;
 
-    List<Uri> videolist = new ArrayList<>();
-    List<Bitmap> imagelist = new ArrayList<>();
+    List<RP> rpList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +78,7 @@ public class Tper2Activity extends AppCompatActivity {
         if(!ispicure){
             if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
                 Uri videoUri = intent.getData();
-                videolist.add(videoUri);
+                rpList.add(new RP(videoUri));
                 //testvideo.setVideoURI(videoUri);
                 /*
                 testvideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -95,13 +94,13 @@ public class Tper2Activity extends AppCompatActivity {
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
                 Bundle extras = intent.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
-                imagelist.add(imageBitmap);
+                rpList.add(new RP(imageBitmap));
                 //testimg.setImageBitmap(imageBitmap);
             }
         }
 
-        Log.d("iwqehjd","images: "+imagelist.size()+" videos: "+videolist.size());
-        DataCollecionRVAdapter adapter = new DataCollecionRVAdapter(this,imagelist);
+        //Log.d("iwqehjd","images: "+imagelist.size()+" videos: "+videolist.size());
+        DataCollecionRVAdapter adapter = new DataCollecionRVAdapter(this,rpList);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
     }
