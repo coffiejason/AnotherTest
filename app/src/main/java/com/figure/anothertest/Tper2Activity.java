@@ -1,10 +1,14 @@
 package com.figure.anothertest;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -14,9 +18,13 @@ import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +40,8 @@ public class Tper2Activity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Boolean ispicure;
 
-    private ImageView testimg;
-    private VideoView testvideo;
+    String filename;
+    Uri imageUri;
     private boolean zoomout = false;
 
     List<RP> rpList = new ArrayList<>();
@@ -49,14 +57,21 @@ public class Tper2Activity extends AppCompatActivity {
         audiobtn = findViewById(R.id.post_audio_btn);
         videobtn = findViewById(R.id.post_video_btn);
 
-        //testimg = findViewById(R.id.testimage);
-        //testvideo = findViewById(R.id.testvideo);
+        ActivityCompat.requestPermissions(Tper2Activity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+
+
+        filename = Environment.getExternalStorageDirectory().getPath() + "/test/testfile.jpg";
+        imageUri = Uri.fromFile(new File(filename));
 
 
         camerabtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                //dispatchTakePictureIntent();
+
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
             }
         });
 
@@ -72,33 +87,11 @@ public class Tper2Activity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        //add new photos and videos to an a list and show a show them in a listview
-
-        if(!ispicure){
-            if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-                Uri videoUri = intent.getData();
-                rpList.add(new RP(videoUri));
-                //testvideo.setVideoURI(videoUri);
-                /*
-                testvideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mp.setLooping(true);
-                        testvideo.start();
-                    }
-                });*/
-            }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && data != null) {
+            imageUri = data.getData();
+            rpList.add(new RP(imageUri,true));
         }
-        else{
-            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-                Bundle extras = intent.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                rpList.add(new RP(imageBitmap));
-                //testimg.setImageBitmap(imageBitmap);
-            }
-        }
-
         //Log.d("iwqehjd","images: "+imagelist.size()+" videos: "+videolist.size());
         DataCollecionRVAdapter adapter = new DataCollecionRVAdapter(this,rpList);
         rv.setAdapter(adapter);
@@ -109,6 +102,10 @@ public class Tper2Activity extends AppCompatActivity {
         ispicure = true;
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
+                    imageUri);
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
@@ -120,8 +117,4 @@ public class Tper2Activity extends AppCompatActivity {
             startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
         }
     }
-
-
-
-
 }
