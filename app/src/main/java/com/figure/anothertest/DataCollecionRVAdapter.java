@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
@@ -45,7 +46,7 @@ public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DCViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final DCViewHolder holder, final int position) {
         if(rpList.get(position).getIsPicture()){
             holder.videoViewl.setVisibility(View.GONE);
             try{
@@ -60,6 +61,16 @@ public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRV
                         context.startActivity(i);
                     }
                 });
+
+                holder.postBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        holder.upload.setVisibility(View.GONE);
+                        holder.uploading.setVisibility(View.VISIBLE);
+                        new Functions().fileUploader(context,rpList.get(position).getImageUri(),holder.uploading,holder.uploaded);
+                    }
+                });
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -80,8 +91,9 @@ public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRV
     }
 
     static class DCViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
-        RelativeLayout rowlayout;
+        ImageView imageView,upload,uploaded;
+        ProgressBar uploading;
+        RelativeLayout rowlayout,postBtn;
         VideoView videoViewl;
 
         DCViewHolder(@NonNull View itemView) {
@@ -89,6 +101,14 @@ public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRV
             videoViewl = itemView.findViewById(R.id.live_video);
             rowlayout = itemView.findViewById(R.id.row_dc_layout);
             imageView = itemView.findViewById(R.id.live_img);
+
+            postBtn = itemView.findViewById(R.id.uploadBtn);
+
+            upload = itemView.findViewById(R.id.uploadimg);
+            uploaded = itemView.findViewById(R.id.uploadedimg);
+            uploading = itemView.findViewById(R.id.uploadingpb);
+
+
         }
     }
 }

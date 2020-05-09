@@ -1,6 +1,7 @@
 package com.figure.anothertest;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -12,15 +13,24 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,9 +40,8 @@ import java.util.List;
 
 public class Tper2Activity extends AppCompatActivity {
 
-    RelativeLayout camerabtn;
-    RelativeLayout videobtn;
-    RelativeLayout audiobtn;
+    RelativeLayout camerabtn,videobtn,audiobtn;
+
 
     RecyclerView rv;
 
@@ -44,12 +53,16 @@ public class Tper2Activity extends AppCompatActivity {
     Uri imageUri;
     private boolean zoomout = false;
 
+    StorageReference storageReference;
+
     List<RP> rpList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tper2);
+
+        storageReference = FirebaseStorage.getInstance().getReference("Images");
 
         rv = findViewById(R.id.rv_data_collected);
 
@@ -92,7 +105,6 @@ public class Tper2Activity extends AppCompatActivity {
             imageUri = data.getData();
             rpList.add(new RP(imageUri,true));
         }
-        //Log.d("iwqehjd","images: "+imagelist.size()+" videos: "+videolist.size());
         DataCollecionRVAdapter adapter = new DataCollecionRVAdapter(this,rpList);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));

@@ -11,14 +11,15 @@
 
     <VideoView
         android:id="@+id/live_video"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginRight="20dp"/>
 
-    <com.dmallcott.dismissibleimageview.DismissibleImageView
+    <ImageView
         android:id="@+id/live_img"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@color/colorHint"
         android:layout_marginRight="20dp"
         android:scaleType="centerCrop"
         android:src="@drawable/egg"/>
@@ -30,11 +31,38 @@
         android:text="img_000"
         android:textSize="18sp"/>
 
+    <RelativeLayout
+        android:id="@+id/uploadBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_cancel"
-        android:layout_alignParentRight="true"/>
+        <ImageView
+            android:id="@+id/uploadimg"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_upload"
+            />
+
+        <ProgressBar
+            android:id="@+id/uploadingpb"
+            android:visibility="gone"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/tipeeGreenDark"/>
+
+        <ImageView
+            android:id="@+id/uploadedimg"
+            android:visibility="gone"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_uploaded"/>
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

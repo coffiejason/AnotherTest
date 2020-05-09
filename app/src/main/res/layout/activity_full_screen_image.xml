@@ -12,6 +12,7 @@
         app:navigationIcon="@drawable/ic_cancel"/>
 
     <ImageView
+        android:layout_centerInParent="true"
         android:id="@+id/fullscreenimg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

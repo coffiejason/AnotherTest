@@ -3,6 +3,7 @@ package com.figure.anothertest;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,10 +13,15 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -36,11 +42,16 @@ import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.maps.android.clustering.ClusterManager;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -643,6 +654,42 @@ class Functions {
 
     private void enableDarkmode(boolean choice){
 
+    }
+
+    void fileUploader(final Context context, Uri uri, final ProgressBar pb, final ImageView iv){
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("Images");
+
+        StorageReference ref = storageReference.child(System.currentTimeMillis()+" "+getExtension(context,uri));
+
+        ref.putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        String downloadUrl = taskSnapshot.getUploadSessionUri().toString();
+                        Toast.makeText(context,"Image Upload Successful",Toast.LENGTH_SHORT);
+                        Log.d("bhqhpicc",""+downloadUrl);
+                        pb.setVisibility(View.GONE);
+                        iv.setVisibility(View.VISIBLE);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                        Log.d("hbhqhreasonn",""+exception);
+                    }
+                });
+
+    }
+
+    private String getExtension(Context c,Uri uri){
+        ContentResolver cr = c.getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+        return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
     }
 
 
