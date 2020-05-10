@@ -85,12 +85,12 @@ public class ClusterListAdapter extends RecyclerView.Adapter<ClusterListAdapter.
         }
     }
 
-    public static class CLViewHolder extends RecyclerView.ViewHolder {
+    static class CLViewHolder extends RecyclerView.ViewHolder {
         TextView postText;
         TextView postUserID;
         RelativeLayout rowlayout;
 
-        public CLViewHolder(@NonNull View itemView) {
+        CLViewHolder(@NonNull View itemView) {
             super(itemView);
             postText = itemView.findViewById(R.id.tv_tp_post);
             rowlayout = itemView.findViewById(R.id.row_item_layout);

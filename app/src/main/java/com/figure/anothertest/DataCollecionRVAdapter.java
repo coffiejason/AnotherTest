@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,13 @@ public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRV
     private Context context;
     private List<RP> rpList;
     List<String> names;
+    String eventID;
 
 
-    DataCollecionRVAdapter(Context c, List<RP> rps){
+    DataCollecionRVAdapter(Context c, List<RP> rps,String eventid){
         this.context = c;
         this.rpList = rps;
+        this.eventID = eventid;
     }
 
     @NonNull
@@ -65,9 +68,11 @@ public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRV
                 holder.postBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         holder.upload.setVisibility(View.GONE);
                         holder.uploading.setVisibility(View.VISIBLE);
-                        new Functions().fileUploader(context,rpList.get(position).getImageUri(),holder.uploading,holder.uploaded);
+                        new Functions().fileUploader(context,rpList.get(position).getImageUri(),holder.uploading,holder.uploaded,holder.postBtn,eventID);
+                        Log.d("ksbxn",""+new Functions().getImagesNames().size());
                     }
                 });
 

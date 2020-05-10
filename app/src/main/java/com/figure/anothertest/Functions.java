@@ -21,6 +21,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -83,7 +84,7 @@ import javax.net.ssl.X509TrustManager;
 
 class Functions {
 
-    //private static List<TPPost> list = new ArrayList<>();
+    private static List<String> imageNames = new ArrayList<>();
     private static List<TPPost> myList = new ArrayList<>();
     private static List<TPPost> allusersloc = new ArrayList<>();
     private static Collection<PostClusterItem> postsfrmDB = new ArrayList<>();
@@ -656,11 +657,14 @@ class Functions {
 
     }
 
-    void fileUploader(final Context context, Uri uri, final ProgressBar pb, final ImageView iv){
+    void fileUploader(final Context context, Uri uri, final ProgressBar pb, final ImageView iv, final RelativeLayout rl,String eventID){
 
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("Images");
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(eventID);
 
-        StorageReference ref = storageReference.child(System.currentTimeMillis()+" "+getExtension(context,uri));
+        //image or video name add to list and pass to tiper
+        String imageName = System.currentTimeMillis()+" "+getExtension(context,uri);
+        StorageReference ref = storageReference.child(imageName);
+        imageNames.add(imageName);
 
         ref.putFile(uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -672,6 +676,7 @@ class Functions {
                         Log.d("bhqhpicc",""+downloadUrl);
                         pb.setVisibility(View.GONE);
                         iv.setVisibility(View.VISIBLE);
+                        rl.setClickable(false);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -692,7 +697,7 @@ class Functions {
         return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
     }
 
-
+    List<String> getImagesNames(){return imageNames;}
 
     /*
     List<TPPost> getWorldPosts(){

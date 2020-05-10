@@ -26,15 +26,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,16 +48,23 @@ public class Tper2Activity extends AppCompatActivity {
     Uri imageUri;
     private boolean zoomout = false;
 
-    StorageReference storageReference;
-
     List<RP> rpList = new ArrayList<>();
+
+    String userID;
+    String eventID; //write eventID to the errands node of the tiper, tiper can access media by storagereference.child(eventid)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tper2);
 
-        storageReference = FirebaseStorage.getInstance().getReference("Images");
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+
+        eventID = userID+""+System.currentTimeMillis();
+
+
 
         rv = findViewById(R.id.rv_data_collected);
 
@@ -105,7 +107,7 @@ public class Tper2Activity extends AppCompatActivity {
             imageUri = data.getData();
             rpList.add(new RP(imageUri,true));
         }
-        DataCollecionRVAdapter adapter = new DataCollecionRVAdapter(this,rpList);
+        DataCollecionRVAdapter adapter = new DataCollecionRVAdapter(this,rpList,eventID);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
     }
