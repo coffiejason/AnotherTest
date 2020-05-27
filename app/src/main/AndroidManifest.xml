@@ -36,7 +36,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".FullScreenImage"></activity>
+        <activity android:name=".NewPost"></activity>
+        <activity android:name=".RecieveActivity" />
+        <activity android:name=".FullScreenImage" />
         <activity android:name=".NotificationsActivity" />
         <activity android:name=".Tper1Activity" />
         <activity android:name=".Tper3Activity" />
@@ -66,11 +68,14 @@
         <activity
             android:name=".ChooseLocationActivity"
             android:label="@string/title_activity_choose_location" />
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:theme="@style/noAnimTheme" />
         <activity android:name=".OpenPostsCluster" />
         <activity
             android:name=".ErrandMapActivity"
-            android:label="@string/title_activity_errand_map" />
+            android:label="@string/title_activity_errand_map"
+            android:theme="@style/noAnimTheme" />
         <activity
             android:name=".CreatePost"
             android:windowSoftInputMode="adjustResize" />

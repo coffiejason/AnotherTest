@@ -1,17 +1,16 @@
 package com.figure.anothertest;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -25,9 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,6 +95,7 @@ class Functions {
         hashMap.put("l",userLocation.getLatitude());
         hashMap.put("g",userLocation.getLongitude());
         userDBReference.child("Location").setValue(hashMap);
+
 
         GeoFire geoFire = new GeoFire(userDBReference.child("Geofire"));
         geoFire.setLocation(userID, new GeoLocation(userLocation.getLatitude(),userLocation.getLongitude()),new
@@ -243,6 +242,25 @@ class Functions {
 
             }
         });
+
+    }
+
+    void checkForErrands(DatabaseReference errandsNode){
+        //errands node is the node where new errands are written to if a user matches a location errand criteria
+
+        errandsNode.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //get all new errands available here
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //delete errands after they are completed
 
     }
 
@@ -481,64 +499,12 @@ class Functions {
 
     }
 
-    static void whoGetsNotified(DatabaseReference db, TPPost post, int radius, String topic, boolean errand){
-        //distances are in meters
-
-        Location loc = new Location("loc");
-
-        Location loc2 = new Location("loc2");
-        loc2.setLatitude(post.getLocation().latitude);
-        loc2.setLongitude(post.getLocation().longitude);
-
-       TPPost hm;
-        Double l,g;
-        String userid;
-        LatLng lg;
-
-        String errand_or_post;
-
-        if(errand){
-            errand_or_post = "ErrandsNearBy";
-        }else{
-            errand_or_post = "PostsNearBy";
-        }
+    public static final String[] GTTOWNS= new String[] {
+           "Mampehia","Mampoase","Mamprobi","Manhia","Mataheko","Madina Estates"
+    };
 
 
-
-        int distance;
-
-        Log.d("jsjsdjkdjhjjh"," "+allusersloc.size());
-
-        for(int i = 0; i < allusersloc.size(); i++){
-            hm = allusersloc.get(i);
-
-            lg = hm.getLocation();
-            l = lg.latitude;
-            g = lg.longitude;
-            userid = hm.getpMessage();
-
-            loc.setLatitude(l); //if this returns null then create a class for the coordinates and user name and add to the the all userlist instead
-            loc.setLongitude(g);
-
-             distance = (int) loc2.distanceTo(loc);
-
-
-
-             if(distance <= radius){
-                 //add topic to the user node
-                 db.child(""+userid).child(""+errand_or_post).setValue(""+topic);
-             }
-
-
-
-
-
-
-
-
-
-
-        }
+    static void whoGetsNotified(List<User> list,LatLng post){
 
     }
 
@@ -550,12 +516,7 @@ class Functions {
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
     }
 
-    void waitAndShow(DatabaseReference userDB,List<TPPost> commentList, RecyclerView rv,Context c){
-        new LoadComments(userDB,commentList,rv,c).execute();
-
-    }
-
-    private class LoadComments extends AsyncTask<Void,Void,List<TPPost>>{
+    private static class LoadComments extends AsyncTask<Void,Void,List<TPPost>>{
         DatabaseReference userDB; List<TPPost> list; RecyclerView rv; Context c;
 
         LoadComments(){}
@@ -663,8 +624,8 @@ class Functions {
 
         //image or video name add to list and pass to tiper
         String imageName = System.currentTimeMillis()+" "+getExtension(context,uri);
-        StorageReference ref = storageReference.child(imageName);
-        imageNames.add(imageName);
+        final StorageReference ref = storageReference.child(imageName);
+
 
         ref.putFile(uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -673,7 +634,8 @@ class Functions {
                         // Get a URL to the uploaded content
                         String downloadUrl = taskSnapshot.getUploadSessionUri().toString();
                         Toast.makeText(context,"Image Upload Successful",Toast.LENGTH_SHORT);
-                        Log.d("bhqhpicc",""+downloadUrl);
+                        Log.d("bhqhpicc",""+ref.toString());
+                        imageNames.add(ref.toString());
                         pb.setVisibility(View.GONE);
                         iv.setVisibility(View.VISIBLE);
                         rl.setClickable(false);
@@ -690,7 +652,7 @@ class Functions {
 
     }
 
-    private String getExtension(Context c,Uri uri){
+     String getExtension(Context c,Uri uri){
         ContentResolver cr = c.getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
 
@@ -698,6 +660,7 @@ class Functions {
     }
 
     List<String> getImagesNames(){return imageNames;}
+    void clearImageNames(){imageNames.clear();}
 
     /*
     List<TPPost> getWorldPosts(){

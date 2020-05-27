@@ -55,6 +55,7 @@ public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRV
             try{
                 final Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(),rpList.get(position).getImageUri());
                 holder.imageView.setImageBitmap(bitmap);
+                //holder.imageView.setImageResource(R.drawable.egg);
 
                 holder.rowlayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -68,11 +69,9 @@ public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRV
                 holder.postBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         holder.upload.setVisibility(View.GONE);
                         holder.uploading.setVisibility(View.VISIBLE);
                         new Functions().fileUploader(context,rpList.get(position).getImageUri(),holder.uploading,holder.uploaded,holder.postBtn,eventID);
-                        Log.d("ksbxn",""+new Functions().getImagesNames().size());
                     }
                 });
 
@@ -82,7 +81,7 @@ public class DataCollecionRVAdapter extends RecyclerView.Adapter<DataCollecionRV
                 e.printStackTrace();
             }
 
-        }else{
+        }else if(!rpList.get(position).getIsPicture()){
             holder.imageView.setVisibility(View.GONE);
             holder.videoViewl.setVideoURI(rpList.get(position).getVideouri());
         }

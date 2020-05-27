@@ -8,14 +8,21 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/fullimgtb"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="40dp"
         app:navigationIcon="@drawable/ic_cancel"/>
 
     <ImageView
+        android:layout_below="@+id/fullimgtb"
         android:layout_centerInParent="true"
         android:id="@+id/fullscreenimg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
         android:src="@drawable/egg"/>
+
+    <VideoView
+        android:id="@+id/fullscreenvideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

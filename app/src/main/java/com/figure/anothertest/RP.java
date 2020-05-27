@@ -20,7 +20,7 @@ public class RP {
     }
     RP(Uri video){
         this.videouri = video;
-        isPicture = false;
+        isPicture = true;
 
     }
 

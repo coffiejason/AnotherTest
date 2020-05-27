@@ -22,6 +22,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -66,8 +69,10 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 //add layout to to map activity that shows when there's a new tip available
+//find a better way to show posts and sort current users
 
 public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -110,6 +115,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     private ClusterManager<PostClusterItem> mClusterManager;
     private static Collection<PostClusterItem> postsfrmDB;
+
+    public static List<User> availableUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -270,9 +277,36 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         return true;
     }
 
+    private static final User[] Users =  new User[] {
+            new User(0.00,0.00,"kjwd"),
+    };
+
+
+    private static final String[] COUNTRIES = new String[] {
+            "Belgium","Beru","Brixton", "France", "Italy", "Germany", "Spain"
+    };
+
     void init(){
 
         postsfrmDB = new ArrayList<>();
+        availableUsers = new ArrayList<>();
+
+        /*
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, Functions.GTTOWNS);
+
+        AutoCompleteTextView textView = (AutoCompleteTextView)
+                findViewById(R.id.fasttravel);
+        textView.setAdapter(adapter);
+
+        textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("yuiooiuytrew","yessss  "+parent.getItemAtPosition(position));
+            }
+        });*/
+
+
 
         tb = findViewById(R.id.mapToolbar);
 
@@ -289,7 +323,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         mapLayoutSub = findViewById(R.id.notifyer_space);
 
-        new Functions().sideMenu(ErrandMapActivity.this,tb);
+        //new Functions().sideMenu(ErrandMapActivity.this,tb);
 
         //get UserID from login and pass it as intent
 
@@ -319,7 +353,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         //hide api
         Places.initialize(getApplicationContext(),"AIzaSyAYWdmSCJ9MyVh0bvBFbrQb9ELgmu3LYu8");
-
+        /*
         autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         assert autocompleteFragment != null;
@@ -337,7 +371,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 // TODO: Handle the error.
                 Log.i("PlacesError", "An error occurred: " + status);
             }
-        });
+        });*/
 
         //LayoutInflater inflater = this.getLayoutInflater();
         //final View child = inflater.inflate(R.layout.errand_notifyer,null);
@@ -410,24 +444,35 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     @Override
     public void itemSelect(int itemId) {
+        Toast.makeText(this," "+itemId,Toast.LENGTH_SHORT).show();
+        switch (itemId){
+            case 0:
+                break;
+
+            case 1:
+                Intent i1 = new Intent(ErrandMapActivity.this,CreatePost.class);
+                startActivity(i1);
+                break;
+
+            case 3:
+                Intent i = new Intent(ErrandMapActivity.this,SettingsActivity.class);
+                startActivity(i);
+                break;
+        }
 
     }
 
     @SuppressLint("ResourceType")
     private void initBottomItems() {
-        BottomItem home = new BottomItem(HOME, R.drawable.ic_home, "Home", true);
-        BottomItem notifications = new BottomItem(NOTIFICATIONS, R.drawable.ic_notifications, "Notifications", true);
-        //BottomItem friends = new BottomItem(FRIENDS, R.drawable.ic_people, "Friends", false);
-        //BottomItem cart = new BottomItem(CART, R.drawable.ic_cart, "Cart", true);
+        BottomItem home = new BottomItem(HOME, R.drawable.ic_home, "Home", false);
+        BottomItem notifications = new BottomItem(NOTIFICATIONS, R.drawable.ic_plus, "Notifications", false);
         BottomItem settings = new BottomItem(SETTINGS, R.drawable.ic_settings, "Settings", false);
 
         badgeBottomNavigtion.addBottomItem(home);
         badgeBottomNavigtion.addBottomItem(notifications);
-        //badgeBottomNavigtion.addBottomItem(friends);
-        //badgeBottomNavigtion.addBottomItem(cart);
         badgeBottomNavigtion.addBottomItem(settings);
 
-        badgeBottomNavigtion.apply(selectedId, getString(R.color.colorWhite), getString(R.color.colorCheckNo));
+        badgeBottomNavigtion.apply(selectedId, getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
         itemSelect(selectedId);
     }
 
@@ -440,25 +485,24 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 HashMap<String, Object> hashMap = new HashMap<>();
                 String userid;
                 double l,g;
-                int i = 0;
+
                 postsfrmDB.clear();
+                availableUsers.clear();
                 mClusterManager.clearItems();
                 for(DataSnapshot d: dataSnapshot.getChildren()){
 
                     Log.d("Igotthekeyskeyskeys",""+d.getKey());
-
+                    userid = d.getKey();
                     //use location.distancebetween here to get only the keys in users location
                     redundantCode(d);
+                    if(d.child("Location").child("g").getValue() !=null){
 
-                    //g = (double) d.child("Location").child("g").getValue();
-                    //l = (double) d.child("Location").child("l").getValue();
-                    //userid = (String) d.child("UserID").child("UserID").getValue();
+                        g = (double) d.child("Location").child("g").getValue();
+                        l = (double) d.child("Location").child("l").getValue();
 
-                    //allusersloc.add(new TPPost(userid,l,g,userid));
-
-                    //Log.d("qwertpo",""+l+" "+g+" "+userid);
+                        availableUsers.add(new User(l,g,userid));
+                    }
                 }
-
             }
 
             @Override
@@ -530,6 +574,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     protected void onResume() {
         super.onResume();
         getAllPosts();
+        badgeBottomNavigtion.apply(selectedId,getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
     }
 
 
@@ -537,7 +582,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     public void buttonClicked(Boolean choice) {
         //open tip activity here
         if(choice){
-            startActivity(new Intent(ErrandMapActivity.this,Tper2Activity.class));
+            startActivity(new Intent(ErrandMapActivity.this,NewPost.class));
         }
     }
 }

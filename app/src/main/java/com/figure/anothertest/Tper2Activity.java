@@ -21,6 +21,8 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,7 +37,7 @@ import java.util.List;
 
 public class Tper2Activity extends AppCompatActivity {
 
-    RelativeLayout camerabtn,videobtn,audiobtn;
+    RelativeLayout camerabtn,videobtn,audiobtn,finishbtn;
 
 
     RecyclerView rv;
@@ -71,6 +73,7 @@ public class Tper2Activity extends AppCompatActivity {
         camerabtn = findViewById(R.id.post_pic_button);
         audiobtn = findViewById(R.id.post_audio_btn);
         videobtn = findViewById(R.id.post_video_btn);
+        finishbtn = findViewById(R.id.finisherrandbtn);
 
         ActivityCompat.requestPermissions(Tper2Activity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
 
@@ -82,11 +85,10 @@ public class Tper2Activity extends AppCompatActivity {
         camerabtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //dispatchTakePictureIntent();
-
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
+                Log.d("ksbxn",""+new Functions().getImagesNames().size());
             }
         });
 
@@ -97,7 +99,12 @@ public class Tper2Activity extends AppCompatActivity {
             }
         });
 
-
+        finishbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //write image uris to tipers node;
+            }
+        });
 
     }
 
@@ -130,5 +137,13 @@ public class Tper2Activity extends AppCompatActivity {
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        new Functions().clearImageNames();
+
+        finish();
     }
 }

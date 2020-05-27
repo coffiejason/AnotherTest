@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="20dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/row_item_layout">
+
+    <TextView
+        android:id="@+id/request_complete_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="request complete"
+        android:textColor="@color/colorTitle"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"/>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_below="@+id/request_complete_text"
+        android:id="@+id/r_profile_photo"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
+        android:layout_marginRight="20dp"
+        app:placeholderImage="@drawable/egg"
+        app:roundAsCircle="true" />
+
+    <TextView
+        android:layout_below="@+id/request_complete_text"
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name_placeholder"
+        android:layout_toRightOf="@id/r_profile_photo"
+        android:textStyle="bold"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:layout_below="@+id/request_complete_text"
+        android:id="@+id/tv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username_placeholder"
+        android:layout_toRightOf="@id/tv_name"
+        android:layout_marginLeft="10dp"
+        android:textStyle="normal"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/r_tp_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your request has been completed"
+        android:layout_toRightOf="@id/r_profile_photo"
+        android:layout_below="@id/tv_name"
+        android:textStyle="normal"
+        android:layout_marginTop="5dp"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/tv_tweet_edited"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edited"
+        android:layout_toRightOf="@id/r_profile_photo"
+        android:layout_below="@id/r_tp_post"
+        android:textStyle="normal"
+        android:layout_marginTop="2dp"
+        android:visibility="gone"
+        android:textColor="@color/twitterBlueDarker"
+        android:textSize="13sp"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_data_collected"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_tweet_edited"
+        android:layout_marginTop="20dp"/>
+</RelativeLayout>

@@ -26,30 +26,79 @@
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="15dp" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/email_input_parent"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                app:cardBackgroundColor="@color/colorCardViewBackground"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <fragment
-                        android:id="@+id/autocomplete_fragment"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/email_input_parent"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    app:cardBackgroundColor="@color/colorCardViewBackground"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:name=
-                            "com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:id="@+id/listbtn"
+                            android:background="@color/tipeeGreen"
+                            android:layout_width="75dp"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:text="Map"
+                                android:textColor="@color/colorBottomBar"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="@color/colorCardViewBackground"
+                            android:layout_width="75dp"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:text="List"
+                                android:textColor="@color/tipeeGreenDark"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
 
 
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -68,6 +117,7 @@
                 android:id="@+id/notifyer_space"/>
 
             <androidx.cardview.widget.CardView
+                android:visibility="gone"
                 android:layout_width="130dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="30dp"
