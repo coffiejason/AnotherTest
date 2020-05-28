@@ -36,7 +36,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".NewPost"></activity>
+        <activity android:name=".NotificationOptions"></activity>
+        <activity android:name=".NewPost" />
         <activity android:name=".RecieveActivity" />
         <activity android:name=".FullScreenImage" />
         <activity android:name=".NotificationsActivity" />

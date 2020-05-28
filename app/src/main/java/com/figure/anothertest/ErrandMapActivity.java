@@ -355,7 +355,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         Places.initialize(getApplicationContext(),"AIzaSyAYWdmSCJ9MyVh0bvBFbrQb9ELgmu3LYu8");
 
         //autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
+        /*
         assert autocompleteFragment != null;
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
 
@@ -372,7 +372,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 Log.i("PlacesError", "An error occurred: " + status);
             }
         });
-
+        */
         //LayoutInflater inflater = this.getLayoutInflater();
         //final View child = inflater.inflate(R.layout.errand_notifyer,null);
 
