@@ -73,6 +73,7 @@ import java.util.List;
 
 //add layout to to map activity that shows when there's a new tip available
 //find a better way to show posts and sort current users
+//write user location to firebase at login and or signup
 
 public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -117,6 +118,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     private static Collection<PostClusterItem> postsfrmDB;
 
     public static List<User> availableUsers;
+    private int gotErrand = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -134,8 +136,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         getToken();
 
         getAllPosts();
-
-        onpenTipBottoSheet();
         //new Functions().getAllPosts(userAvailabilityRef,postsfrmDB,mClusterManager);
         //new Functions().getMyPosts(mMap,userAvailabilityRef.child(userID));
 
@@ -338,6 +338,9 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         userAvailabilityRef.keepSynced(true);
         userIndividual = userAvailabilityRef.child(userID);
 
+        new Functions().checkforErrands(userIndividual,getApplicationContext());
+
+
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -450,7 +453,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 break;
 
             case 1:
-                Intent i1 = new Intent(ErrandMapActivity.this,CreatePost.class);
+                Intent i1 = new Intent(ErrandMapActivity.this,Tper1Activity.class);
                 startActivity(i1);
                 break;
 
@@ -476,9 +479,14 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         itemSelect(selectedId);
     }
 
+    int i = 0;
+
     void getAllPosts(){
         //use Location.distanceBetween() to check if coordinates are in a given radius
         //list.clear();
+        i++;
+
+        Log.d("howmanyimes"," "+i);
         userAvailabilityRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -499,6 +507,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
                         g = (double) d.child("Location").child("g").getValue();
                         l = (double) d.child("Location").child("l").getValue();
+
+                        Log.d("closestsUsers"," "+userid+"  "+l+" "+g);
 
                         availableUsers.add(new User(l,g,userid));
                     }
@@ -582,7 +592,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     public void buttonClicked(Boolean choice) {
         //open tip activity here
         if(choice){
-            startActivity(new Intent(ErrandMapActivity.this,NewPost.class));
+            startActivity(new Intent(ErrandMapActivity.this,Tper2Activity.class));
+            Log.d("howmnyavailableusers"," "+availableUsers.size());
         }
     }
 }

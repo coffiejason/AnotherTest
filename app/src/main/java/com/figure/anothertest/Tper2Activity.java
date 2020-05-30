@@ -17,6 +17,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -41,6 +42,7 @@ public class Tper2Activity extends AppCompatActivity {
 
 
     RecyclerView rv;
+    TextView errandmsg;
 
     static final int REQUEST_VIDEO_CAPTURE = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -59,6 +61,13 @@ public class Tper2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tper2);
+
+        errandmsg = findViewById(R.id.errandmsg);
+
+        String errandmessage = getIntent().getStringExtra("msg");
+        if(errandmessage != null){
+            errandmsg.setText(errandmessage);
+        }
 
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             userID = FirebaseAuth.getInstance().getCurrentUser().getUid();

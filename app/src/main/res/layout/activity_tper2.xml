@@ -51,7 +51,7 @@
         android:textSize="15sp"/>
 
     <TextView
-        android:id="@+id/tv_tp_post"
+        android:id="@+id/errandmsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your request will be completed soon"
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:text="@string/edited"
         android:layout_toRightOf="@id/profile_photo"
-        android:layout_below="@id/tv_tp_post"
+        android:layout_below="@id/errandmsg"
         android:textStyle="normal"
         android:layout_marginTop="2dp"
         android:visibility="gone"

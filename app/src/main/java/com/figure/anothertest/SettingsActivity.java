@@ -63,13 +63,15 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
     public void itemSelect(int itemId) {
         switch (itemId){
             case 0:
+                /*
                 Intent i = new Intent(SettingsActivity.this,ErrandMapActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(i);
+                startActivity(i);*/
+                onBackPressed();
                 break;
 
             case 1:
-                Intent i1 = new Intent(SettingsActivity.this,CreatePost.class);
+                Intent i1 = new Intent(SettingsActivity.this,Tper1Activity.class);
                 startActivity(i1);
                 break;
 

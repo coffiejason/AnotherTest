@@ -6,4 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".NotificationsActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarnotify"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_close"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/toolbarnotify"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/notifyrv"/>
 </RelativeLayout>

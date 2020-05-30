@@ -26,6 +26,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,9 +45,11 @@ import com.google.android.gms.maps.model.LatLng;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
@@ -68,10 +72,12 @@ import org.json.JSONObject;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -83,6 +89,7 @@ import javax.net.ssl.X509TrustManager;
 class Functions {
 
     private static List<String> imageNames = new ArrayList<>();
+    private static List<String> errandsNearBy = new ArrayList<>();
     private static List<TPPost> myList = new ArrayList<>();
     private static List<TPPost> allusersloc = new ArrayList<>();
     private static Collection<PostClusterItem> postsfrmDB = new ArrayList<>();
@@ -134,6 +141,7 @@ class Functions {
 
         DatabaseReference ref = userDB.child(userID);
         ref.child("Errands").push().setValue(hashMap);
+        whoGetsNotified(ErrandMapActivity.availableUsers,new LatLng(l,g),message);
     }
 
     void comment(DatabaseReference commentDBref, String postUserID, String message) {
@@ -188,7 +196,7 @@ class Functions {
         });
 
     }
-
+    /*
     void getAllPosts(DatabaseReference userDB, final Collection<PostClusterItem> postsfrmDB, final ClusterManager cm){
         //use Location.distanceBetween() to check if coordinates are in a given radius
         //list.clear();
@@ -227,6 +235,57 @@ class Functions {
             }
         });
     }
+
+    private void redundantCode(DataSnapshot dataSnapshot,Collection<PostClusterItem> postsfrmDB,ClusterManager cm){
+
+        HashMap<String, Object> h = new HashMap<>();
+        String userid;
+        String postid;
+        String msg;
+        double l,g;
+
+        //list.clear();
+        //myList.clear();
+        //rList.clear();
+        //postsfrmDB.clear();
+        Log.d("redcodemun",""+redcodenum);
+        redcodenum++;
+        for(DataSnapshot p: dataSnapshot.child("Posts").getChildren()){
+
+            h.put("PostID",""+p.getKey());
+
+            for(DataSnapshot finaSnapShot: p.getChildren()){
+
+                Log.d("ypyppypypAllMsgsFinallyyy",finaSnapShot+"");
+
+                h.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
+            }
+
+            if(h.get("l") != null){
+                l = Double.parseDouble(""+h.get("l"));
+                g = Double.parseDouble(""+h.get("g"));
+                msg = ""+h.get("Message");
+                userid = ""+h.get("UserID");
+                postid = ""+h.get("PostID");
+
+                Log.d("hsdhdhjsdhj",l+" "+g+" "+" "+msg);
+
+                //rList.add(new TPPost(msg,l,g,userid,postid));
+                postsfrmDB.add(new PostClusterItem(msg,new LatLng(l,g),userid,postid));
+            }
+        }
+        Log.d("postdsdkjs",""+postsfrmDB.size());
+        setMsgIcon2(cm,postsfrmDB);
+
+
+    }
+
+    private void setMsgIcon2(ClusterManager<PostClusterItem> cm, Collection<PostClusterItem> posts){
+
+        cm.addItems(posts);
+        cm.cluster();
+    }
+    */
 
     void getMyPosts(final GoogleMap mMap, DatabaseReference userDB){
 
@@ -271,12 +330,6 @@ class Functions {
         cm.addItem(new PostClusterItem(message, pl,userid,postid));
         cm.cluster();
 
-    }
-
-    private void setMsgIcon2(ClusterManager<PostClusterItem> cm, Collection<PostClusterItem> posts){
-
-        cm.addItems(posts);
-        cm.cluster();
     }
 
     Bitmap layoutToBitmap(int layout, Context c) {
@@ -455,57 +508,93 @@ class Functions {
                 .build();
     }
 
-    private void redundantCode(DataSnapshot dataSnapshot,Collection<PostClusterItem> postsfrmDB,ClusterManager cm){
 
-        HashMap<String, Object> h = new HashMap<>();
-        String userid;
-        String postid;
-        String msg;
-        double l,g;
+    static void whoGetsNotified(List<User> list,LatLng post,String msg){
+        Location postLocation = new Location("post");
+        postLocation.setLongitude(post.longitude);
+        postLocation.setLatitude(post.latitude);
 
-        //list.clear();
-        //myList.clear();
-        //rList.clear();
-        //postsfrmDB.clear();
-        Log.d("redcodemun",""+redcodenum);
-        redcodenum++;
-        for(DataSnapshot p: dataSnapshot.child("Posts").getChildren()){
+        HashMap<String,String> usertodisance = new HashMap<>();
 
-            h.put("PostID",""+p.getKey());
+        Location userLocation = new Location("userLocation");
+        float users[] = new float[list.size()];
 
-            for(DataSnapshot finaSnapShot: p.getChildren()){
+        for(int i = 0; i<list.size();i++){
+            userLocation.setLatitude(list.get(i).getLat());
+            userLocation.setLongitude(list.get(i).getLng());
 
-                Log.d("ypyppypypAllMsgsFinallyyy",finaSnapShot+"");
+            float distance = postLocation.distanceTo(userLocation);
+            usertodisance.put(""+distance,list.get(i).getUserID());
 
-                h.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
-            }
+            Log.d("alldistances", " "+distance);
+            users[i] = distance;
 
-            if(h.get("l") != null){
-                l = Double.parseDouble(""+h.get("l"));
-                g = Double.parseDouble(""+h.get("g"));
-                msg = ""+h.get("Message");
-                userid = ""+h.get("UserID");
-                postid = ""+h.get("PostID");
 
-                Log.d("hsdhdhjsdhj",l+" "+g+" "+" "+msg);
-
-                //rList.add(new TPPost(msg,l,g,userid,postid));
-                postsfrmDB.add(new PostClusterItem(msg,new LatLng(l,g),userid,postid));
-            }
         }
-        Log.d("postdsdkjs",""+postsfrmDB.size());
-        setMsgIcon2(cm,postsfrmDB);
+        Arrays.sort(users);
+
+        String closetuserid = usertodisance.get("" + users[0]);
+
+        //Log.d("cosssdsfsdf", Objects.requireNonNull(usertodisance.get("" + users[0])));
+
+        assert closetuserid != null;
+        DatabaseReference closestuserdb = FirebaseDatabase.getInstance().getReference().child("Customers available")
+                .child(closetuserid);
+
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("Message",msg);
+
+        closestuserdb.child("ErrandsNearBy").push().setValue(hashMap);
 
 
     }
 
-    public static final String[] GTTOWNS= new String[] {
-           "Mampehia","Mampoase","Mamprobi","Manhia","Mataheko","Madina Estates"
-    };
+    private void onpenTipBottoSheet(FragmentManager fm){
+        TipBSDialogue t = new TipBSDialogue();
+        t.show(fm,"hfhf");
+    }
+
+    int i = 0;
+
+    public boolean checkforErrands(DatabaseReference db, final Context c){
+        db.child("ErrandsNearBy").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                Log.d("newErrandAvailable","You new errandss ohhhh");
+                Toast.makeText(c,"You Have a new Task",Toast.LENGTH_SHORT).show();
+
+                Log.d("howmnytimes"," "+i);
+                i++;
+                Log.d("howmnytimes"," "+i+": "+dataSnapshot.child("Message").getValue());
+
+                errandsNearBy.add(""+dataSnapshot.child("Message").getValue());
 
 
-    static void whoGetsNotified(List<User> list,LatLng post){
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return true;
     }
 
     private void getNotifyTopics(){
@@ -669,6 +758,10 @@ class Functions {
 
     List<TPPost> getMyPostsList(){
         return myList;
+    }
+
+    List<String> getErrandsNearBy(){
+        return errandsNearBy;
     }
 
     /**
