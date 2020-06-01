@@ -65,6 +65,7 @@ public class Tper2Activity extends AppCompatActivity {
         errandmsg = findViewById(R.id.errandmsg);
 
         String errandmessage = getIntent().getStringExtra("msg");
+        String tiperId = getIntent().getStringExtra("tid");
         if(errandmessage != null){
             errandmsg.setText(errandmessage);
         }

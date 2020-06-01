@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:id="@+id/post_pic"
         android:layout_height="150dp"
-        android:layout_below="@+id/tv_tweet_edited"
         android:layout_marginStart="5dp"
         android:layout_marginTop="15dp"
         app:cardBackgroundColor="@color/colorAccent"

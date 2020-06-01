@@ -18,9 +18,11 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     Context context;
     List<String> errandmsgs;
 
-    NotificationsAdapter(Context c,List<String>msgs){
+    List<ErrandItem> errandItems;
+
+    NotificationsAdapter(Context c,List<ErrandItem>msgs){
         this.context = c;
-        this.errandmsgs = msgs;
+        this.errandItems = msgs;
 
     }
 
@@ -40,14 +42,15 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        if(errandmsgs.size()>0){
-            holder.postText.setText(errandmsgs.get(position));
+        if(errandItems.size()>0){
+            holder.postText.setText(errandItems.get(position).getErrandMessage());
 
             holder.rowlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context,Tper2Activity.class);
-                    i.putExtra("msg",errandmsgs.get(position));
+                    i.putExtra("msg",errandItems.get(position).getErrandMessage());
+                    i.putExtra("tid",errandItems.get(position).getTiperID());
                     context.startActivity(i);
                 }
             });
@@ -58,7 +61,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     @Override
     public int getItemCount() {
-        return errandmsgs.size();
+        return errandItems.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

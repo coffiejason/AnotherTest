@@ -90,6 +90,7 @@ class Functions {
 
     private static List<String> imageNames = new ArrayList<>();
     private static List<String> errandsNearBy = new ArrayList<>();
+    private static List<ErrandItem> errandsNearBy2 = new ArrayList<>();
     private static List<TPPost> myList = new ArrayList<>();
     private static List<TPPost> allusersloc = new ArrayList<>();
     private static Collection<PostClusterItem> postsfrmDB = new ArrayList<>();
@@ -140,8 +141,9 @@ class Functions {
         hashMap.put("UserID",userID);
 
         DatabaseReference ref = userDB.child(userID);
+
         ref.child("Errands").push().setValue(hashMap);
-        whoGetsNotified(ErrandMapActivity.availableUsers,new LatLng(l,g),message);
+        whoGetsNotified(ErrandMapActivity.availableUsers,new LatLng(l,g),message,userID);
     }
 
     void comment(DatabaseReference commentDBref, String postUserID, String message) {
@@ -509,7 +511,7 @@ class Functions {
     }
 
 
-    static void whoGetsNotified(List<User> list,LatLng post,String msg){
+    static void whoGetsNotified(List<User> list,LatLng post,String msg,String tiperID){
         Location postLocation = new Location("post");
         postLocation.setLongitude(post.longitude);
         postLocation.setLatitude(post.latitude);
@@ -517,7 +519,7 @@ class Functions {
         HashMap<String,String> usertodisance = new HashMap<>();
 
         Location userLocation = new Location("userLocation");
-        float users[] = new float[list.size()];
+        float[] users = new float[list.size()];
 
         for(int i = 0; i<list.size();i++){
             userLocation.setLatitude(list.get(i).getLat());
@@ -544,6 +546,7 @@ class Functions {
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("Message",msg);
+        hashMap.put("tiperID",tiperID);
 
         closestuserdb.child("ErrandsNearBy").push().setValue(hashMap);
 
@@ -561,6 +564,7 @@ class Functions {
         db.child("ErrandsNearBy").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //get tiperID here and write to ErrandsCompleted node when errand is complete
 
                 Log.d("newErrandAvailable","You new errandss ohhhh");
                 Toast.makeText(c,"You Have a new Task",Toast.LENGTH_SHORT).show();
@@ -570,8 +574,7 @@ class Functions {
                 Log.d("howmnytimes"," "+i+": "+dataSnapshot.child("Message").getValue());
 
                 errandsNearBy.add(""+dataSnapshot.child("Message").getValue());
-
-
+                errandsNearBy2.add(new ErrandItem(""+dataSnapshot.child("tiperID").getValue(),""+dataSnapshot.child("Message").getValue()));
             }
 
             @Override
@@ -748,6 +751,22 @@ class Functions {
         return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
     }
 
+    private void downloadImg(StorageReference storageRef){
+
+        //end code below to your liking
+        storageRef.child("users/me/profile.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+    }
+
     List<String> getImagesNames(){return imageNames;}
     void clearImageNames(){imageNames.clear();}
 
@@ -762,6 +781,10 @@ class Functions {
 
     List<String> getErrandsNearBy(){
         return errandsNearBy;
+    }
+
+    List<ErrandItem> getErrandsNearBy2(){
+        return errandsNearBy2;
     }
 
     /**

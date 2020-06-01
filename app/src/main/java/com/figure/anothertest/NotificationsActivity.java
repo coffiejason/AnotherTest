@@ -16,7 +16,7 @@ public class NotificationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notifications);
         rv = findViewById(R.id.notifyrv);
 
-        NotificationsAdapter adapter = new NotificationsAdapter(NotificationsActivity.this,new Functions().getErrandsNearBy());
+        NotificationsAdapter adapter = new NotificationsAdapter(NotificationsActivity.this,new Functions().getErrandsNearBy2());
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(NotificationsActivity.this));
 
