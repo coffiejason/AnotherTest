@@ -65,6 +65,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -718,7 +719,6 @@ class Functions {
         String imageName = System.currentTimeMillis()+" "+getExtension(context,uri);
         final StorageReference ref = storageReference.child(imageName);
 
-
         ref.putFile(uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -741,6 +741,23 @@ class Functions {
                         Log.d("hbhqhreasonn",""+exception);
                     }
                 });
+
+    }
+
+    void loadImages(StorageReference ref, final ImageView imageView){
+
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(imageView);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("imageloaderror",""+e);
+            }
+        });
 
     }
 

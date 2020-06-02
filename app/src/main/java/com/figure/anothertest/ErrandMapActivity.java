@@ -140,6 +140,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //new Functions().getAllPosts(userAvailabilityRef,postsfrmDB,mClusterManager);
         //new Functions().getMyPosts(mMap,userAvailabilityRef.child(userID));
 
+        onpenTipBottoSheet();
+
         Log.d("qwertrewqwer",""+postsfrmDB.size());
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -593,7 +595,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     public void buttonClicked(Boolean choice) {
         //open tip activity here
         if(choice){
-            startActivity(new Intent(ErrandMapActivity.this,Tper2Activity.class));
+            startActivity(new Intent(ErrandMapActivity.this,RecieveActivity.class));
             Log.d("howmnyavailableusers"," "+availableUsers.size());
         }
     }

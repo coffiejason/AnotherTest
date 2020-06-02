@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 
@@ -65,7 +66,7 @@ public class Tper2Activity extends AppCompatActivity {
         errandmsg = findViewById(R.id.errandmsg);
 
         String errandmessage = getIntent().getStringExtra("msg");
-        String tiperId = getIntent().getStringExtra("tid");
+        final String tiperId = getIntent().getStringExtra("tid");
         if(errandmessage != null){
             errandmsg.setText(errandmessage);
         }
@@ -112,7 +113,8 @@ public class Tper2Activity extends AppCompatActivity {
         finishbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //write image uris to tipers node;
+                //write image uris to tipers node, instead of using push, use errand message as id
+                //FirebaseDatabase.getInstance().getReference().child("Customers available").child(tiperId).child()
             }
         });
 
