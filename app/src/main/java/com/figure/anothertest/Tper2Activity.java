@@ -30,11 +30,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Tper2Activity extends AppCompatActivity {
@@ -55,7 +57,8 @@ public class Tper2Activity extends AppCompatActivity {
 
     List<RP> rpList = new ArrayList<>();
 
-    String userID;
+    DatabaseReference ref;
+
     String eventID; //write eventID to the errands node of the tiper, tiper can access media by storagereference.child(eventid)
 
     @Override
@@ -65,17 +68,15 @@ public class Tper2Activity extends AppCompatActivity {
 
         errandmsg = findViewById(R.id.errandmsg);
 
-        String errandmessage = getIntent().getStringExtra("msg");
+        final String errandmessage = getIntent().getStringExtra("msg");
         final String tiperId = getIntent().getStringExtra("tid");
         if(errandmessage != null){
             errandmsg.setText(errandmessage);
         }
 
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
-            userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        }
+        eventID = tiperId+"Completed";
 
-        eventID = userID+""+System.currentTimeMillis();
+        ref = FirebaseDatabase.getInstance().getReference().child("Customers available").child(tiperId).child("Completed");
 
 
 
@@ -110,14 +111,24 @@ public class Tper2Activity extends AppCompatActivity {
             }
         });
 
+        final HashMap<String, Object> h = new HashMap<>();
+
         finishbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //write image uris to tipers node, instead of using push, use errand message as id
-                //FirebaseDatabase.getInstance().getReference().child("Customers available").child(tiperId).child()
+                //ref.setValue(new Functions().getImagesNames());
+                h.put("Message",errandmessage);
+                h.put("Media",new Functions().getMediauris());
+                String pushid = ref.push().getKey();
+                Log.d("pushidishtisss",""+pushid);
+                assert pushid != null;
+                ref.child(pushid).setValue(h);
+                //ref.child(pushid).setValue(h,new Functions().getImagesNames());
+
+                Toast.makeText(Tper2Activity.this,"Done :) ",Toast.LENGTH_SHORT);
             }
         });
-
     }
 
     @Override

@@ -21,7 +21,6 @@ public class RP {
     RP(Uri video){
         this.videouri = video;
         isPicture = true;
-
     }
 
     boolean getIsPicture(){ return this.isPicture;}

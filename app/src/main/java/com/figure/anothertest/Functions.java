@@ -45,6 +45,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -88,8 +89,9 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 class Functions {
-
+    private static List<String> mediauris = new ArrayList<>();
     private static List<String> imageNames = new ArrayList<>();
+    private static List<ErrandResItem> resItems = new ArrayList<>();
     private static List<String> errandsNearBy = new ArrayList<>();
     private static List<ErrandItem> errandsNearBy2 = new ArrayList<>();
     private static List<TPPost> myList = new ArrayList<>();
@@ -307,13 +309,28 @@ class Functions {
 
     }
 
-    void checkForErrands(DatabaseReference errandsNode){
+    void getErrandsDone(DatabaseReference errandsNode){
         //errands node is the node where new errands are written to if a user matches a location errand criteria
+
 
         errandsNode.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //get all new errands available here
+                String message;
+                List<String> uris = new ArrayList<>();
+
+                //get the key below programmactically, when errand is complete, tipee rights to tiper newerrandcompleted node
+                //tiper reads that node and notifies user on that errand is complete, tiper also gets the key from that node and deletes node
+                message = ""+dataSnapshot.child("-M8t2NspO06LGgog7M42").child("Message").getValue();
+                for(DataSnapshot d: dataSnapshot.child("-M8xr1ZLU4BapuMGkT6X").child("Media").getChildren()){
+                    uris.add(""+d.getValue());
+                }
+
+                resItems.add(new ErrandResItem(message,uris));
+
+                Log.d("wersews","we dey hereeeeee "+resItems.size()+" "+ uris.get(0));
+
+
             }
 
             @Override
@@ -322,8 +339,7 @@ class Functions {
             }
         });
 
-        //delete errands after they are completed
-
+        Log.d("qazxdesxrdsdfghjhgffgh","here dey run "+resItems.size());
     }
 
     private void setMsgIcon(GoogleMap mMap, ClusterManager<PostClusterItem> cm, double l, double g, String message, String userid, String postid){
@@ -511,7 +527,6 @@ class Functions {
                 .build();
     }
 
-
     static void whoGetsNotified(List<User> list,LatLng post,String msg,String tiperID){
         Location postLocation = new Location("post");
         postLocation.setLongitude(post.longitude);
@@ -562,6 +577,7 @@ class Functions {
     int i = 0;
 
     public boolean checkforErrands(DatabaseReference db, final Context c){
+
         db.child("ErrandsNearBy").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -576,6 +592,7 @@ class Functions {
 
                 errandsNearBy.add(""+dataSnapshot.child("Message").getValue());
                 errandsNearBy2.add(new ErrandItem(""+dataSnapshot.child("tiperID").getValue(),""+dataSnapshot.child("Message").getValue()));
+
             }
 
             @Override
@@ -716,7 +733,7 @@ class Functions {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(eventID);
 
         //image or video name add to list and pass to tiper
-        String imageName = System.currentTimeMillis()+" "+getExtension(context,uri);
+        final String imageName = System.currentTimeMillis()+" "+getExtension(context,uri);
         final StorageReference ref = storageReference.child(imageName);
 
         ref.putFile(uri)
@@ -725,9 +742,17 @@ class Functions {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Get a URL to the uploaded content
                         String downloadUrl = taskSnapshot.getUploadSessionUri().toString();
-                        Toast.makeText(context,"Image Upload Successful",Toast.LENGTH_SHORT);
-                        Log.d("bhqhpicc",""+ref.toString());
-                        imageNames.add(ref.toString());
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri mediauri) {
+                                mediauris.add(""+mediauri);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("imageloaderror",""+e);
+                            }
+                        });
                         pb.setVisibility(View.GONE);
                         iv.setVisibility(View.VISIBLE);
                         rl.setClickable(false);
@@ -736,9 +761,6 @@ class Functions {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                        Log.d("hbhqhreasonn",""+exception);
                     }
                 });
 
@@ -758,7 +780,6 @@ class Functions {
                 Log.d("imageloaderror",""+e);
             }
         });
-
     }
 
      String getExtension(Context c,Uri uri){
@@ -792,8 +813,16 @@ class Functions {
         return list;
     }*/
 
+    List<String> getMediauris() { return mediauris; }
+
     List<TPPost> getMyPostsList(){
         return myList;
+    }
+
+     List<ErrandResItem> getResItems() {
+
+        Log.d("qazxcvb",""+resItems.size());
+        return resItems;
     }
 
     List<String> getErrandsNearBy(){
