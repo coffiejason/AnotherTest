@@ -40,8 +40,7 @@
                 android:gravity="center_horizontal">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/email_input_parent"
-                    android:layout_width="150dp"
+                    android:layout_width="190dp"
                     android:layout_height="35dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
@@ -55,11 +54,8 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:id="@+id/listbtn"
                             android:background="@color/tipeeGreen"
-                            android:layout_width="75dp"
+                            android:layout_width="95dp"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -78,10 +74,11 @@
 
                         </RelativeLayout>
                         <RelativeLayout
+                            android:id="@+id/listbtn"
                             android:clickable="true"
                             android:focusable="true"
                             android:background="@color/colorCardViewBackground"
-                            android:layout_width="75dp"
+                            android:layout_width="95dp"
                             android:layout_height="match_parent">
 
                             <TextView

@@ -1,5 +1,6 @@
 package com.figure.anothertest;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
@@ -9,16 +10,23 @@ import android.view.View;
 import android.widget.CalendarView;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -60,6 +68,7 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
 
 
 
+
         Log.d("boolvalue",""+errand);
 
         if( FirebaseAuth.getInstance().getCurrentUser() != null){
@@ -68,6 +77,8 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
 
 
         userDB = FirebaseDatabase.getInstance().getReference().child("Customers available");
+
+        placesSearch();
 
         postBtn = findViewById(R.id.lc_done);
         postBtn.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +106,8 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+
+
 
         googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
@@ -130,6 +143,33 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
 
         }
 
+    }
+
+    protected void placesSearch(){
+        Places.initialize(getApplicationContext(),"AIzaSyAYWdmSCJ9MyVh0bvBFbrQb9ELgmu3LYu8");
+
+        PlacesClient placesClient = Places.createClient(this);
+
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.places_errand_location);
+
+
+        assert autocompleteFragment != null;
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("PlacesGot", "Place: " + place.getName() + ", " + place.getId());
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                // TODO: Handle the error.
+                Log.i("PlacesError", "An error occurred: " + status);
+            }
+        });
     }
 
 

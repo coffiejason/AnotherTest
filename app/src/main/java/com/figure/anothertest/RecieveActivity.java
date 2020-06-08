@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +26,7 @@ public class RecieveActivity extends AppCompatActivity {
     RecyclerView rv;
    List<String> uris;
    List<ErrandResItem> resItem;
+   TextView msg;
 
     //find a way to pass uri strings instead of Storage references
     DatabaseReference db;
@@ -41,7 +43,7 @@ public class RecieveActivity extends AppCompatActivity {
 
         db = FirebaseDatabase.getInstance().getReference().child("Customers available").child(userID).child("Completed");
 
-        //new Functions().getErrandsDone(db);
+        msg = findViewById(R.id.recieved_tp_post);
 
         uris = new Functions().getMediauris();
 
@@ -66,7 +68,7 @@ public class RecieveActivity extends AppCompatActivity {
 
                 //get the key below programmactically, when errand is complete, tipee rights to tiper newerrandcompleted node
                 //tiper reads that node and notifies user on that errand is complete, tiper also gets the key from that node and deletes node
-                message = ""+dataSnapshot.child("-M8t2NspO06LGgog7M42").child("Message").getValue();
+                message = ""+dataSnapshot.child("-M8xr1ZLU4BapuMGkT6X").child("Message").getValue();
                 for(DataSnapshot d: dataSnapshot.child("-M8xr1ZLU4BapuMGkT6X").child("Media").getChildren()){
                     uris.add(""+d.getValue());
                 }
@@ -74,6 +76,11 @@ public class RecieveActivity extends AppCompatActivity {
                 RecievedAdapter ra = new RecievedAdapter(RecieveActivity.this,new ErrandResItem(message,uris));
                 rv.setAdapter(ra);
                 rv.setLayoutManager(new LinearLayoutManager(RecieveActivity.this));
+                if(message != null){
+                    msg.setText(message);
+                }
+
+
 
                 //Log.d("wersews","we dey hereeeeee "+resItems.size()+" "+ uris.get(0));
 

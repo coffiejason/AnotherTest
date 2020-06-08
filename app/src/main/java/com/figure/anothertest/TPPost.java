@@ -13,6 +13,7 @@ public class TPPost {
     private String pMessage;
     private LatLng pLocation;
     private int radius;
+    private boolean isErrand;
 
     TPPost(String message,double l, double g, String userID,String postid){
         pLocation = new LatLng(l,g);
@@ -21,10 +22,11 @@ public class TPPost {
         this.pPostID = postid;
     }
 
-    TPPost(String message,double l, double g, String userID){
+    TPPost(String message,double l, double g, String userID,boolean isErrand){
         pLocation = new LatLng(l,g);
         this.pMessage = message;
         this.pUserID = userID;
+        this.isErrand = isErrand;
     }
 
     TPPost(String message,double l, double g){
@@ -51,7 +53,7 @@ public class TPPost {
     }
 
 
-    String getpMessage(){
+    public  String getpMessage(){
         return this.pMessage;
     }
 
@@ -60,6 +62,8 @@ public class TPPost {
     }
 
     public int getRadius(){ return this.radius;}
+
+    public boolean isErrand() { return isErrand; }
 
     public String getpUserID(){return this.pUserID;}
 

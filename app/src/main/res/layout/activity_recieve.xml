@@ -51,7 +51,7 @@
         android:textSize="15sp"/>
 
     <TextView
-        android:id="@+id/r_tp_post"
+        android:id="@+id/recieved_tp_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your request has been completed"
@@ -61,25 +61,11 @@
         android:layout_marginTop="5dp"
         android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/tv_tweet_edited"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/edited"
-        android:layout_toRightOf="@id/r_profile_photo"
-        android:layout_below="@id/r_tp_post"
-        android:textStyle="normal"
-        android:layout_marginTop="2dp"
-        android:visibility="gone"
-        android:textColor="@color/twitterBlueDarker"
-        android:textSize="13sp"/>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_data_collected"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_tweet_edited"
-        android:layout_marginTop="20dp"/>
+        android:layout_below="@+id/recieved_tp_post"
+        android:layout_marginTop="16dp" />
 </RelativeLayout>

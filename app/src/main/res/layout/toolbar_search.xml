@@ -4,15 +4,25 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <fragment android:id="@+id/autocomplete_fragment"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?selectableItemBackgroundBorderless"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        />
     <RelativeLayout
-        android:id="@+id/toolbar_body_parent"
+        android:visibility="gone"
+        android:id="@+id/toolbar_search_parent"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:background="?selectableItemBackgroundBorderless"
-        android:clickable="true"
+        android:clickable="false"
         android:focusable="true">
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/toolbar_icon"
             android:layout_width="25dp"
             android:layout_height="25dp"

@@ -6,19 +6,114 @@
     tools:context=".WorldActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/world_back_btn"
+        android:id="@+id/listToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/ic_close"/>
+        android:background="@color/colorWhite">
+
+        <include
+            android:id="@+id/toolbar_badge"
+            layout="@layout/toolbar_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginRight="15dp"/>
+
+        <include
+            android:id="@+id/toolbar_search"
+            layout="@layout/toolbar_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginRight="15dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="190dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                app:cardBackgroundColor="@color/colorLoading"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/mapbtn"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="@color/colorCardViewBackground"
+                        android:layout_width="95dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:text="Map"
+                            android:textColor="@color/tipeeGreenDark"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="@color/tipeeGreen"
+                        android:layout_width="95dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:text="List"
+                            android:textColor="@color/colorBottomBar"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/world_recyclerview"
-        android:layout_below="@+id/world_back_btn"
+        android:layout_below="@+id/listToolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+         android:layout_above="@+id/BottomNavigation"/>
+
+    <include
+        android:id="@+id/BottomNavigation"
+        layout="@layout/bottom_navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

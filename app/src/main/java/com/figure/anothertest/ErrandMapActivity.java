@@ -6,25 +6,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -43,14 +36,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,9 +61,7 @@ import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -89,7 +83,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     CardView newNotif;
     RelativeLayout notifIcon;
 
-    RelativeLayout mapLayoutSub;
+    RelativeLayout mapLayoutSub,listBtn;
 
     private BadgeBottomNavigtion badgeBottomNavigtion;
 
@@ -114,12 +108,16 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     private final int CART = 4;
     private int selectedId = 0;
 
+    public static List<TPPost> allposts = new ArrayList<>();
+
 
     private ClusterManager<PostClusterItem> mClusterManager;
     private static Collection<PostClusterItem> postsfrmDB;
 
     public static List<User> availableUsers;
     private int gotErrand = 0;
+
+    int AUTOCOMPLETE_REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -140,7 +138,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //new Functions().getAllPosts(userAvailabilityRef,postsfrmDB,mClusterManager);
         //new Functions().getMyPosts(mMap,userAvailabilityRef.child(userID));
 
-        onpenTipBottoSheet();
+        //onpenTipBottoSheet();
 
         Log.d("qwertrewqwer",""+postsfrmDB.size());
 
@@ -222,6 +220,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //getPost(userIndividual);
 
         readCameraChanges();
+
+        Log.d("allpostsList",""+allposts.size());
 
 
 
@@ -316,6 +316,15 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         newNotif = findViewById(R.id.toolbar_badge_parent);
         notifIcon  = findViewById(R.id.toolbar_body_parent);
 
+        listBtn = findViewById(R.id.listbtn);
+
+        listBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ErrandMapActivity.this,WorldActivity.class));
+            }
+        });
+
         notifIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -360,8 +369,12 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //hide api
         Places.initialize(getApplicationContext(),"AIzaSyAYWdmSCJ9MyVh0bvBFbrQb9ELgmu3LYu8");
 
-        //autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        /*
+        PlacesClient placesClient = Places.createClient(this);
+
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+
         assert autocompleteFragment != null;
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
 
@@ -378,7 +391,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 Log.i("PlacesError", "An error occurred: " + status);
             }
         });
-        */
+
         //LayoutInflater inflater = this.getLayoutInflater();
         //final View child = inflater.inflate(R.layout.errand_notifyer,null);
 
@@ -499,6 +512,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
                 postsfrmDB.clear();
                 availableUsers.clear();
+                allposts.clear();
                 mClusterManager.clearItems();
                 for(DataSnapshot d: dataSnapshot.getChildren()){
 
@@ -558,11 +572,39 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
                 Log.d("hsdhdhjsdhj",l+" "+g+" "+" "+msg);
 
+                allposts.add(new TPPost(msg,l,g,userid,false));
+
                 postsfrmDB.add(new PostClusterItem(msg,new LatLng(l,g),userid,postid));
             }
         }
         Log.d("postdsdkjs",""+postsfrmDB.size());
         setMsgIcon2(mClusterManager,postsfrmDB);
+
+        for(DataSnapshot p: dataSnapshot.child("Errands").getChildren()){
+
+            h.put("PostID",""+p.getKey());
+
+            for(DataSnapshot finaSnapShot: p.getChildren()){
+
+                Log.d("ypyppypypAllMsgsFinallyyy",finaSnapShot+"");
+
+                h.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
+            }
+
+            if(h.get("l") != null){
+                l = Double.parseDouble(""+h.get("l"));
+                g = Double.parseDouble(""+h.get("g"));
+                msg = ""+h.get("Message");
+                userid = ""+h.get("UserID");
+                postid = ""+h.get("PostID");
+
+                Log.d("hsdhdhjsdhj",l+" "+g+" "+" "+msg);
+
+                allposts.add(new TPPost(msg,l,g,userid,true));
+
+                postsfrmDB.add(new PostClusterItem(msg,new LatLng(l,g),userid,postid));
+            }
+        }
     }
 
     private void readCameraChanges(){
@@ -572,15 +614,44 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
             public void onCameraIdle() {
                 mClusterManager.cluster();
                 //mClusterManager.setRenderer(renderer);
-
             }
         });
-
     }
 
     private void onpenTipBottoSheet(){
         TipBSDialogue t = new TipBSDialogue();
         t.show(getSupportFragmentManager(),"hfhf");
+    }
+
+    public void onSearchCalled() {
+        // Set the fields to specify which types of place data to return.
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+        // Start the autocomplete intent.
+        Intent intent = new Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.FULLSCREEN, fields).setCountry("GH")
+                .build(this);
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i("PlacesGot", "Place: " + place.getName() + ", " + place.getId() + ", " + place.getAddress());
+                Toast.makeText(ErrandMapActivity.this, "ID: " + place.getId() + "address:" + place.getAddress() + "Name:" + place.getName() + " latlong: " + place.getLatLng(), Toast.LENGTH_LONG).show();
+                String address = place.getAddress();
+                // do query with address
+
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Toast.makeText(ErrandMapActivity.this, "Error: " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
+                Log.i("ErrorTAG", status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
     }
 
     @Override
@@ -589,7 +660,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         getAllPosts();
         badgeBottomNavigtion.apply(selectedId,getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
     }
-
 
     @Override
     public void buttonClicked(Boolean choice) {

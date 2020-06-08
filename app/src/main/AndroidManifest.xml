@@ -53,7 +53,8 @@
         <activity android:name=".MyReplies" />
         <activity android:name=".MyPosts" />
         <activity android:name=".Errands" />
-        <activity android:name=".WorldActivity" />
+        <activity android:name=".WorldActivity"
+            android:theme="@style/noAnimTheme"/>
         <activity android:name=".EditProfileActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
