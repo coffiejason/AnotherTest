@@ -115,13 +115,13 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
                 startActivity(new Intent(SettingsActivity.this,NotificationOptions.class));
             }
         });
-        /*
+
         media.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SettingsActivity.this,));
+                startActivity(new Intent(SettingsActivity.this,SavedMediaActivity.class));
             }
-        });*/
+        });
 
         /*
         invites.setOnClickListener(new View.OnClickListener() {

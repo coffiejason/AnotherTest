@@ -30,7 +30,7 @@ public class RecieveActivity extends AppCompatActivity {
 
     //find a way to pass uri strings instead of Storage references
     DatabaseReference db;
-    String userID;
+    String userID,key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,9 @@ public class RecieveActivity extends AppCompatActivity {
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
+
+        key = getIntent().getStringExtra("key");
+        Log.d("fcvbnjh",""+key);
 
         db = FirebaseDatabase.getInstance().getReference().child("Customers available").child(userID).child("Completed");
 
@@ -68,8 +71,8 @@ public class RecieveActivity extends AppCompatActivity {
 
                 //get the key below programmactically, when errand is complete, tipee rights to tiper newerrandcompleted node
                 //tiper reads that node and notifies user on that errand is complete, tiper also gets the key from that node and deletes node
-                message = ""+dataSnapshot.child("-M8xr1ZLU4BapuMGkT6X").child("Message").getValue();
-                for(DataSnapshot d: dataSnapshot.child("-M8xr1ZLU4BapuMGkT6X").child("Media").getChildren()){
+                message = ""+dataSnapshot.child(key).child("Message").getValue();
+                for(DataSnapshot d: dataSnapshot.child(key).child("Media").getChildren()){
                     uris.add(""+d.getValue());
                 }
 
@@ -79,11 +82,7 @@ public class RecieveActivity extends AppCompatActivity {
                 if(message != null){
                     msg.setText(message);
                 }
-
-
-
                 //Log.d("wersews","we dey hereeeeee "+resItems.size()+" "+ uris.get(0));
-
 
             }
 

@@ -127,6 +127,7 @@ public class Tper2Activity extends AppCompatActivity {
                 //ref.child(pushid).setValue(h,new Functions().getImagesNames());
 
                 Toast.makeText(Tper2Activity.this,"Done :) ",Toast.LENGTH_SHORT);
+                finish();
             }
         });
     }

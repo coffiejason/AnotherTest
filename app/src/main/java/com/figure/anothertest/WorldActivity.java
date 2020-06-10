@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +31,8 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
     private BadgeBottomNavigtion badgeBottomNavigtion;
 
-    RelativeLayout mapBtn;
+    RelativeLayout mapBtn,notifIcon;
+    CardView newNotif;
 
     List<TPPost> list;
     TPPost post;
@@ -49,7 +51,16 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
         badgeBottomNavigtion = new BadgeBottomNavigtion(findViewById(R.id.BottomNavigation), WorldActivity.this, WorldActivity.this);
         initBottomItems();
 
+        init();
+
+
+
+    }
+
+    void init(){
         mapBtn = findViewById(R.id.mapbtn);
+        notifIcon  = findViewById(R.id.toolbar_body_parent);
+        newNotif = findViewById(R.id.toolbar_badge_parent);
 
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +75,13 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
+        notifIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setNewNotification(false);
+                startActivity(new Intent(WorldActivity.this,NotificationsActivity.class));
+            }
+        });
     }
 
     @SuppressLint("ResourceType")
@@ -101,5 +119,24 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
                 startActivity(i);
                 break;
         }
+    }
+
+    void setNewNotification(final Boolean choice){
+
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                if(choice){
+                    newNotif.setVisibility(View.VISIBLE);
+                }else{
+                    newNotif.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+
+
     }
 }

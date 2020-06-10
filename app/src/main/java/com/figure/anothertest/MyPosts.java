@@ -2,8 +2,10 @@ package com.figure.anothertest;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,10 +20,23 @@ public class MyPosts extends AppCompatActivity {
     String[] userIDs;
     String[] postIDs;
 
+    Toolbar tb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_posts);
+
+        tb = findViewById(R.id.myposts_back_btn);
+
+        tb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        /*
 
         list = new Functions().getMyPostsList();
 
@@ -51,5 +66,7 @@ public class MyPosts extends AppCompatActivity {
         ClusterListAdapter adapter = new ClusterListAdapter(this,postMsgs,userIDs,postIDs);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
+
+         */
     }
 }

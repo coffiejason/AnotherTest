@@ -44,7 +44,7 @@ public class RecievedAdapter extends RecyclerView.Adapter<RecievedAdapter.RViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RViewHolder holder, final int position) {
         //new Functions().loadImages(refs[position],holder.imageview);
         Picasso.get().load(resItem.uriNames.get(position)).into(holder.imageview);
 
@@ -52,7 +52,7 @@ public class RecievedAdapter extends RecyclerView.Adapter<RecievedAdapter.RViewH
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context,ECompleteFullscreen.class);
-                //i.putExtra()
+                i.putExtra("uri",""+resItem.uriNames.get(position));
 
             }
         });

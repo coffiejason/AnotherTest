@@ -7,14 +7,12 @@
     android:layout_height="wrap_content"
     android:id="@+id/row_item_layout">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/profile_photo"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginRight="20dp"
-        android:scaleType="fitCenter"
-        app:placeholderImage="@drawable/egg"
-        app:roundAsCircle="true" />
+        android:src="@drawable/ic_user_placeholder"/>
 
     <TextView
         android:id="@+id/tv_name"

@@ -20,14 +20,14 @@
         android:textStyle="bold"
         android:layout_marginBottom="20dp"/>
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:layout_below="@+id/request_in_process_text"
         android:id="@+id/profile_photo"
         android:layout_width="53dp"
         android:layout_height="53dp"
         android:layout_marginRight="20dp"
-        app:placeholderImage="@drawable/egg"
-        app:roundAsCircle="true" />
+        android:src="@drawable/ic_user_placeholder"/>
+
 
     <TextView
         android:layout_below="@+id/request_in_process_text"

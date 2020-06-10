@@ -65,10 +65,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-//add layout to to map activity that shows when there's a new tip available
-//find a better way to show posts and sort current users
 //write user location to firebase at login and or signup
-//Pass all necessary info on errand to errands nearby
 
 public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -138,7 +135,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //new Functions().getAllPosts(userAvailabilityRef,postsfrmDB,mClusterManager);
         //new Functions().getMyPosts(mMap,userAvailabilityRef.child(userID));
 
-        //onpenTipBottoSheet();
+
 
         Log.d("qwertrewqwer",""+postsfrmDB.size());
 
