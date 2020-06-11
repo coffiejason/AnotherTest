@@ -43,7 +43,8 @@
         <activity android:name=".RecieveActivity" />
         <activity android:name=".FullScreenImage" />
         <activity android:name=".NotificationsActivity" />
-        <activity android:name=".Tper1Activity" />
+        <activity android:name=".Tper1Activity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".Tper3Activity" />
         <activity android:name=".Tper2Activity" />
         <activity

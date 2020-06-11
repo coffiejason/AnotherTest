@@ -17,6 +17,7 @@
     <string name="try_again">Reconnect</string>
     <string name="no_internet">No Internet Connection</string>
     <string name="post_hint">Say something ...</string>
+    <string name="errand_hint">What would you like us to do</string>
     <string name="cancel_btn">Discards post</string>
     <string name="autofill_hint">A catchy post attracts more audience</string>
     <string name="people_around_you">to worlds first true Global village</string>

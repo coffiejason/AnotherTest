@@ -65,6 +65,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 //write user location to firebase at login and or signup
 
 public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -106,6 +109,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     private int selectedId = 0;
 
     public static List<TPPost> allposts = new ArrayList<>();
+    public static LatLng myLocation;
 
 
     private ClusterManager<PostClusterItem> mClusterManager;
@@ -128,6 +132,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         initBottomItems();
 
         init();
+
+        Crouton.makeText(this, "request in progress", Style.INFO,mapLayoutSub).show();
 
         getToken();
 
@@ -276,15 +282,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         return true;
     }
-
-    private static final User[] Users =  new User[] {
-            new User(0.00,0.00,"kjwd"),
-    };
-
-
-    private static final String[] COUNTRIES = new String[] {
-            "Belgium","Beru","Brixton", "France", "Italy", "Germany", "Spain"
-    };
 
     void init(){
 
@@ -467,6 +464,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
             case 1:
                 Intent i1 = new Intent(ErrandMapActivity.this,Tper1Activity.class);
+                i1.putExtra("default_l",args.getFloat("l"));
+                i1.putExtra("default_g",args.getFloat("g"));
                 startActivity(i1);
                 break;
 

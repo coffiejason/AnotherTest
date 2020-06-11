@@ -1,12 +1,14 @@
 package com.figure.anothertest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
@@ -17,11 +19,22 @@ public class OpenPostsCluster extends AppCompatActivity {
     String[] postUserids;
     String[] postids;
 
+    Toolbar tb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fresco.initialize(this);
         setContentView(R.layout.activity_open_posts_cluster);
+
+        tb = findViewById(R.id.commentstb);
+
+        tb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         RecyclerView openCLusterList = findViewById(R.id.openCLusterRecycler);
 

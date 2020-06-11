@@ -52,6 +52,16 @@ public class Tper1Activity extends AppCompatActivity {
         g = intent.getFloatExtra("default_g",(float)0.00000);
 
         init();
+    }
+
+    public void init(){
+        Postbtn = findViewById(R.id.tper_btn_post);
+        Closebtn = findViewById(R.id.tper_toolbar);
+        postEditText = findViewById(R.id.tper_post_text);
+
+        goToSearch();
+
+        deliverToSearch();
 
         Closebtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +80,7 @@ public class Tper1Activity extends AppCompatActivity {
                 }*/
 
                 if(postEditText.getText().toString().isEmpty()){
-                    Snackbar snackbar = Snackbar.make(v,"I can post your idea if you dont say anything",3000);
+                    Snackbar snackbar = Snackbar.make(v,"We didn't quite get your Errand Message",3000);
                     snackbar.show();
                 }
                 else{
@@ -80,20 +90,9 @@ public class Tper1Activity extends AppCompatActivity {
                     i.putExtra("message",postEditText.getText().toString());
                     i.putExtra("errand",true);
                     startActivity(i);
-                    finish();
                 }
             }
         });
-    }
-
-    public void init(){
-        Postbtn = findViewById(R.id.tper_btn_post);
-        Closebtn = findViewById(R.id.tper_toolbar);
-        postEditText = findViewById(R.id.tper_post_text);
-
-        goToSearch();
-
-        deliverToSearch();
 
 
 
