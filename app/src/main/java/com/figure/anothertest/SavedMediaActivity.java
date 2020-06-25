@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +27,7 @@ public class SavedMediaActivity extends AppCompatActivity {
     List<String> keys = new ArrayList<>();
     List<String> titles = new ArrayList<>();
     RecyclerView rv;
-    Toolbar tb;
+    RelativeLayout tb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class SavedMediaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_saved_media);
 
         rv = findViewById(R.id.saved_data_rv);
-        tb = findViewById(R.id.savedmediatb);
+        tb = findViewById(R.id.closebtn);
 
         tb.setOnClickListener(new View.OnClickListener() {
             @Override

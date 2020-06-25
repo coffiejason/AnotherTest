@@ -7,6 +7,8 @@
     android:layout_height="wrap_content"
     android:id="@+id/row_item_layout">
 
+
+
     <TextView
         android:id="@+id/request_in_process_text"
         android:layout_width="wrap_content"

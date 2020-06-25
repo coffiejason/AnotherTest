@@ -36,15 +36,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".SavedMediaActivity"></activity>
+        <activity android:name=".UtilTakeDataActivity"/>
+        <activity android:name=".UtititiesERActivity" />
+        <activity android:name=".SavedMediaActivity" />
         <activity android:name=".ECompleteFullscreen" />
         <activity android:name=".NotificationOptions" />
         <activity android:name=".NewPost" />
         <activity android:name=".RecieveActivity" />
         <activity android:name=".FullScreenImage" />
         <activity android:name=".NotificationsActivity" />
-        <activity android:name=".Tper1Activity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".Tper1Activity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".Tper3Activity" />
         <activity android:name=".Tper2Activity" />
         <activity

@@ -3,6 +3,7 @@ package com.figure.anothertest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,14 +21,14 @@ public class MyPosts extends AppCompatActivity {
     String[] userIDs;
     String[] postIDs;
 
-    Toolbar tb;
+    RelativeLayout tb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_posts);
 
-        tb = findViewById(R.id.myposts_back_btn);
+        tb = findViewById(R.id.closebtn);
 
         tb.setOnClickListener(new View.OnClickListener() {
             @Override

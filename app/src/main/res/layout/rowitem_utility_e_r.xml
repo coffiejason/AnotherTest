@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="20dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/row_item_layout">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BEVERLEY AKORFA"
+        android:textStyle="bold"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/tv_tp_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="110701575"
+        android:layout_below="@id/tv_name"
+        android:textStyle="normal"
+        android:layout_marginTop="5dp"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/tv_tweet_edited"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COMPLETED"
+        android:layout_below="@id/tv_tp_post"
+        android:textStyle="normal"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/twitterBlueDarker"
+        android:textSize="13sp"/>
+
+    <TextView
+        android:layout_toLeftOf="@id/directionsbtn"
+        android:id="@+id/tv_town"
+        android:layout_marginRight="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ABLJ"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+
+    <RelativeLayout
+        android:layout_alignParentRight="true"
+        android:id="@+id/directionsbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_directions"/>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

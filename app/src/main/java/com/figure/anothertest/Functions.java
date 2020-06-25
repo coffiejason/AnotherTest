@@ -76,6 +76,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,11 +90,13 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 class Functions {
+    private static List<String> utilimageuris = new ArrayList<>();
     private static List<String> mediauris = new ArrayList<>();
     private static List<String> imageNames = new ArrayList<>();
     private static List<ErrandResItem> resItems = new ArrayList<>();
     private static List<String> errandsNearBy = new ArrayList<>();
     private static List<ErrandItem> errandsNearBy2 = new ArrayList<>();
+    private static List<UtilitiesERitem> utilityerrands = new ArrayList<>();
     private static List<TPPost> myList = new ArrayList<>();
     private static List<TPPost> allusersloc = new ArrayList<>();
     private static Collection<PostClusterItem> postsfrmDB = new ArrayList<>();
@@ -618,6 +621,43 @@ class Functions {
         return true;
     }
 
+    public boolean checkUtilityErrands(DatabaseReference db, final Context c){
+
+        db.child("Watsan").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //get tiperID here and write to ErrandsCompleted node when errand is complete
+
+                Log.d("howmnytimes"," "+i);
+                i++;
+                Log.d("howmnytimes"," "+i+": "+dataSnapshot.child("Areacode").getValue());
+
+                utilityerrands.add(new UtilitiesERitem(""+dataSnapshot.child("Name").getValue(),""+dataSnapshot.child("Meterno").getValue(),new LatLng(Double.parseDouble(""+dataSnapshot.child("l").getValue()),Double.parseDouble(""+dataSnapshot.child("g").getValue())),""+dataSnapshot.child("Areacode").getValue()));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return true;
+    }
+
     private void getNotifyTopics(){
         //suscribes user to errand topics available to them
 
@@ -766,6 +806,41 @@ class Functions {
 
     }
 
+    void imageUpload(final Context context, Uri uri,String eventID){
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(eventID);
+
+        //image or video name add to list and pass to tiper
+        final String imageName = "meterimage"+getExtension(context,uri);
+        final StorageReference ref = storageReference.child(imageName);
+
+        ref.putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        String downloadUrl = taskSnapshot.getUploadSessionUri().toString();
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                utilimageuris.add(""+uri);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("imageloaderror",""+e);
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+
+    }
+
     void loadImages(StorageReference ref, final ImageView imageView){
 
         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -815,6 +890,8 @@ class Functions {
 
     List<String> getMediauris() { return mediauris; }
 
+    List<String> getUtilimageuris() { return utilimageuris; }
+
     List<TPPost> getMyPostsList(){
         return myList;
     }
@@ -830,7 +907,13 @@ class Functions {
     }
 
     List<ErrandItem> getErrandsNearBy2(){
+        Collections.reverse(errandsNearBy2);
         return errandsNearBy2;
+    }
+
+    List<UtilitiesERitem> getUtilityerrands(){
+        Collections.reverse(utilityerrands);
+        return utilityerrands;
     }
 
     /**

@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import com.figure.anothertest.bottomvavigation.BadgeBottomNavigtion;
 import com.figure.anothertest.bottomvavigation.BottomAdapter;
 import com.figure.anothertest.bottomvavigation.BottomItem;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
@@ -64,9 +66,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 //write user location to firebase at login and or signup
 
@@ -120,6 +119,9 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     int AUTOCOMPLETE_REQUEST_CODE = 100;
 
+    private static final String TAG = "MainActivity";
+    private static final int ERROR_DIALOG_REQUEST = 9001;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -133,9 +135,10 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         init();
 
-        Crouton.makeText(this, "request in progress", Style.INFO,mapLayoutSub).show();
 
         getToken();
+
+        onpenTipBottoSheet();
 
         getAllPosts();
         //new Functions().getAllPosts(userAvailabilityRef,postsfrmDB,mClusterManager);
@@ -345,6 +348,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         userIndividual = userAvailabilityRef.child(userID);
 
         new Functions().checkforErrands(userIndividual,getApplicationContext());
+        new Functions().checkUtilityErrands(userIndividual,getApplicationContext());
 
 
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -365,26 +369,28 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         PlacesClient placesClient = Places.createClient(this);
 
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        //AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                //getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
 
-        assert autocompleteFragment != null;
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-
+        //assert autocompleteFragment != null;
+        //autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        /*
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
-                Log.i("PlacesGot", "Place: " + place.getName() + ", " + place.getId());
+                Toast.makeText(ErrandMapActivity.this,""+place.getLatLng().latitude+" "+place.getLatLng().longitude+" ",Toast.LENGTH_SHORT).show();
+                Log.d("PlacesGot", "Place: " + place.getName() + ", " + place.getId());
+                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(),15));
             }
 
             @Override
             public void onError(@NonNull Status status) {
                 // TODO: Handle the error.
-                Log.i("PlacesError", "An error occurred: " + status);
+                Log.d("PlacesError", "An error occurred: " + status);
             }
-        });
+        });*/
 
         //LayoutInflater inflater = this.getLayoutInflater();
         //final View child = inflater.inflate(R.layout.errand_notifyer,null);
@@ -629,6 +635,27 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
 
+    public boolean isServicesOk(){
+        Log.d("isServicesOk","Checking Goolge Services Version");
+
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(ErrandMapActivity.this);
+
+        if(available == ConnectionResult.SUCCESS){
+            //everything is Ok
+            Log.d(TAG,"isServicesOk, GooglePlay Services is Working");
+        }
+        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //resolvable error eg version issue
+            Log.d(TAG,"Error occurred but can be fix");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(ErrandMapActivity.this,available,ERROR_DIALOG_REQUEST);
+            dialog.show();
+        }
+        else{
+            Toast.makeText(ErrandMapActivity.this,"You cant make map requests",Toast.LENGTH_SHORT);
+        }
+        return false;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
@@ -661,7 +688,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     public void buttonClicked(Boolean choice) {
         //open tip activity here
         if(choice){
-            startActivity(new Intent(ErrandMapActivity.this,RecieveActivity.class));
+            startActivity(new Intent(ErrandMapActivity.this,UtititiesERActivity.class));
             Log.d("howmnyavailableusers"," "+availableUsers.size());
         }
     }

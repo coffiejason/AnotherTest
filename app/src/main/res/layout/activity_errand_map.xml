@@ -121,6 +121,21 @@
                 android:layout_height="150dp"
                 android:id="@+id/notifyer_space"/>
 
+            <RelativeLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/tipeeGreen">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:layout_centerInParent="true"
+                    android:text="Searching for closest users"/>
+            </RelativeLayout>
+
             <androidx.cardview.widget.CardView
                 android:visibility="gone"
                 android:layout_width="130dp"

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +16,10 @@ import java.util.List;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
 
-    Context context;
+    private Context context;
     List<String> errandmsgs;
 
-    List<ErrandItem> errandItems;
+    private List<ErrandItem> errandItems;
 
     NotificationsAdapter(Context c,List<ErrandItem>msgs){
         this.context = c;
@@ -45,15 +46,25 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         if(errandItems.size()>0){
             holder.postText.setText(errandItems.get(position).getErrandMessage());
 
+            /*
+                holder.rowlayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context,Tper2Activity.class);
+                        i.putExtra("msg",errandItems.get(position).getErrandMessage());
+                        i.putExtra("tid",errandItems.get(position).getTiperID());
+                        context.startActivity(i);
+                    }
+                });*/
+
             holder.rowlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(context,Tper2Activity.class);
-                    i.putExtra("msg",errandItems.get(position).getErrandMessage());
-                    i.putExtra("tid",errandItems.get(position).getTiperID());
+                    Intent i = new Intent(context,  UtititiesERActivity.class);
                     context.startActivity(i);
                 }
             });
+
         }
 
 
