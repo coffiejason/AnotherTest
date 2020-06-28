@@ -1,72 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pullToRefresh"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true">
-    
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent">
         <androidx.appcompat.widget.Toolbar
+            android:layout_alignParentTop="true"
             android:id="@+id/notifications_tb"
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/closebtn"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackground">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_close"/>
-                </RelativeLayout>
-
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:text="Notification"/>
-
-            </RelativeLayout>
-        </androidx.appcompat.widget.Toolbar>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/new_notifyrv"/>
-
-        <View
-            android:visibility="invisible"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E6E6E6"/>
-
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:navigationIcon="@drawable/ic_close"/>
         <TextView
-            android:layout_gravity="center_horizontal"
+            android:layout_margin="15dp"
+            android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#E6E6E6"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:text="older"/>
-
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:text="Notification"/>
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/notifications_tb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/notifyrv"/>
+    </RelativeLayout>
 
-    </LinearLayout>
-</ScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
