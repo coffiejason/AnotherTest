@@ -21,14 +21,14 @@ public class MyPosts extends AppCompatActivity {
     String[] userIDs;
     String[] postIDs;
 
-    RelativeLayout tb;
+    Toolbar tb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_posts);
 
-        tb = findViewById(R.id.closebtn);
+        tb = findViewById(R.id.my_posts_tb);
 
         tb.setOnClickListener(new View.OnClickListener() {
             @Override

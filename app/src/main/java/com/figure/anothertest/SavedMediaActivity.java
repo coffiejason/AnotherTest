@@ -27,7 +27,7 @@ public class SavedMediaActivity extends AppCompatActivity {
     List<String> keys = new ArrayList<>();
     List<String> titles = new ArrayList<>();
     RecyclerView rv;
-    RelativeLayout tb;
+    Toolbar tb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class SavedMediaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_saved_media);
 
         rv = findViewById(R.id.saved_data_rv);
-        tb = findViewById(R.id.closebtn);
+        tb = findViewById(R.id.saved_media_tb);
 
         tb.setOnClickListener(new View.OnClickListener() {
             @Override

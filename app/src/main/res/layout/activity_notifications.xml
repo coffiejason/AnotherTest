@@ -8,22 +8,24 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.appcompat.widget.Toolbar
-            android:layout_alignParentTop="true"
             android:id="@+id/notifications_tb"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:navigationIcon="@drawable/ic_close"/>
-        <TextView
-            android:layout_margin="15dp"
-            android:layout_alignParentTop="true"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            app:navigationIcon="@drawable/ic_close" />
+
+        <TextView
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:text="Notification"/>
+            android:layout_margin="15dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notfication"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_below="@+id/notifications_tb"
             android:layout_width="match_parent"

@@ -5,10 +5,11 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    RelativeLayout closebtn;
+    Toolbar closebtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class EditProfileActivity extends AppCompatActivity {
         closebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

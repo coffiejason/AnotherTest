@@ -63,6 +63,8 @@
     <string name="Open">Open</string>
 
     <string name="finish_errand">Finish</string>
+    <string name="share_subject">Join Tipy</string>
+    <string name="invite_fried_via">Invite a friend via... </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
