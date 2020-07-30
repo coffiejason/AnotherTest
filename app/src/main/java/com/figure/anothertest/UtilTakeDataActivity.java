@@ -41,6 +41,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -150,7 +151,7 @@ public class UtilTakeDataActivity extends AppCompatActivity {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(eventID);
 
         //image or video name add to list and pass to tiper
-        final String imageName = "meterimage"+getExtension(context,uri);
+        final String imageName = "meterimage"+Calendar.getInstance().getTimeInMillis()+getExtension(context,uri);
         final StorageReference sRef = storageReference.child(imageName);
 
         sRef.putFile(uri)
@@ -167,6 +168,8 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                                 h.put("Usage",meterNumInput.getText().toString()+" ");
                                 ref.child(town).child(meterno).setValue(h);
                                 finish();
+
+                                Log.d("agocatchyou",""+name);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
