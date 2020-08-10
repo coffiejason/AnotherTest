@@ -579,7 +579,7 @@ class Functions {
 
     int i = 0;
 
-    public boolean checkforErrands(DatabaseReference db, final Context c){
+    public void checkforErrands(DatabaseReference db, final Context c){
 
         db.child("ErrandsNearBy").addChildEventListener(new ChildEventListener() {
             @Override
@@ -618,10 +618,11 @@ class Functions {
 
             }
         });
-        return true;
+
+
     }
 
-    public boolean checkUtilityErrands(DatabaseReference db, final Context c){
+    public void checkUtilityErrands(DatabaseReference db, final Context c){
 
         db.child("Watsan").addChildEventListener(new ChildEventListener() {
             @Override
@@ -655,7 +656,6 @@ class Functions {
 
             }
         });
-        return true;
     }
 
     private void getNotifyTopics(){

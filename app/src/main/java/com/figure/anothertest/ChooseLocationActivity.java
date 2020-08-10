@@ -134,7 +134,7 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
                 new Functions().creatErrand(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude);
                 new Functions().notifyUserswithTopic(ChooseLocationActivity.this,post,errand);
                 finish();
-                //startActivity(new Intent(ChooseLocationActivity.this,Tper2Activity.class));
+
             }else{
                 new Functions().creatPostText(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude,radius);
                 new Functions().notifyUserswithTopic(ChooseLocationActivity.this,post,errand);

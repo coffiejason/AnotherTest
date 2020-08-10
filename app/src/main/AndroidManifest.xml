@@ -36,7 +36,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".UtilTakeDataActivity"/>
+        <activity android:name=".AddPhoneActivity"></activity>
+        <activity android:name=".UtilTakeDataActivity" />
         <activity android:name=".UtititiesERActivity" />
         <activity android:name=".SavedMediaActivity" />
         <activity android:name=".ECompleteFullscreen" />

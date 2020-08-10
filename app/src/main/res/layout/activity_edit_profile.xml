@@ -110,6 +110,7 @@
                     android:layout_height="1dp"
                     android:background="#EAEAEA"/>
                 <LinearLayout
+                    android:id="@+id/add_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
@@ -163,6 +164,56 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#EAEAEA"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:tint="@color/colorPrimary"
+                        android:src="@drawable/ic_id_card"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:textSize="15sp"
+                                android:textColor="#292727"
+                                android:text="Phone"/>
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_edit_black_24dp"
+                                android:tint="#7A7A7A"
+                                android:background="@android:color/transparent"
+                                />
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/tv_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="@android:color/black"
+                            android:text="xxx-xxx-xxx"/>
+
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <Button

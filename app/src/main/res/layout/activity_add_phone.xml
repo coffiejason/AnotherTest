@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:fillViewport="true"
+    tools:context=".LoginActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_layout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/nice_to_see_you_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Add phone number"
+                android:textColor="@color/colorTitle"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:id="@+id/login_input_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nice_to_see_you_text_view"
+                android:layout_marginTop="30dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/email_input_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    app:cardBackgroundColor="@color/colorCardViewBackground"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.rilixtech.widget.countrycodepicker.CountryCodePicker
+                            android:id="@+id/ccp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_centerVertical="true"/>
+
+                        <EditText
+                            android:id="@+id/lUsername"
+                            android:layout_toRightOf="@+id/ccp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="15dp"
+                            android:background="@null"
+                            android:hint="Phone"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/colorTitle"
+                            android:textSize="15dp"
+                            tools:ignore="TextFields" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/login_button_card_view"
+                android:layout_width="130dp"
+                android:layout_height="45dp"
+                android:layout_below="@+id/login_input_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="@color/colorCardViewBackground"
+                app:cardCornerRadius="22.5dp"
+                app:cardElevation="0dp">
+
+                <RelativeLayout
+                    android:id="@+id/login"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:focusable="false">
+
+                    <TextView
+                        android:id="@+id/button_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/button_progress"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:text="Add"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <ProgressBar
+                        android:id="@+id/button_progress"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dp"
+                        android:indeterminateTint="@color/colorLoadingTitle"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/button_error_icon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/ic_error"
+                        android:backgroundTint="@color/colorWhite"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/lRegister_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="15dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="@string/you_are_not_a_member_register"
+            android:textColor="@color/colorTitle"
+            android:textSize="15dp" />
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

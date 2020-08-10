@@ -65,6 +65,7 @@ dependencies {
     implementation 'com.github.dmallcott:DismissibleImageView:1.0.1'
     implementation 'com.mikhaellopez:circularimageview:3.2.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.joielechong:countrycodepicker:2.4.2'
     compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
         // exclusion is not necessary, but generally a good idea.
         exclude group: 'com.google.android', module: 'support-v4'

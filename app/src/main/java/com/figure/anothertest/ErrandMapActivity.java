@@ -347,8 +347,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         userAvailabilityRef.keepSynced(true);
         userIndividual = userAvailabilityRef.child(userID);
 
-        new Functions().checkforErrands(userIndividual,getApplicationContext());
-        new Functions().checkUtilityErrands(userIndividual,getApplicationContext());
+        //new Functions().checkforErrands(userIndividual,getApplicationContext());
+        //new Functions().checkUtilityErrands(userIndividual,getApplicationContext());
 
 
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

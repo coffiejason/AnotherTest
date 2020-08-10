@@ -97,7 +97,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else{
                     if(permissionGranted){
-                        loginUser(email,password);
+                        if(!email.isEmpty() && !password.isEmpty()){
+                            loginUser(email,password);
+                        }
+
                     }else{
                         Toast.makeText(LoginActivity.this,"We need you location to proceed",Toast.LENGTH_SHORT).show();
                         ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
