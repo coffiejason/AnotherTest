@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,15 +14,24 @@ public class EditProfileActivity extends AppCompatActivity {
 
     Toolbar closebtn;
     LinearLayout addPhone,ln_edit_name,addID;
+    TextView tv_username,tv_phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        findViewById(R.id.tv_username);
+
         closebtn = findViewById(R.id.closebtn);
 
         addID = findViewById(R.id.addID);
+
+        tv_username = findViewById(R.id.tv_username);
+        tv_phone = findViewById(R.id.tv_phone);
+
+        tv_username.setText(""+SharedPrefs.getUsername());
+        tv_phone.setText(""+SharedPrefs.getPhonenum());
 
         closebtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,5 +63,12 @@ public class EditProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(EditProfileActivity.this,AddNameActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tv_username.setText(""+SharedPrefs.getUsername());
+        tv_phone.setText(""+SharedPrefs.getPhonenum());
     }
 }

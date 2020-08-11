@@ -46,6 +46,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="centerInside"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
                     android:elevation="1dp"
                     android:src="@drawable/ic_photo_camera_black_24dp"
                     android:layout_alignBottom="@id/image_profile"
@@ -62,6 +65,9 @@
                     android:id="@+id/ln_edit_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
                     android:padding="15dp"
                     android:orientation="horizontal">
                     <ImageView
@@ -113,6 +119,9 @@
                     android:id="@+id/add_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
                     android:padding="15dp"
                     android:orientation="horizontal">
                     <ImageView
@@ -169,6 +178,9 @@
                     android:id="@+id/addID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
                     android:padding="15dp"
                     android:orientation="horizontal">
                     <ImageView
@@ -194,7 +206,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="15sp"
                                 android:textColor="#292727"
-                                android:text="Phone"/>
+                                android:text="ID Card"/>
                             <ImageButton
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -216,7 +228,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
             <Button
                 android:id="@+id/btn_log_out"
                 android:layout_width="wrap_content"
@@ -224,7 +235,9 @@
                 android:text="SIGN OUT"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="15dp"
-                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
                 android:textStyle="bold"
                 android:textSize="15sp"
                 android:textColor="@color/colorPrimary"/>

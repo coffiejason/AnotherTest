@@ -6,17 +6,26 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:fillViewport="true"
-    tools:context=".LoginActivity">
+    tools:context=".AddNameActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/main_layout">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/closebtn"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_close" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true">
+
 
             <TextView
                 android:id="@+id/nice_to_see_you_text_view"
