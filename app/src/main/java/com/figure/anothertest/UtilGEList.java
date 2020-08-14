@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UtititiesERActivity extends AppCompatActivity {
+public class UtilGEList extends AppCompatActivity {
 
     RecyclerView rv;
     List<UtilitiesERitem> list = new ArrayList<>();
@@ -31,20 +32,25 @@ public class UtititiesERActivity extends AppCompatActivity {
 
     DatabaseReference userDB;
     String userID;
+    String tasknum;
 
     private static List<UtilitiesERitem> utilityerrands = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_utitities_e_r);
+        setContentView(R.layout.activity_util_g_e_list);
         tb = findViewById(R.id.toolbar);
         rv = findViewById(R.id.recyclerViewuer);
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        userDB = FirebaseDatabase.getInstance().getReference().child("Customers available").child(userID);
+        userDB = FirebaseDatabase.getInstance().getReference().child("MeterRequests");
         userDB.keepSynced(true);
+
+        tasknum = getIntent().getStringExtra("tasknum");
+        Toast.makeText(this, ""+tasknum, Toast.LENGTH_SHORT).show();
 
         checkUtilityErrands(userDB,getApplicationContext());
 
@@ -60,7 +66,7 @@ public class UtititiesERActivity extends AppCompatActivity {
 
     public void checkUtilityErrands(DatabaseReference db, final Context c){
         utilityerrands.clear();
-        db.child("ErrandsNearBy/-MDyZpAmKlmeUVR8igZC/Customer List").addChildEventListener(new ChildEventListener() {
+        db.child(tasknum+"/Customer List").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 //get tiperID here and write to ErrandsCompleted node when errand is complete
@@ -101,7 +107,7 @@ public class UtititiesERActivity extends AppCompatActivity {
 
     void showList(){
         if(utilityerrands.size() >0 ){
-            UtilitiesERAdapter adapter = new UtilitiesERAdapter(UtititiesERActivity.this,utilityerrands);
+            UtilitiesERAdapter adapter = new UtilitiesERAdapter(UtilGEList.this,utilityerrands);
             rv.setAdapter(adapter);
             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         }

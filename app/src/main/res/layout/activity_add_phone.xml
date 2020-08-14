@@ -75,7 +75,7 @@
                             android:layout_marginRight="15dp"
                             android:background="@null"
                             android:maxLength="9"
-                            android:hint="Phone"
+                            android:hint="24 000 0000"
                             android:inputType="number"
                             android:imeOptions="actionNext"
                             android:maxLines="1"

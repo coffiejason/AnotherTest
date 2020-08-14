@@ -15,11 +15,8 @@ public class TPPost {
     private int radius;
     private boolean isErrand;
 
-    TPPost(String message,double l, double g, String userID,String postid){
-        pLocation = new LatLng(l,g);
+    TPPost(String message){
         this.pMessage = message;
-        this.pUserID = userID;
-        this.pPostID = postid;
     }
 
     TPPost(String message,double l, double g, String userID,boolean isErrand){

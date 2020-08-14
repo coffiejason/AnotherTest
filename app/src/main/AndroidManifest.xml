@@ -36,10 +36,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".AddIDCardActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".AddNameActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".UtilGEList"></activity>
+        <activity
+            android:name=".AddIDCardActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".AddNameActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AddPhoneActivity"
             android:windowSoftInputMode="adjustResize" />

@@ -218,7 +218,7 @@
 
 
                         <TextView
-                            android:id="@+id/tv_phone"
+                            android:id="@+id/tv_id_card"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"

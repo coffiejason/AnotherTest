@@ -79,7 +79,7 @@ class SharedPrefs {
 
     static String getPhonenum(){
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(PROFILE_SHARED_PREFS,Context.MODE_PRIVATE);
-        return sharedPreferences.getString(PHONE_NUMBER_KEY,"+000 000 0000");
+        return sharedPreferences.getString(PHONE_NUMBER_KEY,"000 000 0000");
     }
 
     static void setIDnumber(String IDnumber){
@@ -91,6 +91,6 @@ class SharedPrefs {
 
     static String getIDnumber(){
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(PROFILE_SHARED_PREFS,Context.MODE_PRIVATE);
-        return sharedPreferences.getString(ID_NUMBER_KEY,null);
+        return sharedPreferences.getString(ID_NUMBER_KEY,"xxx-xxx-xxx");
     }
 }

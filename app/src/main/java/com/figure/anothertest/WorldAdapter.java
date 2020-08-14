@@ -1,6 +1,7 @@
 package com.figure.anothertest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,9 @@ import java.util.List;
 
 public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> {
     private Context context;
-    List<TPPost> list;
+    List<UtilGenItem> list;
 
-    WorldAdapter(Context c, List<TPPost> allposts){
+    WorldAdapter(Context c, List<UtilGenItem> allposts){
         this.context = c;
         Collections.reverse(allposts);
         this.list = allposts;
@@ -39,8 +40,18 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.postText.setText(list.get(position).getpMessage());
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        holder.postText.setText(list.get(position).getMessage());
+        holder.postUserID.setText(list.get(position).getTiperID());
+
+        holder.rowlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context,  UtilGEList.class);
+                i.putExtra("tasknum",""+list.get(position).tasknum());
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -57,7 +68,7 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
             super(itemView);
             postText = itemView.findViewById(R.id.tv_tp_post);
             rowlayout = itemView.findViewById(R.id.row_item_layout);
-            postUserID = itemView.findViewById(R.id.tv_username);
+            postUserID = itemView.findViewById(R.id.tv_name);
         }
     }
 }

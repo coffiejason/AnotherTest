@@ -68,9 +68,9 @@ public class AddPhoneActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPrefs.setPhonenum("+233"+lUsername.getText().toString());
+                SharedPrefs.setPhonenum(ccp.getSelectedCountryCode()+""+lUsername.getText().toString());
 
-                Log.d("phonesetoh",""+ccp.getFullNumber());
+                Log.d("phonesetoh",""+ccp.getSelectedCountryCode()+""+lUsername.getText().toString());
                 finish();
             }
         });
@@ -87,7 +87,7 @@ public class AddPhoneActivity extends AppCompatActivity {
 
         lUsername = findViewById(R.id.lUsername);
 
-        ccp.registerPhoneNumberTextView(lUsername);
+        //ccp.registerPhoneNumberTextView(lUsername);
 
     }
 
