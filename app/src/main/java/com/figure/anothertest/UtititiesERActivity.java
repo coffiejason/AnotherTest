@@ -107,4 +107,13 @@ public class UtititiesERActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Log.d("hownigareyou",""+utilityerrands.size());
+        //checkUtilityErrands(userDB,getApplicationContext());
+        //Log.d("hownigareyou",""+utilityerrands.size());
+        showList();
+    }
 }

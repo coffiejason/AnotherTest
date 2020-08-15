@@ -46,7 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class UtilTakeDataActivity extends AppCompatActivity {
-    String name,meterno,town;
+    String name,meterno,town,position;
     TextView userdetails;
     RelativeLayout postPicbtn,imageclick,finishbtn;
     CardView image,finishbtnview;
@@ -78,7 +78,8 @@ public class UtilTakeDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_util_take_data);
 
-        ActivityCompat.requestPermissions(UtilTakeDataActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        //ActivityCompat.requestPermissions(UtilTakeDataActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        ActivityCompat.requestPermissions(UtilTakeDataActivity.this, new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
 
         ref = FirebaseDatabase.getInstance().getReference().child("Watsan Demo");
         init();
@@ -106,6 +107,9 @@ public class UtilTakeDataActivity extends AppCompatActivity {
         name = getIntent().getStringExtra("Name");
         meterno = getIntent().getStringExtra("Meterno");
         town = getIntent().getStringExtra("Town");
+        position = getIntent().getStringExtra("position");
+
+        Toast.makeText(getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
 
         userdetails.setText(name+" - "+meterno);
 
@@ -140,7 +144,12 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                 }
                 else {
                     Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", imagefile);
-                    imageUpload(UtilTakeDataActivity.this,uri,"WatsanDemo");
+                    //imageUpload(UtilTakeDataActivity.this,uri,"WatsanDemo");
+
+                    SharedPrefs.setMeternum(meterno,"meternum"+position);
+                    SharedPrefs.setMeterRead(meterNumInput.getText().toString()+"","reading"+position);
+                    SharedPrefs.setImageUri(""+uri,"picread"+position);
+                    onBackPressed();
                 }
             }
         });

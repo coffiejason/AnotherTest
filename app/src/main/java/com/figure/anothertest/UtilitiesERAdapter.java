@@ -48,6 +48,10 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
             holder.meternum.setText(items.get(position).getMeterNum());
             holder.town.setText(items.get(position).getTown());
 
+            if(SharedPrefs.getMeternum("meternum"+position) != null && SharedPrefs.getMeterRead("reading"+position) != null && SharedPrefs.getImageUri("picread"+position) != null){
+                holder.done.setVisibility(View.VISIBLE);
+                holder.done.setText("DONE");
+            }
 
             holder.directionsbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -68,6 +72,7 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
                     i.putExtra("Name",""+items.get(position).getCustomerName());
                     i.putExtra("Meterno",""+items.get(position).getMeterNum());
                     i.putExtra("Town",""+items.get(position).getTown());
+                    i.putExtra("position",""+position);
                     context.startActivity(i);
                 }
             });
@@ -82,7 +87,7 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView meternum,name,town;
+        TextView meternum,name,town,done;
         RelativeLayout rowlayout,directionsbtn;
 
 
@@ -93,6 +98,7 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
             meternum = itemView.findViewById(R.id.tv_tp_post);
             rowlayout = itemView.findViewById(R.id.row_item_layout);
             directionsbtn = itemView.findViewById(R.id.directionsbtn);
+            done = itemView.findViewById(R.id.tv_tweet_edited);
         }
     }
 }

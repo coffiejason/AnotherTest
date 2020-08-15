@@ -113,4 +113,12 @@ public class UtilGEList extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //checkUtilityErrands(userDB,getApplicationContext());
+        showList();
+    }
 }
