@@ -21,7 +21,7 @@ class SharedPrefs {
     private static final String PHONE_NUMBER_KEY = "phone_number";
 
     //UtilER
-        private static final String UTIL_SHARED_NAME = "utilsharedpref";
+    private static final String UTIL_SHARED_NAME = "utilsharedpref";
 
     private static final String METER_NUM_KEY0 = "meternum0";
     private static final String READING_KEY0 = "reading0";

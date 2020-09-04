@@ -15,16 +15,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.figure.anothertest.bottomvavigation.BadgeBottomNavigtion;
 import com.figure.anothertest.bottomvavigation.BottomAdapter;
 import com.figure.anothertest.bottomvavigation.BottomItem;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +54,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
     List<UtilGenItem> errands;
     DatabaseReference ref;
+    View parentLayout;
 
     private static List<UtilitiesERitem> utilityerrands = new ArrayList<>();
 
@@ -61,12 +65,13 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_world);
 
-        //list = new Functions().getWorldPosts();
+        final SwipeRefreshLayout swipe = findViewById(R.id.world_layout);
 
         badgeBottomNavigtion = new BadgeBottomNavigtion(findViewById(R.id.BottomNavigation), WorldActivity.this, WorldActivity.this);
         initBottomItems();
 
         errands = new ArrayList<>();
+        parentLayout = findViewById(android.R.id.content);
 
         init();
 
@@ -74,8 +79,39 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
         getErrands(ref,this);
 
-        checkUtilityErrands(ref,getApplicationContext());
+        //checkUtilityErrands(ref,getApplicationContext());
 
+
+
+
+        utilityerrands.clear();
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                getErrands(ref,getApplicationContext());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+        endTasksAlert();
+
+
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                getErrands(ref,getApplicationContext());
+                swipe.setRefreshing(false);
+            }
+        });
 
 
 
@@ -112,7 +148,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
     void showList(){
         if(errands.size() > 0){
-            WorldAdapter adapter = new WorldAdapter(WorldActivity.this,errands);
+            WorldAdapter adapter = new WorldAdapter(WorldActivity.this,errands,endTasksAlert());
             rv.setAdapter(adapter);
             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         }
@@ -177,6 +213,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
     public void getErrands(DatabaseReference db, final Context c){
         Log.d("dowegeterrand22s"," where here");
         utilityerrands.clear();
+        errands.clear();
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -234,8 +271,9 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
 
 
-                Log.d("learningagain",""+h.get("Customer List"));
-                errands.add(new UtilGenItem(""+h.get("TiperID"),""+h.get("Message"),eid));
+                Log.d("learningagain",""+h.get("posterID"));
+                //item = new UtilGenItem(""+h.get("posterID"));
+                errands.add(new UtilGenItem(""+h.get("TiperID"),""+h.get("Message"),eid,""+h.get("posterID")));
                 showList();
             }
 
@@ -303,5 +341,18 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
             }
         });
+    }
+
+     boolean endTasksAlert(){
+        if(SharedPrefs.getMeternum("meternum0") != null){
+            Snackbar snackbar = Snackbar.make(parentLayout,"Submit begun tasks before proceeding",3000);
+            snackbar.show();
+
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 }

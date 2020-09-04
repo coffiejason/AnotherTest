@@ -8,9 +8,53 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:navigationIcon="@drawable/ic_close" />
+
+    <RelativeLayout
+        android:id="@+id/er_upload_button"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:id="@+id/erubid"
+            android:layout_centerInParent="true"
+            android:layout_margin="1.5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_upload" />
+
+        <ProgressBar
+            android:id="@+id/erpbid"
+            android:visibility="gone"
+            android:outlineSpotShadowColor="@color/tipeeGreen"
+            android:layout_centerInParent="true"
+            android:layout_margin="1.5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="?android:progressBarStyleHorizontal"
+            android:progress="0"
+            android:progressDrawable="@drawable/shape_circle"/>
+
+        <ImageView
+            android:id="@+id/erdid"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:layout_margin="1.5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_uploaded" />
+
+
+    </RelativeLayout>
 
     <TextView
         android:layout_alignParentTop="true"
@@ -28,6 +72,5 @@
         android:layout_below="@+id/toolbar"
         android:id="@+id/recyclerViewuer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

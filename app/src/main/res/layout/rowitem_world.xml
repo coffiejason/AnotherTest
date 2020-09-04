@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="20dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/row_item_layout">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/profile_photo"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/ic_user_placeholder"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name_placeholder"
+        android:layout_toRightOf="@id/profile_photo"
+        android:textStyle="bold"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username_placeholder"
+        android:layout_toRightOf="@id/tv_name"
+        android:layout_marginLeft="10dp"
+        android:textStyle="normal"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/tv_tp_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/post_placeholder"
+        android:layout_toRightOf="@id/profile_photo"
+        android:layout_below="@id/tv_name"
+        android:textStyle="normal"
+        android:layout_marginTop="5dp"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/tv_tweet_edited"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PENDING"
+        android:layout_toRightOf="@id/profile_photo"
+        android:layout_below="@id/tv_tp_post"
+        android:textStyle="normal"
+        android:layout_marginTop="2dp"
+        android:visibility="visible"
+        android:textColor="#DDA809"
+        android:textSize="13sp"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_below="@id/tv_tp_post"
+        android:layout_marginTop="25dp"
+        android:visibility="gone"
+        android:id="@+id/comment_count"
+        android:layout_toRightOf="@id/profile_photo"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:id="@+id/tweet_action_reply"
+            android:src="@drawable/ic_twitter_comment" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"
+            android:layout_toRightOf="@+id/tweet_action_reply"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
