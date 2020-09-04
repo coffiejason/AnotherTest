@@ -46,15 +46,15 @@
         android:textSize="15sp"/>
 
     <TextView
-        android:id="@+id/tv_tweet_edited"
+        android:id="@+id/status_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="PENDING"
         android:layout_toRightOf="@id/profile_photo"
         android:layout_below="@id/tv_tp_post"
         android:textStyle="normal"
+        android:visibility="gone"
         android:layout_marginTop="2dp"
-        android:visibility="visible"
         android:textColor="#DDA809"
         android:textSize="13sp"/>
 

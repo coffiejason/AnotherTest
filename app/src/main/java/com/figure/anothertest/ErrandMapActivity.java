@@ -138,7 +138,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         getToken();
 
-        onpenTipBottoSheet();
+        //onpenTipBottoSheet();
 
         getAllPosts();
         //new Functions().getAllPosts(userAvailabilityRef,postsfrmDB,mClusterManager);

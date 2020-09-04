@@ -1,5 +1,6 @@
 package com.figure.anothertest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,20 +13,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Collection;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> {
     private Context context;
     List<UtilGenItem> list;
     boolean tasks;
+    Activity activity;
 
-    WorldAdapter(Context c, List<UtilGenItem> allposts,boolean tsks){
+    WorldAdapter(Context c, List<UtilGenItem> allposts,boolean tsks,Activity activity){
         this.context = c;
         Collections.reverse(allposts);
         this.list = allposts;
         this.tasks = tsks;
+        this.activity = activity;
     }
 
     @NonNull
@@ -47,19 +52,41 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
         holder.postText.setText(list.get(position).getMessage());
         holder.postUserID.setText(list.get(position).getTiperID());
 
+        if(list.get(position).getStatus().equals("PENDING")){
+            holder.status_msg.setVisibility(View.VISIBLE);
+        }
+
         holder.rowlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(!tasks){
+                if(SharedPrefs.getTaskId().equals(""+list.get(position).tasknum())){
                     Intent i = new Intent(context,  UtilGEList.class);
                     i.putExtra("tasknum",""+list.get(position).tasknum());
                     i.putExtra("posterID",""+list.get(position).getPosterID());
                     context.startActivity(i);
                 }
                 else{
-                    Toast.makeText(context,"Submit or drop previous Errands to proceed",Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(context," Complete or Drop current Errands to proceed ",Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        holder.rowlayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                SharedPrefs.clearTask();
+
+                Toast.makeText(context,"Were here ",Toast.LENGTH_SHORT).show();
+
+                final HashMap<String,Object> status = new HashMap<>();
+                status.remove("STATUS","PENDING");
+
+                FirebaseDatabase.getInstance().getReference().child("MeterRequests").child(list.get(position).tasknum()).updateChildren(status);
+
+                return true;
             }
         });
 
@@ -72,7 +99,7 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView postText;
+        TextView postText,status_msg;
         TextView postUserID;
         RelativeLayout rowlayout;
 
@@ -81,6 +108,8 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
             postText = itemView.findViewById(R.id.tv_tp_post);
             rowlayout = itemView.findViewById(R.id.row_item_layout);
             postUserID = itemView.findViewById(R.id.tv_name);
+            status_msg = itemView.findViewById(R.id.status_msg);
+
         }
     }
 }

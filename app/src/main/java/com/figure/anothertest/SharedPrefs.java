@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 class SharedPrefs {
 
@@ -22,6 +23,8 @@ class SharedPrefs {
 
     //UtilER
     private static final String UTIL_SHARED_NAME = "utilsharedpref";
+
+    private static final String TASK_ID = "taskid";
 
     private static final String METER_NUM_KEY0 = "meternum0";
     private static final String READING_KEY0 = "reading0";
@@ -176,5 +179,24 @@ class SharedPrefs {
     static String getImageUri(String key){
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getString(key,null);
+    }
+
+    static void setTaskId(String taskid){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(UTIL_SHARED_NAME,taskid);
+        editor.apply();
+    }
+
+    static void clearTask(){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear().commit();
+        editor.apply();
+    }
+
+    static String getTaskId(){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
+        return sharedPreferences.getString(UTIL_SHARED_NAME,"none");
     }
 }

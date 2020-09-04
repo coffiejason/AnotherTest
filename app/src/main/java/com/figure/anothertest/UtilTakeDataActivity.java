@@ -46,7 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class UtilTakeDataActivity extends AppCompatActivity {
-    String name,meterno,town,position;
+    String name,meterno,town,position,tasknum;
     TextView userdetails;
     RelativeLayout postPicbtn,imageclick,finishbtn;
     CardView image,finishbtnview;
@@ -69,7 +69,7 @@ public class UtilTakeDataActivity extends AppCompatActivity {
     private ImageView ivSelected;
 
     Context context;
-    DatabaseReference ref;
+    DatabaseReference ref,statusRef;
 
     HashMap<String, Object> h = new HashMap<>();
 
@@ -82,6 +82,7 @@ public class UtilTakeDataActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(UtilTakeDataActivity.this, new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
 
         ref = FirebaseDatabase.getInstance().getReference().child("Watsan Demo");
+        statusRef = FirebaseDatabase.getInstance().getReference().child("MeterRequests");
         init();
         initListeners();
     }
@@ -108,12 +109,15 @@ public class UtilTakeDataActivity extends AppCompatActivity {
         meterno = getIntent().getStringExtra("Meterno");
         town = getIntent().getStringExtra("Town");
         position = getIntent().getStringExtra("position");
+        tasknum = getIntent().getStringExtra("tasknum");
 
         Toast.makeText(getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
 
         userdetails.setText(name+" - "+meterno);
 
         mAlbumStorageDirFactory = new BaseAlbumDirFactory();
+
+        Log.d("hshsbhqgfy",""+tasknum);
     }
 
     void initListeners(){
@@ -146,9 +150,15 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                     Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", imagefile);
                     //imageUpload(UtilTakeDataActivity.this,uri,"WatsanDemo");
 
+                    final HashMap<String,Object> status = new HashMap<>();
+                    status.put("STATUS","PENDING");
+
+                    statusRef.child(tasknum).updateChildren(status);
+
                     SharedPrefs.setMeternum(meterno,"meternum"+position);
                     SharedPrefs.setMeterRead(meterNumInput.getText().toString()+"","reading"+position);
                     SharedPrefs.setImageUri(""+uri,"picread"+position);
+                    SharedPrefs.setTaskId(tasknum);
                     onBackPressed();
                 }
             }
@@ -162,6 +172,8 @@ public class UtilTakeDataActivity extends AppCompatActivity {
         //image or video name add to list and pass to tiper
         final String imageName = "meterimage"+Calendar.getInstance().getTimeInMillis()+getExtension(context,uri);
         final StorageReference sRef = storageReference.child(imageName);
+
+
 
         sRef.putFile(uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

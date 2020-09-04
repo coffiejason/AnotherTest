@@ -20,6 +20,13 @@ import java.util.List;
 public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.ViewHolder>{
     Context context;
     List<UtilitiesERitem> items;
+    String taskNum;
+
+    UtilitiesERAdapter(Context c, List<UtilitiesERitem> list,String taskNum){
+        this.context = c;
+        this.items = list;
+        this.taskNum = taskNum;
+    }
 
     UtilitiesERAdapter(Context c, List<UtilitiesERitem> list){
         this.context = c;
@@ -73,6 +80,7 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
                     i.putExtra("Meterno",""+items.get(position).getMeterNum());
                     i.putExtra("Town",""+items.get(position).getTown());
                     i.putExtra("position",""+position);
+                    i.putExtra("tasknum",""+taskNum);
                     context.startActivity(i);
                 }
             });

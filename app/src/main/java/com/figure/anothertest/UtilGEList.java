@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -161,7 +160,7 @@ public class UtilGEList extends AppCompatActivity {
 
     void showList(){
         if(utilityerrands.size() >0 ){
-            UtilitiesERAdapter adapter = new UtilitiesERAdapter(UtilGEList.this,utilityerrands);
+            UtilitiesERAdapter adapter = new UtilitiesERAdapter(UtilGEList.this,utilityerrands,tasknum);
             rv.setAdapter(adapter);
             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         }

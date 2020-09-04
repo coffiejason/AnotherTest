@@ -56,6 +56,8 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
     DatabaseReference ref;
     View parentLayout;
 
+    String taskNum = "";
+
     private static List<UtilitiesERitem> utilityerrands = new ArrayList<>();
 
     private HashMap<String, Object> j = new HashMap<>();
@@ -90,6 +92,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 getErrands(ref,getApplicationContext());
+                showList();
             }
 
             @Override
@@ -148,7 +151,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
     void showList(){
         if(errands.size() > 0){
-            WorldAdapter adapter = new WorldAdapter(WorldActivity.this,errands,endTasksAlert());
+            WorldAdapter adapter = new WorldAdapter(WorldActivity.this,errands,endTasksAlert(),WorldActivity.this);
             rv.setAdapter(adapter);
             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         }
@@ -273,7 +276,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
                 Log.d("learningagain",""+h.get("posterID"));
                 //item = new UtilGenItem(""+h.get("posterID"));
-                errands.add(new UtilGenItem(""+h.get("TiperID"),""+h.get("Message"),eid,""+h.get("posterID")));
+                errands.add(new UtilGenItem(""+h.get("TiperID"),""+h.get("Message"),eid,""+h.get("posterID"),""+h.get("STATUS")));
                 showList();
             }
 
