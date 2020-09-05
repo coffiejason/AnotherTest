@@ -63,6 +63,8 @@ public class UtilGEList extends AppCompatActivity {
 
     int i = 0;
 
+    int progressDiff = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +82,7 @@ public class UtilGEList extends AppCompatActivity {
         tasknum = getIntent().getStringExtra("tasknum");
         posterID = getIntent().getStringExtra("posterID");
 
-        Toast.makeText(this, ""+tasknum, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, ""+tasknum, Toast.LENGTH_SHORT).show();
 
         checkUtilityErrands(userDB,getApplicationContext());
 
@@ -110,8 +112,17 @@ public class UtilGEList extends AppCompatActivity {
                 uploadImg.setVisibility(View.GONE);
                 pb.setVisibility(View.VISIBLE);
 
-                //pb.setProgress(pb.getProgress()+10);
-                uploadReadings();
+                if(!utilityerrands.isEmpty()){
+                    //Toast.makeText(getApplicationContext(),""+(100/utilityerrands.size()),Toast.LENGTH_SHORT).show();
+                    progressDiff = 100/utilityerrands.size();
+                }
+
+                if(SharedPrefs.getMeterRead("reading"+(utilityerrands.size()-1)) == "none" ){
+                    Toast.makeText(getApplicationContext(),"Get remaining readings to complete errand",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    uploadReadings();
+                }
 
             }
         });
@@ -174,7 +185,6 @@ public class UtilGEList extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
     }
 
-
     void uploadReadings(){
 
 
@@ -205,7 +215,7 @@ public class UtilGEList extends AppCompatActivity {
                                 h.put("imgurl",""+uri2);
                                 ref.child(posterID).child("31082020").child("mt"+h.get("meterno")).setValue(h);
                                 //finish();
-                                pb.setProgress(pb.getProgress()+10);
+                                pb.setProgress(pb.getProgress()+progressDiff);
                                 Log.d("agocatchyou","uploaded sucessfully");
 
                                 uploadReadings();
@@ -227,6 +237,15 @@ public class UtilGEList extends AppCompatActivity {
         Log.d("kjdsjkjs",""+pb.getProgress());
 
         //i++;
+    }
+
+    void isComplete(){
+        for(int i = 0; i < utilityerrands.size(); i++){
+            SharedPrefs.getMeternum("meternum"+i);
+
+            Log.d("hes done all errands",""+SharedPrefs.getMeternum("meternum"+i));
+
+        }
     }
 
 

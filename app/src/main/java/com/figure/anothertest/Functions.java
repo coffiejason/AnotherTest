@@ -104,6 +104,8 @@ class Functions {
     int allpostsnum = 0;
     int allpostsinner = 0;
 
+    private DatabaseReference statusRef;
+
     void saveUser(DatabaseReference userDBReference, Location userLocation, String userID){
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("l",userLocation.getLatitude());
@@ -310,6 +312,16 @@ class Functions {
             }
         });
 
+    }
+
+    void clearTask(Context context, String tasknum){
+
+        SharedPrefs.clearTask();
+
+        statusRef = FirebaseDatabase.getInstance().getReference().child("MeterRequests");
+        Toast.makeText(context,"Task Dropped",Toast.LENGTH_SHORT).show();
+
+        statusRef.child(""+tasknum).child("STATUS").removeValue();
     }
 
     void getErrandsDone(DatabaseReference errandsNode){

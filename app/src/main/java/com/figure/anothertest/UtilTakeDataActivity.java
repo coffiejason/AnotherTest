@@ -159,6 +159,7 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                     SharedPrefs.setMeterRead(meterNumInput.getText().toString()+"","reading"+position);
                     SharedPrefs.setImageUri(""+uri,"picread"+position);
                     SharedPrefs.setTaskId(tasknum);
+                    SharedPrefs.setTaskId2("loremipsum");
                     onBackPressed();
                 }
             }

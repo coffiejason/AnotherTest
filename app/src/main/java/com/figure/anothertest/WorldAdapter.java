@@ -3,6 +3,7 @@ package com.figure.anothertest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,14 +61,24 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
 
-                if(SharedPrefs.getTaskId().equals(""+list.get(position).tasknum())){
+                //Toast.makeText(context,SharedPrefs.getTaskId()+" "+list.get(position).tasknum(),Toast.LENGTH_SHORT).show();
+
+                if(SharedPrefs.getTaskId().equals(list.get(position).tasknum()) ){
+
                     Intent i = new Intent(context,  UtilGEList.class);
                     i.putExtra("tasknum",""+list.get(position).tasknum());
                     i.putExtra("posterID",""+list.get(position).getPosterID());
                     context.startActivity(i);
+
+                }
+                else if(SharedPrefs.getTaskId().equals("none")){
+                    Intent i = new Intent(context,  UtilGEList.class);
+                    i.putExtra("tasknum",""+list.get(position).tasknum());
+                    i.putExtra("posterID",""+list.get(position).getPosterID());
+                    context.startActivity(i);
+
                 }
                 else{
-
                     Toast.makeText(context," Complete or Drop current Errands to proceed ",Toast.LENGTH_SHORT).show();
                 }
             }
@@ -76,21 +87,10 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
         holder.rowlayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-
-                SharedPrefs.clearTask();
-
-                Toast.makeText(context,"Were here ",Toast.LENGTH_SHORT).show();
-
-                final HashMap<String,Object> status = new HashMap<>();
-                status.remove("STATUS","PENDING");
-
-                FirebaseDatabase.getInstance().getReference().child("MeterRequests").child(list.get(position).tasknum()).updateChildren(status);
-
+                new Functions().clearTask(context,list.get(position).tasknum());
                 return true;
             }
         });
-
-
     }
 
     @Override
