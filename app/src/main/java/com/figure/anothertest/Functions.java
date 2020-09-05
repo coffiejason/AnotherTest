@@ -324,6 +324,16 @@ class Functions {
         statusRef.child(""+tasknum).child("STATUS").removeValue();
     }
 
+    void completeErrand(Context context, String tasknum){
+
+        SharedPrefs.clearErrandSP();
+
+        statusRef = FirebaseDatabase.getInstance().getReference().child("MeterRequests");
+        //Toast.makeText(context,"Task Dropped",Toast.LENGTH_SHORT).show();
+
+        statusRef.child(""+tasknum).removeValue();
+    }
+
     void getErrandsDone(DatabaseReference errandsNode){
         //errands node is the node where new errands are written to if a user matches a location errand criteria
 

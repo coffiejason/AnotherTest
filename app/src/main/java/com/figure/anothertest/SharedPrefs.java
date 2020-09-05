@@ -154,7 +154,7 @@ class SharedPrefs {
 
     static String getMeternum(String key){
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
-        return sharedPreferences.getString(key,null);
+        return sharedPreferences.getString(key,"none");
     }
 
     static void setMeterRead(String reading, String key){
@@ -200,6 +200,13 @@ class SharedPrefs {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(TASK_ID);
         editor.remove(TASK_ID2);
+        editor.apply();
+    }
+
+    static void clearErrandSP(){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
         editor.apply();
     }
 

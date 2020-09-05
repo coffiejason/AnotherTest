@@ -101,12 +101,6 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
             }
         });
 
-
-
-
-        endTasksAlert();
-
-
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -151,7 +145,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
     void showList(){
         if(errands.size() > 0){
-            WorldAdapter adapter = new WorldAdapter(WorldActivity.this,errands,endTasksAlert(),WorldActivity.this);
+            WorldAdapter adapter = new WorldAdapter(WorldActivity.this,errands,WorldActivity.this);
             rv.setAdapter(adapter);
             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         }

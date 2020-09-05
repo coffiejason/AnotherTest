@@ -23,14 +23,12 @@ import java.util.List;
 public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> {
     private Context context;
     List<UtilGenItem> list;
-    boolean tasks;
     Activity activity;
 
-    WorldAdapter(Context c, List<UtilGenItem> allposts,boolean tsks,Activity activity){
+    WorldAdapter(Context c, List<UtilGenItem> allposts,Activity activity){
         this.context = c;
         Collections.reverse(allposts);
         this.list = allposts;
-        this.tasks = tsks;
         this.activity = activity;
     }
 

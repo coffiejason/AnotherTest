@@ -146,6 +146,9 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                 else if(meterReading.length() < 5){
                     Toast.makeText(UtilTakeDataActivity.this,"Invalid Metre Usage Number",Toast.LENGTH_SHORT).show();
                 }
+                else if(imagefile == null){
+                    Toast.makeText(UtilTakeDataActivity.this,"Submit Meter Image",Toast.LENGTH_SHORT).show();
+                }
                 else {
                     Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", imagefile);
                     //imageUpload(UtilTakeDataActivity.this,uri,"WatsanDemo");

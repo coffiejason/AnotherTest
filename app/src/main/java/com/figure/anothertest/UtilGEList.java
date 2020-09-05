@@ -65,6 +65,8 @@ public class UtilGEList extends AppCompatActivity {
 
     int progressDiff = 0;
 
+    int uploadCount = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,21 +111,13 @@ public class UtilGEList extends AppCompatActivity {
         uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadImg.setVisibility(View.GONE);
-                pb.setVisibility(View.VISIBLE);
 
                 if(!utilityerrands.isEmpty()){
                     //Toast.makeText(getApplicationContext(),""+(100/utilityerrands.size()),Toast.LENGTH_SHORT).show();
                     progressDiff = 100/utilityerrands.size();
                 }
 
-                if(SharedPrefs.getMeterRead("reading"+(utilityerrands.size()-1)) == "none" ){
-                    Toast.makeText(getApplicationContext(),"Get remaining readings to complete errand",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    uploadReadings();
-                }
-
+                isComplete();
             }
         });
     }
@@ -186,6 +180,8 @@ public class UtilGEList extends AppCompatActivity {
     }
 
     void uploadReadings(){
+        uploadImg.setVisibility(View.GONE);
+        pb.setVisibility(View.VISIBLE);
 
 
         Uri uri = Uri.parse(SharedPrefs.getImageUri("picread"+i).toString());
@@ -218,7 +214,25 @@ public class UtilGEList extends AppCompatActivity {
                                 pb.setProgress(pb.getProgress()+progressDiff);
                                 Log.d("agocatchyou","uploaded sucessfully");
 
-                                uploadReadings();
+                                uploadCount++;
+
+                                if(uploadCount < utilityerrands.size()){
+                                    uploadReadings();
+
+                                    if(pb.getProgress()+progressDiff < 100){
+                                        Toast.makeText(getApplicationContext(),pb.getProgress()+progressDiff+"% complete", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        Toast.makeText(getApplicationContext()," Submitting ", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }
+                                else{
+                                    Toast.makeText(getApplicationContext(),"Upload Complete", Toast.LENGTH_LONG).show();
+                                    new Functions().completeErrand(getApplicationContext(),tasknum);
+                                    onBackPressed();
+                                }
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -240,13 +254,27 @@ public class UtilGEList extends AppCompatActivity {
     }
 
     void isComplete(){
+        int j = 0;
         for(int i = 0; i < utilityerrands.size(); i++){
             SharedPrefs.getMeternum("meternum"+i);
 
-            Log.d("hes done all errands",""+SharedPrefs.getMeternum("meternum"+i));
+            if(SharedPrefs.getMeternum("meternum"+i) == "none"){
+                j++;
+            }
+        }
 
+        if(j > 0){
+            Toast.makeText(getApplicationContext(),"Read "+j+" remaining meters to complete the errand",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            uploadReadings();
+
+            Snackbar snackbar = Snackbar.make(parentLayout,"Uploading Task, Please wait",3000);
+            snackbar.show();
         }
     }
+
+
 
 
     @Override
