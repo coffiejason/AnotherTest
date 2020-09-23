@@ -57,13 +57,15 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                     }
                 });*/
 
+            //working
+            /*
             holder.rowlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context,  UtititiesERActivity.class);
                     context.startActivity(i);
                 }
-            });
+            });*/
 
         }
 

@@ -138,7 +138,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         getToken();
 
-        //onpenTipBottoSheet();
+        onpenTipBottoSheet();
 
         getAllPosts();
         //new Functions().getAllPosts(userAvailabilityRef,postsfrmDB,mClusterManager);
@@ -688,7 +688,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     public void buttonClicked(Boolean choice) {
         //open tip activity here
         if(choice){
-            startActivity(new Intent(ErrandMapActivity.this,UtititiesERActivity.class));
+            startActivity(new Intent(ErrandMapActivity.this,GetLocationActivity.class));
             Log.d("howmnyavailableusers"," "+availableUsers.size());
         }
     }

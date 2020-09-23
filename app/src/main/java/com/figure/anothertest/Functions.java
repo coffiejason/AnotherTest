@@ -127,6 +127,18 @@ class Functions {
                 });
     }
 
+    void saveCL(DatabaseReference db, String name, String meternum, String l, String g){
+
+        HashMap<String,String>hashMap = new HashMap<>();
+
+        hashMap.put("name",name);
+        hashMap.put("meternum",meternum);
+        hashMap.put("l",l);
+        hashMap.put("g",g);
+
+        db.child("Data_collection").child(meternum).setValue(hashMap);
+    }
+
     void creatPostText(DatabaseReference userDB, String userID, String message, float l, float g, int radius){
         //add location parameter to Hashmap
         HashMap<String, Object> hashMap = new HashMap<>();

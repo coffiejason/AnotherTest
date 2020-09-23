@@ -156,6 +156,7 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                     final HashMap<String,Object> status = new HashMap<>();
                     status.put("STATUS","PENDING");
 
+
                     statusRef.child(tasknum).updateChildren(status);
 
                     SharedPrefs.setMeternum(meterno,"meternum"+position);

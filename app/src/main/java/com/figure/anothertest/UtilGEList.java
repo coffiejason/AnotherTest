@@ -195,7 +195,7 @@ public class UtilGEList extends AppCompatActivity {
         h.put("Usage",SharedPrefs.getMeterRead("reading"+i));
         h.put("meterno",""+SharedPrefs.getMeternum("meternum"+i));
 
-        Log.d("writinghis",""+utilityerrands.get(i).getCustomerName()+" "+uri+" "+SharedPrefs.getMeterRead("reading"+i)+" "+SharedPrefs.getMeternum("meternum"+i) );
+        Log.d("writinghis","WHERERE "+utilityerrands.get(i).getCustomerName()+" "/*+uri+" "+SharedPrefs.getMeterRead("reading"+i)+" "+SharedPrefs.getMeternum("meternum"+i) */);
 
         sRef.putFile(uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -209,7 +209,7 @@ public class UtilGEList extends AppCompatActivity {
                                 Log.d("srwqsdxd","were here");
                                 Log.d("srwqsdxd",""+h.get("meterno"));
                                 h.put("imgurl",""+uri2);
-                                ref.child(posterID).child("31082020").child("mt"+h.get("meterno")).setValue(h);
+                                ref.child(posterID).child("31082020").child("mt"+h.get("meterno")).updateChildren(h);
                                 //finish();
                                 pb.setProgress(pb.getProgress()+progressDiff);
                                 Log.d("agocatchyou","uploaded sucessfully");
@@ -250,7 +250,7 @@ public class UtilGEList extends AppCompatActivity {
 
         Log.d("kjdsjkjs",""+pb.getProgress());
 
-        //i++;
+        i++;
     }
 
     void isComplete(){
