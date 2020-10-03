@@ -127,7 +127,7 @@ class Functions {
                 });
     }
 
-    void saveCL(DatabaseReference db, String name, String meternum, String l, String g){
+    void saveCL(DatabaseReference db, String name, String meternum, String l, String g,Boolean isIndoor){
 
         HashMap<String,String>hashMap = new HashMap<>();
 
@@ -135,6 +135,7 @@ class Functions {
         hashMap.put("meternum",meternum);
         hashMap.put("l",l);
         hashMap.put("g",g);
+        hashMap.put("isIndoor",""+isIndoor);
 
         db.child("Data_collection").child(meternum).setValue(hashMap);
     }

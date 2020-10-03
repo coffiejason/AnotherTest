@@ -64,7 +64,7 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                            Uri.parse("google.navigation:q= 5.709347,-0.205360"));
+                            Uri.parse("google.navigation:q= "+items.get(position).getLocation().latitude+","+items.get(position).getLocation().longitude));
                     //5.709347,-0.205360
                    //intent.setPackage("com.google.android.apps.apps.maps");
 

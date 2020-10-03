@@ -97,6 +97,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     LatLng defaultLocation;
     Bundle args;
 
+    public static Bundle coordsLoc = new Bundle();
+
     AutocompleteSupportFragment autocompleteFragment;
 
     //bottom nav stuff, might delete
@@ -221,6 +223,9 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         args.putFloat("l", (float) location.getLatitude());
         args.putFloat("g", (float) location.getLongitude());
+
+        coordsLoc.putFloat("l", (float) location.getLatitude());
+        coordsLoc.putFloat("g", (float) location.getLongitude());
 
         //code to save user location to Firebase
         //getPost(userIndividual);

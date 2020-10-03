@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +32,7 @@ public class GetLocationActivity extends AppCompatActivity {
 
     DatabaseReference db,userIndividual;
     RelativeLayout submitBtn;
+    Switch isIndoor_switch;
 
     String l,g;
 
@@ -43,6 +45,9 @@ public class GetLocationActivity extends AppCompatActivity {
         db.keepSynced(true);
         userIndividual = db.child("Data_collection");
         submitBtn = findViewById(R.id.submitBtn);
+        isIndoor_switch = findViewById(R.id.isIndoor_switch);
+
+
 
         etname = findViewById(R.id.name_cd);
         etmeternum = findViewById(R.id.meternum_cd);
@@ -50,12 +55,12 @@ public class GetLocationActivity extends AppCompatActivity {
         final SwipeRefreshLayout swipe = findViewById(R.id.getLocatonsswipelayout);
         etLocation = findViewById(R.id.lUsername);
 
-        getLocation();
+        getLocation2();
 
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getLocation();
+                getLocation2();
                 swipe.setRefreshing(false);
             }
         });
@@ -63,13 +68,32 @@ public class GetLocationActivity extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Functions().saveCL(db,etname.getText().toString(),etmeternum.getText().toString(),l,g);
 
-                etLocation.clearComposingText();
-                etmeternum.clearComposingText();
-                etLocation.clearComposingText();
+                if(etname.getText().toString().equals("")  || etmeternum.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(),"Fill all data", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    new Functions().saveCL(db,etname.getText().toString(),etmeternum.getText().toString(),l,g,isIndoor_switch.isChecked());
+
+                    Log.d("switchstatus",""+isIndoor_switch.isChecked());
+
+                }
+
+
+                etLocation.getText().clear();
+                etmeternum.getText().clear();
+                etname.getText().clear();
             }
         });
+    }
+
+    void getLocation2(){
+        Log.d("fromErrmap",ErrandMapActivity.coordsLoc.getFloat("l")+" "+ErrandMapActivity.coordsLoc.getFloat("g"));
+        etLocation.setText(ErrandMapActivity.coordsLoc.getFloat("l")+" "+ErrandMapActivity.coordsLoc.getFloat("g"));
+
+        l = ""+ErrandMapActivity.coordsLoc.getFloat("l") ;
+        g = ""+ErrandMapActivity.coordsLoc.getFloat("g");
+
     }
 
     void getLocation(){
