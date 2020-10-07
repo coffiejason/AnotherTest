@@ -46,7 +46,7 @@ public class UtilGEList extends AppCompatActivity {
 
     DatabaseReference userDB;
     String userID;
-    String tasknum,posterID;
+    String tasknum,posterID,date;
     View parentLayout;
 
     private static List<UtilitiesERitem> utilityerrands = new ArrayList<>();
@@ -83,6 +83,7 @@ public class UtilGEList extends AppCompatActivity {
 
         tasknum = getIntent().getStringExtra("tasknum");
         posterID = getIntent().getStringExtra("posterID");
+        date = getIntent().getStringExtra("Date");
 
         //Toast.makeText(this, ""+tasknum, Toast.LENGTH_SHORT).show();
 
@@ -165,7 +166,7 @@ public class UtilGEList extends AppCompatActivity {
 
     void showList(){
         if(utilityerrands.size() >0 ){
-            UtilitiesERAdapter adapter = new UtilitiesERAdapter(UtilGEList.this,utilityerrands,tasknum);
+            UtilitiesERAdapter adapter = new UtilitiesERAdapter(UtilGEList.this,utilityerrands,tasknum,date);
             rv.setAdapter(adapter);
             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         }
@@ -209,7 +210,7 @@ public class UtilGEList extends AppCompatActivity {
                                 Log.d("srwqsdxd","were here");
                                 Log.d("srwqsdxd",""+h.get("meterno"));
                                 h.put("imgurl",""+uri2);
-                                ref.child(posterID).child("31082020").child("mt"+h.get("meterno")).updateChildren(h);
+                                ref.child(posterID).child(date).child(""+h.get("meterno")).updateChildren(h);
                                 //finish();
                                 pb.setProgress(pb.getProgress()+progressDiff);
                                 Log.d("agocatchyou","uploaded sucessfully");

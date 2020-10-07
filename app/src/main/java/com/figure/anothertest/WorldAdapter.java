@@ -66,6 +66,7 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
                     Intent i = new Intent(context,  UtilGEList.class);
                     i.putExtra("tasknum",""+list.get(position).tasknum());
                     i.putExtra("posterID",""+list.get(position).getPosterID());
+                    i.putExtra("Date",""+list.get(position).getDate());
                     context.startActivity(i);
 
                 }
@@ -73,6 +74,7 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
                     Intent i = new Intent(context,  UtilGEList.class);
                     i.putExtra("tasknum",""+list.get(position).tasknum());
                     i.putExtra("posterID",""+list.get(position).getPosterID());
+                    i.putExtra("Date",""+list.get(position).getDate());
                     context.startActivity(i);
 
                 }
@@ -85,7 +87,10 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
         holder.rowlayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                new Functions().clearTask(context,list.get(position).tasknum());
+                if(SharedPrefs.getTaskId().equals(list.get(position).tasknum()) ){
+
+                    new Functions().clearTask(context,list.get(position).tasknum());
+                }
                 return true;
             }
         });

@@ -46,7 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class UtilTakeDataActivity extends AppCompatActivity {
-    String name,meterno,town,position,tasknum;
+    String name,meterno,town,position,tasknum,date;
     TextView userdetails;
     RelativeLayout postPicbtn,imageclick,finishbtn;
     CardView image,finishbtnview;
@@ -110,6 +110,7 @@ public class UtilTakeDataActivity extends AppCompatActivity {
         town = getIntent().getStringExtra("Town");
         position = getIntent().getStringExtra("position");
         tasknum = getIntent().getStringExtra("tasknum");
+        date = getIntent().getStringExtra("Date");
 
         Toast.makeText(getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
 

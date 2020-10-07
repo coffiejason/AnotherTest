@@ -56,6 +56,8 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
     DatabaseReference ref;
     View parentLayout;
 
+    WorldAdapter adapter;
+
     String taskNum = "";
 
     private static List<UtilitiesERitem> utilityerrands = new ArrayList<>();
@@ -104,7 +106,6 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 getErrands(ref,getApplicationContext());
                 swipe.setRefreshing(false);
             }
@@ -116,6 +117,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
     }
 
     void init(){
+
         mapBtn = findViewById(R.id.mapbtn);
         notifIcon  = findViewById(R.id.toolbar_body_parent);
         newNotif = findViewById(R.id.toolbar_badge_parent);
@@ -141,11 +143,14 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
         });
 
 
+        //new Functions().testNotify(getApplicationContext());
+
+
     }
 
     void showList(){
         if(errands.size() > 0){
-            WorldAdapter adapter = new WorldAdapter(WorldActivity.this,errands,WorldActivity.this);
+            adapter = new WorldAdapter(WorldActivity.this,errands,WorldActivity.this);
             rv.setAdapter(adapter);
             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         }
@@ -268,9 +273,9 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
 
 
-                Log.d("learningagain",""+h.get("posterID"));
+                Log.d("learningagain",""+h.get("Date"));
                 //item = new UtilGenItem(""+h.get("posterID"));
-                errands.add(new UtilGenItem(""+h.get("TiperID"),""+h.get("Message"),eid,""+h.get("posterID"),""+h.get("STATUS")));
+                errands.add(new UtilGenItem(""+h.get("TiperID"),""+h.get("Message"),eid,""+h.get("posterID"),""+h.get("STATUS"),""+h.get("Date")));
                 showList();
             }
 

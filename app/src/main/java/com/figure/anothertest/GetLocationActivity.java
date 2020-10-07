@@ -55,12 +55,12 @@ public class GetLocationActivity extends AppCompatActivity {
         final SwipeRefreshLayout swipe = findViewById(R.id.getLocatonsswipelayout);
         etLocation = findViewById(R.id.lUsername);
 
-        getLocation2();
+        getLocation();
 
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getLocation2();
+                getLocation();
                 swipe.setRefreshing(false);
             }
         });

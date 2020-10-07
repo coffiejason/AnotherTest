@@ -330,6 +330,7 @@ class Functions {
     void clearTask(Context context, String tasknum){
 
         SharedPrefs.clearTask();
+        SharedPrefs.clearErrandSP();
 
         statusRef = FirebaseDatabase.getInstance().getReference().child("MeterRequests");
         Toast.makeText(context,"Task Dropped",Toast.LENGTH_SHORT).show();
@@ -442,6 +443,61 @@ class Functions {
             JSONObject notification = new JSONObject();
             notification.put("title", ""+nt);
             notification.put("body", ""+post.getpMessage());
+            mainObj.put("notification", notification);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                    mainObj,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("sucesssss", "" + response);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("failllleedd", "" + error);
+                }
+            }
+            ){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String,String> header = new HashMap<>();
+                    header.put("Content-Type","application/json");
+                    header.put("Authorization","key=AAAAtEBMzJ4:APA91bGmAnHTXM1D0TMl4xWO-cKB3dqCVqg8bR8Ncf64GQJgJP-SRNzo9bQ-6WwtBNimHU72JAbIKnL8Rj1BIqEL99TUOCJd4PGxKdBV7vOYd1tRi1NgzE5zxeRvRngv2LNCxy1LxLm_");
+                    return header;
+                }
+            };
+
+            queue.add(request);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    void testNotify(Context c){
+        RequestQueue queue = Volley.newRequestQueue(c);
+        String URL = "https://fcm.googleapis.com/fcm/send";
+
+        String nt;
+
+        nt = "New Errands Available";
+
+
+
+        //whoGetsNotified(db,post,1000,topic,errand);
+
+        JSONObject  mainObj = new JSONObject();
+
+        //write topic to all user in post range
+
+
+
+        try {
+            mainObj.put("to", "/topics/" +"topicsname");
+            JSONObject notification = new JSONObject();
+            notification.put("title", ""+nt);
+            notification.put("body", "CW meter reading errands");
             mainObj.put("notification", notification);
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,

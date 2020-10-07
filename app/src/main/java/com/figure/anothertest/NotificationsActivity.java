@@ -82,7 +82,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
         errandsNearBy2.clear();
 
-        db.child("ErrandsNearBy").addChildEventListener(new ChildEventListener() {
+        db.child("MeterRequests").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 //get tiperID here and write to ErrandsCompleted node when errand is complete
@@ -94,8 +94,8 @@ public class NotificationsActivity extends AppCompatActivity {
                // i++;
                 Log.d("howmnytimes", ""+dataSnapshot.child("Message").getValue());
 
-                errandsNearBy.add(""+dataSnapshot.child("Message").getValue());
-                errandsNearBy2.add(new ErrandItem(""+dataSnapshot.child("tiperID").getValue(),""+dataSnapshot.child("Message").getValue()));
+                errandsNearBy.add("");
+                errandsNearBy2.add(new ErrandItem("New Errands Available",""));
 
                 NotificationsAdapter adapter = new NotificationsAdapter(NotificationsActivity.this,errandsNearBy2);
                 rv.setAdapter(adapter);
@@ -126,10 +126,11 @@ public class NotificationsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
-
-
-
-
-
+        errandsNearBy2.clear();
+        errandsNearBy.clear();
+    }
 }
