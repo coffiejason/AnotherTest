@@ -68,7 +68,6 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
                     i.putExtra("posterID",""+list.get(position).getPosterID());
                     i.putExtra("Date",""+list.get(position).getDate());
                     context.startActivity(i);
-
                 }
                 else if(SharedPrefs.getTaskId().equals("none")){
                     Intent i = new Intent(context,  UtilGEList.class);

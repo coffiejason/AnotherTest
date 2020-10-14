@@ -38,6 +38,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
@@ -50,6 +52,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -124,6 +127,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     private static final String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
+    DatabaseReference ref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -142,10 +147,22 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         onpenTipBottoSheet();
 
-        //getAllPosts();
-        //new Functions().getAllPosts(userAvailabilityRef,postsfrmDB,mClusterManager);
-        //new Functions().getMyPosts(mMap,userAvailabilityRef.child(userID));
+        ref = FirebaseDatabase.getInstance().getReference().child("MeterRequests");
 
+        getErrands(ref,getApplicationContext());
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mMap.clear();
+                getErrands(ref,getApplicationContext());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         //Log.d("qwertrewqwer",""+postsfrmDB.size());
@@ -185,7 +202,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //request for User permission
         mMap.setMyLocationEnabled(true);
         mMap.setOnCameraIdleListener(mClusterManager);
-        //mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
         mClusterManager = new ClusterManager<>(ErrandMapActivity.this, mMap);
         mClusterManager.setOnClusterClickListener(this);
         mClusterManager.cluster();
@@ -548,10 +565,108 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         });
     }
 
+    public void getErrands(DatabaseReference db, final Context c){
+        Log.d("dowegeterrand22s"," where here");
+        //utilityerrands.clear();
+        //errands.clear();
+        final HashMap<String, Object> tasknums = new HashMap<>();
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //get tiperID here and write to ErrandsCompleted node when errand is complete
+
+                Log.d("dowegeterrands"," where here ");
+
+                HashMap<String, Object> h = new HashMap<>();
+                HashMap<String, Object> j = new HashMap<>();
+                tasknums.put("tasknum",""+dataSnapshot.getKey());
+
+                for(DataSnapshot p: dataSnapshot.getChildren()){
+
+                    h.put(p.getKey(),p.getValue());
+                    //Log.d("dowegeterrands3"," "+tasknum);
+
+                    for(DataSnapshot p2: p.getChildren()){
+
+                        for(DataSnapshot p3: p2.getChildren()){
+                            Log.d("tryagain2",""+p3);
+                            Log.d("tryagain3",p3.getKey()+" - "+p3.getValue());
+                            j.put(p3.getKey(),p3.getValue());
+
+
+
+                        }
+                        //Log.d("hhsswty1y12",""+j.get(eid+"Name"));
+                        //utilityerrands.add(new UtilitiesERitem(""+j.get(eid+"Name"),""+j.get(eid+"Meterno"),new LatLng(Double.parseDouble(""+j.get(eid+"l")),Double.parseDouble(""+j.get(eid+"g"))),""+j.get(eid+"Areacode")));
+
+                    }
+
+                    //Log.d("valuuueeesss",""+h.get("TiperID")+" "+h.get("Message")+" "+h.get("posterID")+" "+h.get("STATUS")+" "+""+h.get("Date")+" "+j.get("l")+" "+j.get("g"));
+                }
+
+                Log.d("valuuueeesss",""+h.get("TiperID")+" "+h.get("Message")+" "+h.get("posterID")+" "+h.get("STATUS")+" "+""+h.get("Date")+" "+j.get("l")+" "+j.get("g"));
+
+                //postsfrmDB.add(new PostClusterItem(" "+h.get("Message"),new LatLng(Double.parseDouble(""+j.get("l")),Double.parseDouble(""+j.get("g"))),""+h.get("TiperID")," "+h.get("posterID")));
+                if(j.get("l") != null){
+
+                    setMsgIcon(mMap," "+h.get("Message"),new LatLng(Double.parseDouble(""+j.get("l")),Double.parseDouble(""+j.get("g"))),""+tasknums.get("tasknum"));
+
+
+                }
+
+    }
+
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
+
     private void setMsgIcon2(ClusterManager<PostClusterItem> cm, Collection<PostClusterItem> posts){
 
         cm.addItems(posts);
         cm.cluster();
+    }
+
+    private void setMsgIcon(GoogleMap map, String title, LatLng latLng, final String tasknum){
+
+        map.addMarker(new MarkerOptions().position(latLng).title(title)).setSnippet(tasknum);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+        Log.d("jkdsnsd"," "+tasknum);
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Log.d("jkdsnsd2","we dey hererer "+marker.getSnippet());
+                Intent intent = new Intent(getApplicationContext(),UtilGEList.class);
+                intent.putExtra("tasknum",""+marker.getSnippet());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setInfoWindow(){
+
     }
 
     private void redundantCode(DataSnapshot dataSnapshot){
@@ -622,7 +737,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
             @Override
             public void onCameraIdle() {
                 mClusterManager.cluster();
-                //mClusterManager.setRenderer(renderer);
+                mClusterManager.setRenderer(renderer);
             }
         });
     }
@@ -687,7 +802,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     @Override
     protected void onResume() {
         super.onResume();
-        getAllPosts();
+        //getAllPosts();
         badgeBottomNavigtion.apply(selectedId,getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
     }
 
