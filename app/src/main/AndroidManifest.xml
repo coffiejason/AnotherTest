@@ -37,8 +37,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".GetLocationActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".TPCertActivity"></activity>
+        <activity
+            android:name=".GetLocationActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".UtilGEList" />
         <activity
             android:name=".AddIDCardActivity"

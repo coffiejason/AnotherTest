@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:padding="20dp"
     android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground"
     android:id="@+id/row_item_layout">
 
     <com.mikhaellopez.circularimageview.CircularImageView
@@ -80,6 +83,4 @@
             android:layout_toRightOf="@+id/tweet_action_reply"/>
 
     </RelativeLayout>
-
-
 </RelativeLayout>

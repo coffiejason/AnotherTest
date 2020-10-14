@@ -142,13 +142,13 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         onpenTipBottoSheet();
 
-        getAllPosts();
+        //getAllPosts();
         //new Functions().getAllPosts(userAvailabilityRef,postsfrmDB,mClusterManager);
         //new Functions().getMyPosts(mMap,userAvailabilityRef.child(userID));
 
 
 
-        Log.d("qwertrewqwer",""+postsfrmDB.size());
+        //Log.d("qwertrewqwer",""+postsfrmDB.size());
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -318,6 +318,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         newNotif = findViewById(R.id.toolbar_badge_parent);
         notifIcon  = findViewById(R.id.toolbar_body_parent);
 
+        newNotif.setVisibility(View.GONE);
+
         listBtn = findViewById(R.id.listbtn);
 
         listBtn.setOnClickListener(new View.OnClickListener() {
@@ -466,9 +468,23 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     }
 
+    @SuppressLint("ResourceType")
+    private void initBottomItems() {
+        BottomItem home = new BottomItem(HOME, R.drawable.ic_home, "Home", false);
+        BottomItem notifications = new BottomItem(NOTIFICATIONS, R.drawable.ic_plus, "Notifications", false);
+        BottomItem settings = new BottomItem(SETTINGS, R.drawable.ic_settings, "Settings", false);
+
+        badgeBottomNavigtion.addBottomItem(home);
+        badgeBottomNavigtion.addBottomItem(notifications);
+        badgeBottomNavigtion.addBottomItem(settings);
+
+        badgeBottomNavigtion.apply(selectedId, getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
+        itemSelect(selectedId);
+    }
+
     @Override
     public void itemSelect(int itemId) {
-        Toast.makeText(this," "+itemId,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this," "+itemId,Toast.LENGTH_SHORT).show();
         switch (itemId){
             case 0:
                 break;
@@ -486,20 +502,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
                 break;
         }
 
-    }
-
-    @SuppressLint("ResourceType")
-    private void initBottomItems() {
-        BottomItem home = new BottomItem(HOME, R.drawable.ic_home, "Home", false);
-        BottomItem notifications = new BottomItem(NOTIFICATIONS, R.drawable.ic_plus, "Notifications", false);
-        BottomItem settings = new BottomItem(SETTINGS, R.drawable.ic_settings, "Settings", false);
-
-        badgeBottomNavigtion.addBottomItem(home);
-        badgeBottomNavigtion.addBottomItem(notifications);
-        badgeBottomNavigtion.addBottomItem(settings);
-
-        badgeBottomNavigtion.apply(selectedId, getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
-        itemSelect(selectedId);
     }
 
     int i = 0;

@@ -2,6 +2,9 @@ package com.figure.anothertest;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +15,10 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Geocoder;
 import android.location.Location;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +31,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -81,6 +87,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -1006,6 +1013,61 @@ class Functions {
         Collections.reverse(utilityerrands);
         return utilityerrands;
     }
+
+    public void showNotifications(Context context,String title, String message){
+        Intent intent=new Intent(context, UtilGEList.class);
+        String channel_id="TP_notification";
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_ONE_SHOT);
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder builder=new NotificationCompat.Builder(context,channel_id)
+                .setSmallIcon(R.drawable.tplogolarge)
+                .setSound(uri)
+                .setAutoCancel(true)
+                .setVibrate(new long[]{1000,1000,1000,1000,1000})
+                .setOnlyAlertOnce(true)
+                .setContentIntent(pendingIntent)
+                .setOngoing(true)
+                .setAutoCancel(true);
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
+            //builder=builder.setContent(getCustomDesign(title,message));
+            builder=builder.setContentTitle(title)
+                    .setContentText(message)
+                    .setSmallIcon(R.drawable.tplogolarge);
+        }
+        else{
+            builder=builder.setContentTitle(title)
+                    .setContentText(message)
+                    .setSmallIcon(R.drawable.tplogolarge);
+        }
+
+        NotificationManager notificationManager= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel=new NotificationChannel(channel_id,"web_app",NotificationManager.IMPORTANCE_HIGH);
+            notificationChannel.setSound(uri,null);
+            assert notificationManager != null;
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        assert notificationManager != null;
+        notificationManager.notify(createRandomCode(7),builder.build());
+
+    }
+
+    public int createRandomCode(int codeLength){
+        char[] chars = "1234567890".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new SecureRandom();
+        for(int i = 0; i < codeLength; i++){
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+
+        return Integer.parseInt(sb.toString());
+    }
+
+
 
     /**
      * Enables https connections

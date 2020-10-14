@@ -75,7 +75,7 @@ public class EditProfileActivity extends AppCompatActivity {
         addID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(EditProfileActivity.this,AddIDCardActivity.class));
+                startActivity(new Intent(EditProfileActivity.this,TPCertActivity.class));
             }
         });
 
@@ -130,7 +130,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         username = username + SharedPrefs.getUsername();
         phone = phone + SharedPrefs.getUsername();
-        id = id + SharedPrefs.getUsername();
+        //id = id + SharedPrefs.getUsername();
 
         if(username.isEmpty()){
             tv_username.setText("Add username");
@@ -145,12 +145,12 @@ public class EditProfileActivity extends AppCompatActivity {
         else{
             tv_phone.setText("+"+SharedPrefs.getPhonenum());
         }
-
+        /*
         if(id.isEmpty()){
             tv_id_card.setText("Add a Valid ID");
         }
         else{
             tv_id_card.setText(""+SharedPrefs.getIDnumber());
-        }
+        }*/
     }
 }

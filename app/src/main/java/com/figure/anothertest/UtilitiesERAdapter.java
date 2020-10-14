@@ -56,7 +56,7 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder,final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         if(items.size()>0){
             holder.name.setText(items.get(position).getCustomerName());
             holder.meternum.setText(items.get(position).getMeterNum());
@@ -70,6 +70,13 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
             holder.directionsbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /*
+                    holder.img_directionsBtn_clicked.setVisibility(View.VISIBLE);
+                    holder.img_directionsBtn.setVisibility(View.GONE);
+                    */
+
+                    new Functions().showNotifications(context,items.get(position).getCustomerName(),items.get(position).getMeterNum());
+
                     Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                             Uri.parse("google.navigation:q= "+items.get(position).getLocation().latitude+","+items.get(position).getLocation().longitude));
                     //5.709347,-0.205360
@@ -105,6 +112,7 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView meternum,name,town,done;
         RelativeLayout rowlayout,directionsbtn;
+        ImageView img_directionsBtn, img_directionsBtn_clicked;
 
 
         ViewHolder(@NonNull View itemView) {
@@ -115,6 +123,8 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
             rowlayout = itemView.findViewById(R.id.row_item_layout);
             directionsbtn = itemView.findViewById(R.id.directionsbtn);
             done = itemView.findViewById(R.id.tv_tweet_edited);
+            img_directionsBtn = itemView.findViewById(R.id.img_directions);
+            img_directionsBtn_clicked = itemView.findViewById(R.id.img_directions_clicked);
         }
     }
 }

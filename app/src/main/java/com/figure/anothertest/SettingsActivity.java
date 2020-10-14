@@ -82,12 +82,6 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        badgeBottomNavigtion.apply(selectedId, getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
-    }
-
     private void init(){
         profile = findViewById(R.id.ln_profile);
         myposts = findViewById(R.id.ln_chats);
@@ -127,7 +121,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "http://thisaq.com/tp/services/";
+                String url = "http://tipyllc.com/services/";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
@@ -152,4 +146,14 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
         });
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        init();
+        badgeBottomNavigtion.apply(selectedId, getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
+        //initBottomItems();
+    }
+
 }

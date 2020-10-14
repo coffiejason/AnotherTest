@@ -122,6 +122,8 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
         notifIcon  = findViewById(R.id.toolbar_body_parent);
         newNotif = findViewById(R.id.toolbar_badge_parent);
 
+        newNotif.setVisibility(View.GONE);
+
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,8 +168,6 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
         badgeBottomNavigtion.addBottomItem(home);
         badgeBottomNavigtion.addBottomItem(notifications);
-        //badgeBottomNavigtion.addBottomItem(friends);
-        //badgeBottomNavigtion.addBottomItem(cart);
         badgeBottomNavigtion.addBottomItem(settings);
 
         badgeBottomNavigtion.apply(selectedId, getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
@@ -176,7 +176,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
     @Override
     public void itemSelect(int itemId) {
-        Toast.makeText(this," "+itemId,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this," "+itemId,Toast.LENGTH_SHORT).show();
         switch (itemId){
             case 0:
                 break;
@@ -225,25 +225,15 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
                  String eid = "";
 
-                //i++;
-                //Log.d("howmnytimes"," "+i+": "+dataSnapshot.child("Areacode").getValue());
-
-                //utilityerrands.add(new UtilitiesERitem(""+errands,""+dataSnapshot.child("Meterno").getValue(),new LatLng(Double.parseDouble(""+dataSnapshot.child("l").getValue()),Double.parseDouble(""+dataSnapshot.child("g").getValue())),""+dataSnapshot.child("Areacode").getValue()));
-                //dataSnapshot.getChildren()
-                //errands.add(new TPPost(""+dataSnapshot.child("Message").getValue()));
-
                 HashMap<String, Object> h = new HashMap<>();
 
-
-                Log.d("jjwjwjdtassnapcsj"," "+dataSnapshot.getKey());
                 eid = ""+dataSnapshot.getKey();
 
                 for(DataSnapshot p: dataSnapshot.getChildren()){
 
-                    Log.d("dowegeterrands2"," "+p.getKey());
-
                     h.put(p.getKey(),p.getValue());
                     Log.d("dowegeterrands3"," "+p);
+                    /*
                     for(DataSnapshot p2: p.getChildren()){
 
                         Log.d("tryagain",""+p2);
@@ -259,19 +249,9 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
                         }
                         Log.d("hhsswty1y12",""+j.get(eid+"Name"));
                         utilityerrands.add(new UtilitiesERitem(""+j.get(eid+"Name"),""+j.get(eid+"Meterno"),new LatLng(Double.parseDouble(""+j.get(eid+"l")),Double.parseDouble(""+j.get(eid+"g"))),""+j.get(eid+"Areacode")));
-                    }
+                    }*/
 
                 }
-
-                /*
-                try {
-                    JSONObject cl = new JSONObject(""+h.get("Customer List").toString());
-                    Log.d("wedeygetoooh",""+cl.getString("Meterno"));
-                } catch (JSONException e) {
-                   Log.d("errorreading",""+e.toString());
-                }*/
-
-
 
                 Log.d("learningagain",""+h.get("Date"));
                 //item = new UtilGenItem(""+h.get("posterID"));
@@ -356,5 +336,12 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
             return false;
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //getAllPosts();
+        badgeBottomNavigtion.apply(selectedId,getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
     }
 }

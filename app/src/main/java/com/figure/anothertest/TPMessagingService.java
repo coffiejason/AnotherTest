@@ -51,6 +51,7 @@ public class TPMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
+
     private RemoteViews getCustomDesign(String title, String message){
 
         RemoteViews remoteViews=new RemoteViews(getApplicationContext().getPackageName(), R.layout.notification);
@@ -71,7 +72,7 @@ public class TPMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder=new NotificationCompat.Builder(getApplicationContext(),channel_id)
-                .setSmallIcon(R.drawable.web_hi_res_512)
+                .setSmallIcon(R.drawable.tplogolarge)
                 .setSound(uri)
                 .setAutoCancel(true)
                 .setVibrate(new long[]{1000,1000,1000,1000,1000})
@@ -82,12 +83,12 @@ public class TPMessagingService extends FirebaseMessagingService {
             //builder=builder.setContent(getCustomDesign(title,message));
             builder=builder.setContentTitle(title)
                     .setContentText(message)
-                    .setSmallIcon(R.drawable.web_hi_res_512);
+                    .setSmallIcon(R.drawable.tplogolarge);
         }
         else{
             builder=builder.setContentTitle(title)
                     .setContentText(message)
-                    .setSmallIcon(R.drawable.web_hi_res_512);
+                    .setSmallIcon(R.drawable.tplogolarge);
         }
 
         NotificationManager notificationManager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

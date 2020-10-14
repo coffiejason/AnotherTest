@@ -206,8 +206,9 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="15sp"
                                 android:textColor="#292727"
-                                android:text="ID Card"/>
+                                android:text="Certification"/>
                             <ImageButton
+                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_edit_black_24dp"
@@ -223,7 +224,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
                             android:textColor="@android:color/black"
-                            android:text="xxx-xxx-xxx"/>
+                            android:text=""/>
 
                     </LinearLayout>
                 </LinearLayout>
