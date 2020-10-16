@@ -12,6 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/tplogolarge"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +33,7 @@
                 android:layout_marginStart="15dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@string/get_connected"
+                android:text="@string/lets_help_society"
                 android:textColor="@color/colorTitle"
                 android:textSize="30sp"
                 android:textStyle="bold"
@@ -41,7 +48,7 @@
                 android:layout_marginTop="3dp"
                 android:paddingLeft="5dp"
                 android:ellipsize="end"
-                android:text="@string/people_around_you"
+                android:text="@string/and_get_paid_for_it"
                 android:textColor="@color/colorTitle"
                 android:textSize="15sp"
                 android:layout_marginLeft="15dp" />
@@ -86,7 +93,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="270dp"
                 android:layout_below="@+id/getstarted"
                 android:src="@drawable/introo"/>
 

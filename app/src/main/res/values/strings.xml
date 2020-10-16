@@ -66,6 +66,9 @@
     <string name="share_subject">Join Tipy</string>
     <string name="invite_fried_via">Invite a friend via... </string>
 
+    <string name="lets_help_society">Lets help society</string>
+    <string name="and_get_paid_for_it">and get paid for it !</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

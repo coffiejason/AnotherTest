@@ -105,7 +105,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 editor3.apply();
 
                 Intent i = new Intent(EditProfileActivity.this,HomeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
 
             }

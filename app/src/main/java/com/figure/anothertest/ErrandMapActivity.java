@@ -37,6 +37,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -651,7 +652,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     private void setMsgIcon(GoogleMap map, String title, LatLng latLng, final String tasknum){
 
-        map.addMarker(new MarkerOptions().position(latLng).title(title)).setSnippet(tasknum);
+        map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(new Functions().layoutToBitmap(R.layout.post_icon,getApplicationContext()))).title(title)).setSnippet(tasknum);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
         Log.d("jkdsnsd"," "+tasknum);
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
