@@ -731,7 +731,7 @@ class Functions {
                 i++;
                 Log.d("howmnytimes"," "+i+": "+dataSnapshot.child("Areacode").getValue());
 
-                utilityerrands.add(new UtilitiesERitem(""+dataSnapshot.child("Name").getValue(),""+dataSnapshot.child("Meterno").getValue(),new LatLng(Double.parseDouble(""+dataSnapshot.child("l").getValue()),Double.parseDouble(""+dataSnapshot.child("g").getValue())),""+dataSnapshot.child("Areacode").getValue()));
+                utilityerrands.add(new UtilitiesERitem(""+dataSnapshot.child("Name").getValue(),""+dataSnapshot.child("Meterno").getValue(),new LatLng(Double.parseDouble(""+dataSnapshot.child("l").getValue()),Double.parseDouble(""+dataSnapshot.child("g").getValue())),""+dataSnapshot.child("Areacode").getValue(),""+dataSnapshot.child("isIndoor").getValue()));
             }
 
             @Override
@@ -1065,6 +1065,32 @@ class Functions {
         }
 
         return Integer.parseInt(sb.toString());
+    }
+
+    public void submitFailedRead(UtilitiesERitem item,String tasknum,String date){
+        HashMap<String,Object> h = new HashMap<>();
+        h.put("MeterNo",item.getMeterNum());
+        h.put("Name",item.getCustomerName());
+        h.put("Areacode",item.getTown());
+        h.put("TaskID",tasknum);
+        h.put("Date",date);
+        h.put("l",""+item.getLocation().latitude);
+        h.put("g",""+item.getLocation().longitude);
+
+        final String removeRead = ""+h.get("MeterNo");
+        final String taskid = ""+h.get("TaskID");
+
+
+        FirebaseDatabase.getInstance().getReference().child("Pending-Failed").child(""+h.get("MeterNo")).updateChildren(h).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                removeMeterRequest(taskid,removeRead);
+            }
+        });
+    }
+
+    private void removeMeterRequest(String taskid,String meterno){
+        FirebaseDatabase.getInstance().getReference().child("MeterRequests").child(taskid).child("Customer List").child(meterno).removeValue();
     }
 
 

@@ -29,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -101,6 +102,19 @@ public class UtilGEList extends AppCompatActivity {
         //endTasksAlert();
 
         init();
+
+        userDB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                checkUtilityErrands(userDB,getApplicationContext());
+                showList();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     void init(){
@@ -134,7 +148,9 @@ public class UtilGEList extends AppCompatActivity {
                 //i++;
                 //Log.d("howmnytimes"," "+i+": "+dataSnapshot.child("Areacode").getValue());
 
-                utilityerrands.add(new UtilitiesERitem(""+dataSnapshot.child("Name").getValue(),""+dataSnapshot.child("Meterno").getValue(),new LatLng(Double.parseDouble(""+dataSnapshot.child("l").getValue()),Double.parseDouble(""+dataSnapshot.child("g").getValue())),""+dataSnapshot.child("Areacode").getValue()));
+                Log.d("isinninsdsd","bkkjkjkj "+dataSnapshot.child("isIndoor").getValue());
+
+                utilityerrands.add(new UtilitiesERitem(""+dataSnapshot.child("Name").getValue(),""+dataSnapshot.child("Meterno").getValue(),new LatLng(Double.parseDouble(""+dataSnapshot.child("l").getValue()),Double.parseDouble(""+dataSnapshot.child("g").getValue())),""+dataSnapshot.child("Areacode").getValue(),""+dataSnapshot.child("isIndoor").getValue()));
                 //UtilitiesERAdapter adapter = new UtilitiesERAdapter(UtititiesERActivity.this,utilityerrands);
                 //rv.setAdapter(adapter);
                 //rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -195,6 +211,8 @@ public class UtilGEList extends AppCompatActivity {
         h.put("imgurl",""+uri);
         h.put("Usage",SharedPrefs.getMeterRead("reading"+i));
         h.put("meterno",""+SharedPrefs.getMeternum("meternum"+i));
+        h.put("l",""+SharedPrefs.getTipeeL("tipeeL"+i));
+        h.put("g",""+SharedPrefs.getTipeeG("tipeeG"+i));
 
         Log.d("writinghis","WHERERE "+utilityerrands.get(i).getCustomerName()+" "/*+uri+" "+SharedPrefs.getMeterRead("reading"+i)+" "+SharedPrefs.getMeternum("meternum"+i) */);
 

@@ -50,6 +50,17 @@
         android:textStyle="bold"
         android:textSize="20sp"/>
 
+    <ImageView
+        android:id="@+id/indoor_icon"
+        android:visibility="gone"
+        android:layout_below="@+id/tv_town"
+        android:layout_toLeftOf="@id/directionsbtn"
+        android:layout_marginTop="4dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="70dp"
+        android:src="@drawable/ic_home"/>
+
 
     <RelativeLayout
         android:layout_alignParentRight="true"

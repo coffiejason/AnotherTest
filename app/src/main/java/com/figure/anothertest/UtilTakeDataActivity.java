@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,13 +51,14 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class UtilTakeDataActivity extends AppCompatActivity {
-    String name,meterno,town,position,tasknum,date;
+    String name,meterno,town,position,tasknum,date,ml,mg;
     TextView userdetails;
     RelativeLayout postPicbtn,imageclick,finishbtn;
     CardView image,finishbtnview;
     Toolbar tb;
 
     EditText meterNumInput;
+    String tipeeL,tipeeG;
 
     private String mCurrentPhotoPath;
 
@@ -72,6 +78,9 @@ public class UtilTakeDataActivity extends AppCompatActivity {
     DatabaseReference ref,statusRef;
 
     HashMap<String, Object> h = new HashMap<>();
+
+    LocationManager locationManager;
+    LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,12 +120,16 @@ public class UtilTakeDataActivity extends AppCompatActivity {
         position = getIntent().getStringExtra("position");
         tasknum = getIntent().getStringExtra("tasknum");
         date = getIntent().getStringExtra("Date");
+        //ml = getIntent().getStringExtra("ml");
+       // mg = getIntent().getStringExtra("mg");
 
         Toast.makeText(getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
 
         userdetails.setText(name+" - "+meterno);
 
         mAlbumStorageDirFactory = new BaseAlbumDirFactory();
+
+        getLocation();
 
         Log.d("hshsbhqgfy",""+tasknum);
     }
@@ -164,6 +177,8 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                     SharedPrefs.setMeterRead(meterNumInput.getText().toString()+"","reading"+position);
                     SharedPrefs.setImageUri(""+uri,"picread"+position);
                     SharedPrefs.setTaskId(tasknum);
+                    SharedPrefs.setTipeeL(tipeeL,"tipeeL"+position);
+                    SharedPrefs.setTipeeG(tipeeG,"tipeeG"+position);
                     SharedPrefs.setTaskId2("loremipsum");
                     onBackPressed();
                 }
@@ -337,5 +352,53 @@ public class UtilTakeDataActivity extends AppCompatActivity {
 
     public void snack(View view, String message){
         Snackbar.make(view,message,Snackbar.LENGTH_LONG).show();
+    }
+
+    void getLocation(){
+
+        //Spinner spinner = (Spinner) findViewById(R.id.spinner);
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i("LOCATION", location.toString());
+                Toast.makeText(getApplicationContext(),"L:"+location.getLatitude()+" G:"+location.getLongitude(),Toast.LENGTH_SHORT).show();
+                //etLocation.setText("L:"+location.getLatitude()+" G:"+location.getLongitude());
+                tipeeL = ""+location.getLatitude();
+                tipeeG = ""+location.getLongitude();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+
+        };
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String []{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }else{
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10, locationListener);
+        }
+
+        // ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.planets_array, android.R.layout.simple_spinner_item);
+
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // spinner.setAdapter(adapter);
+
     }
 }

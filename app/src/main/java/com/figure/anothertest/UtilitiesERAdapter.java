@@ -1,6 +1,8 @@
 package com.figure.anothertest;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,6 +70,10 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
                 holder.done.setText("DONE");
             }
 
+            if(items.get(position).getIsIndoor().equals("true") || items.get(position).getIsIndoor().equals("")){
+                holder.indoor_icon.setVisibility(View.VISIBLE);
+            }
+
             holder.directionsbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -96,7 +103,38 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
                     i.putExtra("position",""+position);
                     i.putExtra("tasknum",""+taskNum);
                     i.putExtra("Date",""+date);
+                    i.putExtra("ml",""+items.get(position).getLocation().latitude);
+                    i.putExtra("mg",""+items.get(position).getLocation().longitude);
                     context.startActivity(i);
+                }
+            });
+
+            holder.rowlayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    new Functions().submitFailedRead(items.get(position),taskNum,date);
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Are you sure you want to drop "+items.get(position).getCustomerName()+"'s Meter read ?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+
+
+
+                    return true;
                 }
             });
 
@@ -113,6 +151,7 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
         TextView meternum,name,town,done;
         RelativeLayout rowlayout,directionsbtn;
         ImageView img_directionsBtn, img_directionsBtn_clicked;
+        ImageView indoor_icon;
 
 
         ViewHolder(@NonNull View itemView) {
@@ -125,6 +164,7 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
             done = itemView.findViewById(R.id.tv_tweet_edited);
             img_directionsBtn = itemView.findViewById(R.id.img_directions);
             img_directionsBtn_clicked = itemView.findViewById(R.id.img_directions_clicked);
+            indoor_icon = itemView.findViewById(R.id.indoor_icon);
         }
     }
 }

@@ -219,4 +219,28 @@ class SharedPrefs {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getString(TASK_ID2,"none");
     }
+
+    static void setTipeeL(String lat, String key){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key,lat);
+        editor.apply();
+    }
+
+    static void setTipeeG(String lng, String key){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key,lng);
+        editor.apply();
+    }
+
+    static String getTipeeL(String key){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key,null);
+    }
+
+    static String getTipeeG(String key){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key,null);
+    }
 }
