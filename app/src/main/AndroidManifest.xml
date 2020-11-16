@@ -37,7 +37,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".TPCertActivity"></activity>
+        <activity android:name=".UpdateActivity"></activity>
+        <activity android:name=".TPCertActivity" />
         <activity
             android:name=".GetLocationActivity"
             android:windowSoftInputMode="adjustResize" />

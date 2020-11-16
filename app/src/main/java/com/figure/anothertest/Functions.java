@@ -171,7 +171,7 @@ class Functions {
         DatabaseReference ref = userDB.child(userID);
 
         ref.child("Errands").push().setValue(hashMap);
-        whoGetsNotified(ErrandMapActivity.availableUsers,new LatLng(l,g),message,userID);
+        //whoGetsNotified(ErrandMapActivity.availableUsers,new LatLng(l,g),message,userID);
     }
 
     void comment(DatabaseReference commentDBref, String postUserID, String message) {
@@ -1067,8 +1067,42 @@ class Functions {
         return Integer.parseInt(sb.toString());
     }
 
-    public void submitFailedRead(UtilitiesERitem item,String tasknum,String date){
+    public void dropRead(UtilitiesERitem item,String tasknum,String date){
         HashMap<String,Object> h = new HashMap<>();
+        h.put("Meterno",item.getMeterNum());
+        h.put("Name",item.getCustomerName());
+        h.put("Areacode",item.getTown());
+        h.put("TaskID",tasknum);
+        h.put("Date",date);
+        h.put("l",""+item.getLocation().latitude);
+        h.put("g",""+item.getLocation().longitude);
+
+        final String removeRead = ""+h.get("Meterno");
+        final String taskid = ""+h.get("TaskID");
+
+        final HashMap<String, Object> h2 = new HashMap<>();
+        h2.put("Date",date);
+        h2.put("Message","Reposted Meter read");
+        h2.put("TiperID","Reposted");
+
+
+        FirebaseDatabase.getInstance().getReference().child("MeterRequests").child(""+h.get("Meterno")).child("Customer List").child(""+h.get("Meterno")).updateChildren(h).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                FirebaseDatabase.getInstance().getReference().child("MeterRequests").child(removeRead).updateChildren(h2).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        removeMeterRequest(taskid,removeRead);
+                    }
+                });
+            }
+        });
+    }
+
+    public void ReportFailed(UtilitiesERitem item,String tasknum,String date,String reason){
+        HashMap<String,Object> h = new HashMap<>();
+        h.put("Reason",reason);
         h.put("MeterNo",item.getMeterNum());
         h.put("Name",item.getCustomerName());
         h.put("Areacode",item.getTown());
@@ -1081,12 +1115,13 @@ class Functions {
         final String taskid = ""+h.get("TaskID");
 
 
-        FirebaseDatabase.getInstance().getReference().child("Pending-Failed").child(""+h.get("MeterNo")).updateChildren(h).addOnSuccessListener(new OnSuccessListener<Void>() {
+        FirebaseDatabase.getInstance().getReference().child("failed").child(""+h.get("MeterNo")).updateChildren(h).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 removeMeterRequest(taskid,removeRead);
             }
         });
+
     }
 
     private void removeMeterRequest(String taskid,String meterno){

@@ -51,6 +51,7 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
         holder.postText.setText(list.get(position).getMessage());
         holder.postUserID.setText(list.get(position).getTiperID());
 
+
         if(list.get(position).getStatus().equals("PENDING")){
             holder.status_msg.setVisibility(View.VISIBLE);
         }

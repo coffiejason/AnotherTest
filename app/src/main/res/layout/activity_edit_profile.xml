@@ -42,6 +42,7 @@
                     android:src="@drawable/icon_male_ph"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:visibility="gone"
                     android:id="@+id/fab_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,6 +96,7 @@
                                 android:textColor="#292727"
                                 android:text="Name"/>
                             <ImageButton
+                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_edit_black_24dp"
@@ -149,6 +151,7 @@
                                 android:textColor="#292727"
                                 android:text="Phone"/>
                             <ImageButton
+                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_edit_black_24dp"

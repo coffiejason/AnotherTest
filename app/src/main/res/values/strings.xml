@@ -68,6 +68,9 @@
 
     <string name="lets_help_society">Lets help society</string>
     <string name="and_get_paid_for_it">and get paid for it !</string>
+    <string name="update_message">Update your app</string>
+    <string name="update_description_msg">A new version of our app is available</string>
+    <string name="update">Update</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

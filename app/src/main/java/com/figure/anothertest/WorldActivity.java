@@ -324,7 +324,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
             }
         });
     }
-
+    /*
      boolean endTasksAlert(){
         if(SharedPrefs.getMeternum("meternum0") != null){
             Snackbar snackbar = Snackbar.make(parentLayout,"Submit begun tasks before proceeding",3000);
@@ -336,12 +336,16 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
             return false;
         }
 
-    }
+    }*/
 
     @Override
     protected void onResume() {
         super.onResume();
-        //getAllPosts();
+        //showList();
+        if(SharedPrefs.getTaskId() == null){
+            onBackPressed();
+        }
+
         badgeBottomNavigtion.apply(selectedId,getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
     }
 }

@@ -90,13 +90,14 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
         help = findViewById(R.id.ln_help);
         invites = findViewById(R.id.ln_invite_friend);
 
+
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SettingsActivity.this,EditProfileActivity.class));
             }
         });
-
+        /*
         myposts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +117,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
             public void onClick(View v) {
                 startActivity(new Intent(SettingsActivity.this,SavedMediaActivity.class));
             }
-        });
+        });*/
 
         help.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +135,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
                 /*Create an ACTION_SEND Intent*/
                 Intent intent = new Intent(android.content.Intent.ACTION_SEND);
                 /*This will be the actual content you wish you share.*/
-                String shareBody = "Hey there checkout TIpy http://thisaq.com/tp/";
+                String shareBody = "Hey there checkout Tipy at http://tipyllc.com/signup/ , Signup and start making money from home";
                 /*The type of the content is text, obviously.*/
                 intent.setType("text/plain");
                 /*Applying information Subject and Body.*/

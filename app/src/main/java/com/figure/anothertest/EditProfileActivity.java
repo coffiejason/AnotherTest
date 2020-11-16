@@ -65,24 +65,10 @@ public class EditProfileActivity extends AppCompatActivity {
         addPhone = findViewById(R.id.add_phone);
         ln_edit_name = findViewById(R.id.ln_edit_name);
 
-        addPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(EditProfileActivity.this,AddPhoneActivity.class));
-            }
-        });
-
         addID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(EditProfileActivity.this,TPCertActivity.class));
-            }
-        });
-
-        ln_edit_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(EditProfileActivity.this,AddNameActivity.class));
             }
         });
 
@@ -126,6 +112,11 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     void setProfileDetails(){
+        tv_username.setText("John Doe");
+
+        tv_phone.setText("+233 240 000 0000");
+        /*
+
         String username = "",phone = "",id = "";
 
         username = username + SharedPrefs.getUsername();

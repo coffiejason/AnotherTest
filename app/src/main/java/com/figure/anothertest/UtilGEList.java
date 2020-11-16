@@ -58,7 +58,7 @@ public class UtilGEList extends AppCompatActivity {
     ImageView uploadImg, doneImg;
 
     StorageReference storageReference = FirebaseStorage.getInstance().getReference("Watsan Demo");
-    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("CWSA_userbase");
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("readings");
 
     HashMap<String, Object> h = new HashMap<>();
 
@@ -84,9 +84,9 @@ public class UtilGEList extends AppCompatActivity {
 
         tasknum = getIntent().getStringExtra("tasknum");
         posterID = getIntent().getStringExtra("posterID");
-        date = getIntent().getStringExtra("Date");
+        date = "2020/10";/*getIntent().getStringExtra("Date");*/
 
-        //Toast.makeText(this, ""+tasknum, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, ""+date, Toast.LENGTH_SHORT).show();
 
         checkUtilityErrands(userDB,getApplicationContext());
 
@@ -106,8 +106,8 @@ public class UtilGEList extends AppCompatActivity {
         userDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                checkUtilityErrands(userDB,getApplicationContext());
-                showList();
+                //checkUtilityErrands(userDB,getApplicationContext());
+                //showList();
             }
 
             @Override
@@ -207,12 +207,15 @@ public class UtilGEList extends AppCompatActivity {
         final String imageName = "meterimage"+ Calendar.getInstance().getTimeInMillis()+getExtension(getApplicationContext(),uri);
         final StorageReference sRef = storageReference.child(imageName);
 
-        h.put("Name",utilityerrands.get(i).getCustomerName());
-        h.put("imgurl",""+uri);
-        h.put("Usage",SharedPrefs.getMeterRead("reading"+i));
-        h.put("meterno",""+SharedPrefs.getMeternum("meternum"+i));
+        //h.put("Name",utilityerrands.get(i).getCustomerName());
+        //h.put("imageUrl",""+uri);
+        h.put("reading",SharedPrefs.getMeterRead("reading"+i));
+        h.put("id",""+SharedPrefs.getMeternum("meternum"+i));
+        h.put("meterNo",""+SharedPrefs.getMeternum("meternum"+i));
         h.put("l",""+SharedPrefs.getTipeeL("tipeeL"+i));
         h.put("g",""+SharedPrefs.getTipeeG("tipeeG"+i));
+        h.put("date",""+date);
+
 
         Log.d("writinghis","WHERERE "+utilityerrands.get(i).getCustomerName()+" "/*+uri+" "+SharedPrefs.getMeterRead("reading"+i)+" "+SharedPrefs.getMeternum("meternum"+i) */);
 
@@ -226,9 +229,9 @@ public class UtilGEList extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri2) {
                                 Log.d("srwqsdxd","were here");
-                                Log.d("srwqsdxd",""+h.get("meterno"));
-                                h.put("imgurl",""+uri2);
-                                ref.child(posterID).child(date).child(""+h.get("meterno")).updateChildren(h);
+                                Log.d("srwqsdxd",""+h.get("id"));
+                                h.put("imageUrl",""+uri2);
+                                ref.child(""+h.get("id")).updateChildren(h);
                                 //finish();
                                 pb.setProgress(pb.getProgress()+progressDiff);
                                 Log.d("agocatchyou","uploaded sucessfully");

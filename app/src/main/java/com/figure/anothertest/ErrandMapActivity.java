@@ -8,7 +8,6 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,19 +17,17 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.figure.anothertest.bottomvavigation.BadgeBottomNavigtion;
 import com.figure.anothertest.bottomvavigation.BottomAdapter;
 import com.figure.anothertest.bottomvavigation.BottomItem;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
+
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
+
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,15 +40,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -62,21 +53,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.maps.android.clustering.Cluster;
-import com.google.maps.android.clustering.ClusterManager;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 //write user location to firebase at login and or signup
 
 public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        com.google.android.gms.location.LocationListener,ClusterManager.OnClusterClickListener<PostClusterItem>, BottomAdapter.BottomItemClickInterface, TipBSDialogue.BottomSheetListner {
+        com.google.android.gms.location.LocationListener, BottomAdapter.BottomItemClickInterface, TipBSDialogue.BottomSheetListner {
 
     private GoogleMap mMap;
     GoogleApiClient googleApiClient;
@@ -102,6 +87,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     Bundle args;
 
     public static Bundle coordsLoc = new Bundle();
+    public static String versionNum = "1.0.0";
 
     AutocompleteSupportFragment autocompleteFragment;
 
@@ -113,22 +99,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     private final int CART = 4;
     private int selectedId = 0;
 
-    public static List<TPPost> allposts = new ArrayList<>();
-    public static LatLng myLocation;
-
-
-    private ClusterManager<PostClusterItem> mClusterManager;
-    private static Collection<PostClusterItem> postsfrmDB;
-
-    public static List<User> availableUsers;
-    private int gotErrand = 0;
-
-    int AUTOCOMPLETE_REQUEST_CODE = 100;
-
-    private static final String TAG = "MainActivity";
-    private static final int ERROR_DIALOG_REQUEST = 9001;
-
-    DatabaseReference ref;
+    DatabaseReference ref,appversion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -166,8 +137,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         });
 
 
-        //Log.d("qwertrewqwer",""+postsfrmDB.size());
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
@@ -202,14 +171,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         //request for User permission
         mMap.setMyLocationEnabled(true);
-        mMap.setOnCameraIdleListener(mClusterManager);
-        mMap.setOnMarkerClickListener(mClusterManager);
-        mClusterManager = new ClusterManager<>(ErrandMapActivity.this, mMap);
-        mClusterManager.setOnClusterClickListener(this);
-        mClusterManager.cluster();
-
-        renderer = new TPClusterRenderer(ErrandMapActivity.this,mMap,mClusterManager);
-        mClusterManager.setRenderer(renderer);
     }
 
     @Override
@@ -245,25 +206,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         coordsLoc.putFloat("l", (float) location.getLatitude());
         coordsLoc.putFloat("g", (float) location.getLongitude());
 
-        //code to save user location to Firebase
-        //getPost(userIndividual);
-
-        readCameraChanges();
-
-        Log.d("allpostsList",""+allposts.size());
-
-
-
         new Functions().saveUser(userIndividual,location,userID);
-        mClusterManager.cluster();
 
-        //mMap.clear();
-        //mClusterManager.clearItems();
-
-
-        //TPPost p = new TPPost("heyy",5.209,0.2994);
-
-        //Functions.whoGetsNotified(userAvailabilityRef,p,1000,"sometopic",true);
     }
 
     protected synchronized void buildGoogleApiClient(){
@@ -283,52 +227,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         super.onStop();
     }
 
-    @Override
-    public boolean onClusterClick(Cluster<PostClusterItem> cluster) {
-        Toast.makeText(this, "Cluster clicked", Toast.LENGTH_SHORT).show();
-        Collection<PostClusterItem> pCluster = cluster.getItems();
-
-        Bundle bundle = new Bundle();
-
-        int i = 0;
-
-        for(PostClusterItem p: pCluster){
-            Log.d("GotAllMsg",""+p.getTitle());
-            bundle.putString("Key"+i,p.getTitle());
-            bundle.putString("IDKey"+i,p.getUserID());
-            bundle.putString("postIDKey"+i,p.getPostid());
-            i++;
-        }
-
-        bundle.putInt("iterator",i);
-
-        Intent intent = new Intent(ErrandMapActivity.this, OpenPostsCluster.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
-
-        return true;
-    }
-
     void init(){
-
-        postsfrmDB = new ArrayList<>();
-        availableUsers = new ArrayList<>();
-
-        /*
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, Functions.GTTOWNS);
-
-        AutoCompleteTextView textView = (AutoCompleteTextView)
-                findViewById(R.id.fasttravel);
-        textView.setAdapter(adapter);
-
-        textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("yuiooiuytrew","yessss  "+parent.getItemAtPosition(position));
-            }
-        });*/
-
 
 
         tb = findViewById(R.id.mapToolbar);
@@ -385,59 +284,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         registerReceiver(broadcastReceiver,new IntentFilter(TPMessagingService.TOKEN_BROADCAST));
 
-        RelativeLayout post_button = findViewById(R.id.post_errand);
-
         args = new Bundle();
-
-        //hide api
-        Places.initialize(getApplicationContext(),"AIzaSyAYWdmSCJ9MyVh0bvBFbrQb9ELgmu3LYu8");
-
-        PlacesClient placesClient = Places.createClient(this);
-
-        //AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                //getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-
-        //assert autocompleteFragment != null;
-        //autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-        /*
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                // TODO: Get info about the selected place.
-                Toast.makeText(ErrandMapActivity.this,""+place.getLatLng().latitude+" "+place.getLatLng().longitude+" ",Toast.LENGTH_SHORT).show();
-                Log.d("PlacesGot", "Place: " + place.getName() + ", " + place.getId());
-                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(),15));
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-                // TODO: Handle the error.
-                Log.d("PlacesError", "An error occurred: " + status);
-            }
-        });*/
-
-        //LayoutInflater inflater = this.getLayoutInflater();
-        //final View child = inflater.inflate(R.layout.errand_notifyer,null);
-
-        post_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                //mapLayoutSub.addView(child);
-
-
-
-                Intent intent = new Intent(ErrandMapActivity.this, CreatePost.class);
-                intent.putExtra("default_l",args.getFloat("l"));
-                intent.putExtra("default_g",args.getFloat("g"));
-                startActivity(intent);
-                Animatoo.animateSlideLeft(ErrandMapActivity.this);
-
-            }
-
-        });
     }
 
     // for new devices sake, save the token in TPMessagingservice, if already generated do this . all must be dont on start
@@ -522,50 +369,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     }
 
-    int i = 0;
-
-    void getAllPosts(){
-        //use Location.distanceBetween() to check if coordinates are in a given radius
-        //list.clear();
-        i++;
-
-        Log.d("howmanyimes"," "+i);
-        userAvailabilityRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                String userid;
-                double l,g;
-
-                postsfrmDB.clear();
-                availableUsers.clear();
-                allposts.clear();
-                mClusterManager.clearItems();
-                for(DataSnapshot d: dataSnapshot.getChildren()){
-
-                    Log.d("Igotthekeyskeyskeys",""+d.getKey());
-                    userid = d.getKey();
-                    //use location.distancebetween here to get only the keys in users location
-                    redundantCode(d);
-                    if(d.child("Location").child("g").getValue() !=null){
-
-                        g = (double) d.child("Location").child("g").getValue();
-                        l = (double) d.child("Location").child("l").getValue();
-
-                        Log.d("closestsUsers"," "+userid+"  "+l+" "+g);
-
-                        availableUsers.add(new User(l,g,userid));
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     public void getErrands(DatabaseReference db, final Context c){
         Log.d("dowegeterrand22s"," where here");
         //utilityerrands.clear();
@@ -607,7 +410,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
                 Log.d("valuuueeesss",""+h.get("TiperID")+" "+h.get("Message")+" "+h.get("posterID")+" "+h.get("STATUS")+" "+""+h.get("Date")+" "+j.get("l")+" "+j.get("g"));
 
-                //postsfrmDB.add(new PostClusterItem(" "+h.get("Message"),new LatLng(Double.parseDouble(""+j.get("l")),Double.parseDouble(""+j.get("g"))),""+h.get("TiperID")," "+h.get("posterID")));
                 if(j.get("l") != null){
 
                     setMsgIcon(mMap," "+h.get("Message"),new LatLng(Double.parseDouble(""+j.get("l")),Double.parseDouble(""+j.get("g"))),""+tasknums.get("tasknum"));
@@ -643,13 +445,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     }
 
 
-
-    private void setMsgIcon2(ClusterManager<PostClusterItem> cm, Collection<PostClusterItem> posts){
-
-        cm.addItems(posts);
-        cm.cluster();
-    }
-
     private void setMsgIcon(GoogleMap map, String title, LatLng latLng, final String tasknum){
 
         map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(new Functions().layoutToBitmap(R.layout.post_icon,getApplicationContext()))).title(title)).setSnippet(tasknum);
@@ -666,81 +461,37 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         });
     }
 
-    private void setInfoWindow(){
+    public void checkVersion(){
 
-    }
+        appversion = FirebaseDatabase.getInstance().getReference().child("App-Version").child("current");
 
-    private void redundantCode(DataSnapshot dataSnapshot){
-
-        HashMap<String, Object> h = new HashMap<>();
-        String userid;
-        String postid;
-        String msg;
-        double l,g;
-        for(DataSnapshot p: dataSnapshot.child("Posts").getChildren()){
-
-            h.put("PostID",""+p.getKey());
-
-            for(DataSnapshot finaSnapShot: p.getChildren()){
-
-                Log.d("ypyppypypAllMsgsFinallyyy",finaSnapShot+"");
-
-                h.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
-            }
-
-            if(h.get("l") != null){
-                l = Double.parseDouble(""+h.get("l"));
-                g = Double.parseDouble(""+h.get("g"));
-                msg = ""+h.get("Message");
-                userid = ""+h.get("UserID");
-                postid = ""+h.get("PostID");
-
-                Log.d("hsdhdhjsdhj",l+" "+g+" "+" "+msg);
-
-                allposts.add(new TPPost(msg,l,g,userid,false));
-
-                postsfrmDB.add(new PostClusterItem(msg,new LatLng(l,g),userid,postid));
-            }
-        }
-        Log.d("postdsdkjs",""+postsfrmDB.size());
-        setMsgIcon2(mClusterManager,postsfrmDB);
-
-        for(DataSnapshot p: dataSnapshot.child("Errands").getChildren()){
-
-            h.put("PostID",""+p.getKey());
-
-            for(DataSnapshot finaSnapShot: p.getChildren()){
-
-                Log.d("ypyppypypAllMsgsFinallyyy",finaSnapShot+"");
-
-                h.put(""+finaSnapShot.getKey(),""+finaSnapShot.getValue());
-            }
-
-            if(h.get("l") != null){
-                l = Double.parseDouble(""+h.get("l"));
-                g = Double.parseDouble(""+h.get("g"));
-                msg = ""+h.get("Message");
-                userid = ""+h.get("UserID");
-                postid = ""+h.get("PostID");
-
-                Log.d("hsdhdhjsdhj",l+" "+g+" "+" "+msg);
-
-                allposts.add(new TPPost(msg,l,g,userid,true));
-
-                postsfrmDB.add(new PostClusterItem(msg,new LatLng(l,g),userid,postid));
-            }
-        }
-    }
-
-    private void readCameraChanges(){
-        final float zoom = mMap.getCameraPosition().zoom;
-        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+        getErrands(appversion,getApplicationContext());
+        final HashMap<String, String> h = new HashMap<>();
+        appversion.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onCameraIdle() {
-                mClusterManager.cluster();
-                mClusterManager.setRenderer(renderer);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("appvvvv",""+dataSnapshot.getValue().toString());
+                h.put("current",""+dataSnapshot.getValue().toString());
+
+                if(dataSnapshot.getValue().toString() != null){
+                    String temp = dataSnapshot.getValue().toString();
+                    if(!versionNum.equals(dataSnapshot.getValue().toString())){
+                        startActivity(new Intent(ErrandMapActivity.this,UpdateActivity.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+
+
+
+
+
+
     }
 
     private void onpenTipBottoSheet(){
@@ -748,62 +499,10 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         t.show(getSupportFragmentManager(),"hfhf");
     }
 
-    public void onSearchCalled() {
-        // Set the fields to specify which types of place data to return.
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
-        // Start the autocomplete intent.
-        Intent intent = new Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.FULLSCREEN, fields).setCountry("GH")
-                .build(this);
-        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
-    }
-
-    public boolean isServicesOk(){
-        Log.d("isServicesOk","Checking Goolge Services Version");
-
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(ErrandMapActivity.this);
-
-        if(available == ConnectionResult.SUCCESS){
-            //everything is Ok
-            Log.d(TAG,"isServicesOk, GooglePlay Services is Working");
-        }
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
-            //resolvable error eg version issue
-            Log.d(TAG,"Error occurred but can be fix");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(ErrandMapActivity.this,available,ERROR_DIALOG_REQUEST);
-            dialog.show();
-        }
-        else{
-            Toast.makeText(ErrandMapActivity.this,"You cant make map requests",Toast.LENGTH_SHORT);
-        }
-        return false;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                Log.i("PlacesGot", "Place: " + place.getName() + ", " + place.getId() + ", " + place.getAddress());
-                Toast.makeText(ErrandMapActivity.this, "ID: " + place.getId() + "address:" + place.getAddress() + "Name:" + place.getName() + " latlong: " + place.getLatLng(), Toast.LENGTH_LONG).show();
-                String address = place.getAddress();
-                // do query with address
-
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
-                Status status = Autocomplete.getStatusFromIntent(data);
-                Toast.makeText(ErrandMapActivity.this, "Error: " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
-                Log.i("ErrorTAG", status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-            }
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        //getAllPosts();
+        checkVersion();
         badgeBottomNavigtion.apply(selectedId,getString(R.color.colorAccent), getString(R.color.tipeeGreenDark));
     }
 
@@ -812,7 +511,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         //open tip activity here
         if(choice){
             startActivity(new Intent(ErrandMapActivity.this,GetLocationActivity.class));
-            Log.d("howmnyavailableusers"," "+availableUsers.size());
         }
     }
 }

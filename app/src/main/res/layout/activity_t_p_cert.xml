@@ -25,7 +25,8 @@
         android:text="CERTIFICATION"/>
 
     <ImageView
-        android:layout_margin="15dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="15dp"
         android:id="@+id/logo1"
         android:layout_below="@+id/title_text"
         android:layout_width="100dp"
@@ -33,12 +34,13 @@
         android:src="@drawable/cwsalogo"/>
 
     <ImageView
-        android:layout_margin="15dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="15dp"
         android:id="@+id/logo2"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/title_text"
         android:layout_width="100dp"
-        android:padding="10dp"
+        android:padding="15dp"
         android:layout_height="50dp"
         android:src="@drawable/tplogolarge"/>
 

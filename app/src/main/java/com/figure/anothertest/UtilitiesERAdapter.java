@@ -113,14 +113,17 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
                 @Override
                 public boolean onLongClick(View v) {
 
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    //Drop
+                    final DialogInterface.OnClickListener droplistner = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    new Functions().submitFailedRead(items.get(position),taskNum,date);
+                                    new Functions().dropRead(items.get(position),taskNum,date);
+                                    items.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position,items.size());
                                     break;
-
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //No button clicked
                                     break;
@@ -128,9 +131,56 @@ public class UtilitiesERAdapter extends RecyclerView.Adapter<UtilitiesERAdapter.
                         }
                     };
 
+                    //Report as failed
+                    final DialogInterface.OnClickListener reportlistner = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    new Functions().ReportFailed(items.get(position),taskNum,date,"Damaged");
+                                    items.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position,items.size());
+
+                                    Toast.makeText(context,"Report: Damaged meter",Toast.LENGTH_SHORT).show();
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    new Functions().ReportFailed(items.get(position),taskNum,date,"Missing");
+                                    items.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position,items.size());
+
+                                    Toast.makeText(context,"Report: Meter Not Found",Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        }
+                    };
+
+
+
+                    //Main
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    new AlertDialog.Builder(context).setTitle("Drop Meter Read").setMessage("Are you sure you want to drop meter reading")
+                                            .setPositiveButton("yes", droplistner).setNegativeButton("No",droplistner)
+                                            .show();
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+
+                                    new AlertDialog.Builder(context).setTitle("Report As Failed").setMessage("Select a reason for failure")
+                                            .setPositiveButton("Damaged", reportlistner).setNegativeButton("Missing",reportlistner)
+                                            .show();
+                                    break;
+                            }
+                        }
+                    };
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage("Are you sure you want to drop "+items.get(position).getCustomerName()+"'s Meter read ?").setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener).show();
+                    builder.setMessage("Drop or Report as failed").setPositiveButton("Drop", dialogClickListener)
+                            .setNegativeButton("Report as Failed", dialogClickListener).show();
 
 
 

@@ -131,7 +131,7 @@ public class ChooseLocationActivity extends FragmentActivity implements OnMapRea
 
             if(errand){
                 //send notification to users close to the post location
-                new Functions().creatErrand(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude);
+                //new Functions().creatErrand(userDB,userID,msg, (float) finalLocation.latitude, (float) finalLocation.longitude);
                 new Functions().notifyUserswithTopic(ChooseLocationActivity.this,post,errand);
                 finish();
 
