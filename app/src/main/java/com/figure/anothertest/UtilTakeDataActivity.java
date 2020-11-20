@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.figure.anothertest.utils.AlbumStorageDirFactory;
 import com.figure.anothertest.utils.BaseAlbumDirFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -58,7 +59,7 @@ public class UtilTakeDataActivity extends AppCompatActivity {
     Toolbar tb;
 
     EditText meterNumInput;
-    String tipeeL,tipeeG;
+    String tipeeL,tipeeG,integrity;
 
     private String mCurrentPhotoPath;
 
@@ -120,8 +121,8 @@ public class UtilTakeDataActivity extends AppCompatActivity {
         position = getIntent().getStringExtra("position");
         tasknum = getIntent().getStringExtra("tasknum");
         date = getIntent().getStringExtra("Date");
-        //ml = getIntent().getStringExtra("ml");
-       // mg = getIntent().getStringExtra("mg");
+        ml = getIntent().getStringExtra("ml");
+        mg = getIntent().getStringExtra("mg");
 
         Toast.makeText(getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
 
@@ -177,8 +178,9 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                     SharedPrefs.setMeterRead(meterNumInput.getText().toString()+"","reading"+position);
                     SharedPrefs.setImageUri(""+uri,"picread"+position);
                     SharedPrefs.setTaskId(tasknum);
-                    SharedPrefs.setTipeeL(tipeeL,"tipeeL"+position);
-                    SharedPrefs.setTipeeG(tipeeG,"tipeeG"+position);
+                    //SharedPrefs.setTipeeL(tipeeL,"tipeeL"+position);
+                    //SharedPrefs.setTipeeG(tipeeG,"tipeeG"+position);
+                    SharedPrefs.setIntegrity(integrity,"integrity"+position);
                     SharedPrefs.setTaskId2("loremipsum");
                     onBackPressed();
                 }
@@ -367,8 +369,10 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                 Log.i("LOCATION", location.toString());
                 Toast.makeText(getApplicationContext(),"L:"+location.getLatitude()+" G:"+location.getLongitude(),Toast.LENGTH_SHORT).show();
                 //etLocation.setText("L:"+location.getLatitude()+" G:"+location.getLongitude());
-                tipeeL = ""+location.getLatitude();
-                tipeeG = ""+location.getLongitude();
+                //tipeeL = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
+                //tipeeG = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
+                integrity = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
+
             }
 
             @Override
@@ -400,5 +404,22 @@ public class UtilTakeDataActivity extends AppCompatActivity {
 
         // spinner.setAdapter(adapter);
 
+    }
+
+    private String compareLGs(LatLng latLng){
+        Location l1 = new Location("");
+        l1.setLatitude(latLng.latitude);
+        l1.setLongitude(latLng.latitude);
+
+        Location l2 = new Location("");
+        l2.setLatitude(latLng.latitude);
+        l2.setLatitude(latLng.longitude);
+
+        if(l2.distanceTo(l1) <= 5){
+            return "Good";
+        }
+        else{
+            return "Bad";
+        }
     }
 }

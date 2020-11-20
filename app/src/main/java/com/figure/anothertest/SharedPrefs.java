@@ -243,4 +243,16 @@ class SharedPrefs {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getString(key,null);
     }
+
+    static void setIntegrity(String s, String key){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key,s);
+        editor.apply();
+    }
+
+    static String getIntegrity(String key){
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(UTIL_SHARED_NAME,Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key,null);
+    }
 }

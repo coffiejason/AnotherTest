@@ -212,8 +212,9 @@ public class UtilGEList extends AppCompatActivity {
         h.put("reading",SharedPrefs.getMeterRead("reading"+i));
         h.put("id",""+SharedPrefs.getMeternum("meternum"+i));
         h.put("meterNo",""+SharedPrefs.getMeternum("meternum"+i));
-        h.put("l",""+SharedPrefs.getTipeeL("tipeeL"+i));
-        h.put("g",""+SharedPrefs.getTipeeG("tipeeG"+i));
+        //h.put("l",""+SharedPrefs.getTipeeL("tipeeL"+i));
+        //h.put("g",""+SharedPrefs.getTipeeG("tipeeG"+i));
+        h.put("integrity",""+SharedPrefs.getIntegrity("integrity"+i));
         h.put("date",""+date);
 
 
