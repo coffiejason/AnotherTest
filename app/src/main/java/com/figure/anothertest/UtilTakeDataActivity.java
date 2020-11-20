@@ -178,8 +178,8 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                     SharedPrefs.setMeterRead(meterNumInput.getText().toString()+"","reading"+position);
                     SharedPrefs.setImageUri(""+uri,"picread"+position);
                     SharedPrefs.setTaskId(tasknum);
-                    //SharedPrefs.setTipeeL(tipeeL,"tipeeL"+position);
-                    //SharedPrefs.setTipeeG(tipeeG,"tipeeG"+position);
+                    SharedPrefs.setTipeeL(tipeeL,"tipeeL"+position);
+                    SharedPrefs.setTipeeG(tipeeG,"tipeeG"+position);
                     SharedPrefs.setIntegrity(integrity,"integrity"+position);
                     SharedPrefs.setTaskId2("loremipsum");
                     onBackPressed();
@@ -369,8 +369,8 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                 Log.i("LOCATION", location.toString());
                 Toast.makeText(getApplicationContext(),"L:"+location.getLatitude()+" G:"+location.getLongitude(),Toast.LENGTH_SHORT).show();
                 //etLocation.setText("L:"+location.getLatitude()+" G:"+location.getLongitude());
-                //tipeeL = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
-                //tipeeG = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
+                tipeeL = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
+                tipeeG = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
                 integrity = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
 
             }
