@@ -32,7 +32,7 @@
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:src="@drawable/cwsalogo"/>
-
+    <!--
     <ImageView
         android:layout_marginTop="40dp"
         android:layout_marginRight="15dp"
@@ -42,7 +42,7 @@
         android:layout_width="100dp"
         android:padding="15dp"
         android:layout_height="50dp"
-        android:src="@drawable/tplogolarge"/>
+        android:src="@drawable/tplogolarge"/>-->
 
     <RelativeLayout
         android:id="@+id/imagerl"
@@ -104,9 +104,10 @@
         android:textStyle="bold" />
 
     <ImageView
+        android:layout_below="@+id/cert_text"
         android:id="@+id/qrcode"
         android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:padding="10dp"

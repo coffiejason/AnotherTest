@@ -369,8 +369,8 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                 Log.i("LOCATION", location.toString());
                 Toast.makeText(getApplicationContext(),"L:"+location.getLatitude()+" G:"+location.getLongitude(),Toast.LENGTH_SHORT).show();
                 //etLocation.setText("L:"+location.getLatitude()+" G:"+location.getLongitude());
-                tipeeL = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
-                tipeeG = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
+                tipeeL = ""+location.getLatitude();
+                tipeeG = ""+location.getLongitude();
                 integrity = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
 
             }
@@ -409,11 +409,11 @@ public class UtilTakeDataActivity extends AppCompatActivity {
     private String compareLGs(LatLng latLng){
         Location l1 = new Location("");
         l1.setLatitude(latLng.latitude);
-        l1.setLongitude(latLng.latitude);
+        l1.setLongitude(latLng.longitude);
 
         Location l2 = new Location("");
-        l2.setLatitude(latLng.latitude);
-        l2.setLatitude(latLng.longitude);
+        l2.setLatitude(Double.parseDouble(ml));
+        l2.setLongitude(Double.parseDouble(mg));
 
         if(l2.distanceTo(l1) <= 5){
             return "Good";
@@ -421,5 +421,17 @@ public class UtilTakeDataActivity extends AppCompatActivity {
         else{
             return "Bad";
         }
+    }
+
+    private String compareLG2(LatLng latLng){
+        Location l1 = new Location("");
+        l1.setLatitude(latLng.latitude);
+        l1.setLongitude(latLng.longitude);
+
+        Location l2 = new Location("");
+        l2.setLatitude(Double.parseDouble(ml));
+        l2.setLongitude(Double.parseDouble(mg));
+
+        return ""+l2.distanceTo(l1);
     }
 }

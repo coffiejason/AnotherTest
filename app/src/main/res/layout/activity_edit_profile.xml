@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:layout_gravity="center_horizontal">
+
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/image_profile"
                     android:transitionName="image"
@@ -95,6 +96,7 @@
                                 android:textSize="15sp"
                                 android:textColor="#292727"
                                 android:text="Name"/>
+                            <!--
                             <ImageButton
                                 android:visibility="gone"
                                 android:layout_width="wrap_content"
@@ -102,7 +104,7 @@
                                 android:src="@drawable/ic_edit_black_24dp"
                                 android:tint="#7A7A7A"
                                 android:background="@android:color/transparent"
-                                />
+                                />-->
                         </LinearLayout>
                         <TextView
                             android:id="@+id/tv_username"
@@ -150,6 +152,7 @@
                                 android:textSize="15sp"
                                 android:textColor="#292727"
                                 android:text="Phone"/>
+                            <!--
                             <ImageButton
                                 android:visibility="gone"
                                 android:layout_width="wrap_content"
@@ -157,7 +160,7 @@
                                 android:src="@drawable/ic_edit_black_24dp"
                                 android:tint="#7A7A7A"
                                 android:background="@android:color/transparent"
-                                />
+                                />-->
                         </LinearLayout>
 
 
@@ -210,6 +213,7 @@
                                 android:textSize="15sp"
                                 android:textColor="#292727"
                                 android:text="Certification"/>
+                            <!--
                             <ImageButton
                                 android:visibility="gone"
                                 android:layout_width="wrap_content"
@@ -218,6 +222,7 @@
                                 android:tint="#7A7A7A"
                                 android:background="@android:color/transparent"
                                 />
+                                -->
                         </LinearLayout>
 
 

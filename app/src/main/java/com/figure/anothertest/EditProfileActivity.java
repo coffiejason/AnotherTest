@@ -30,9 +30,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
     Button btn_log_out;
 
-    FloatingActionButton fab;
+    //FloatingActionButton fab;
 
-    CircularImageView image_profile;
+    //CircularImageView image_profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         btn_log_out = findViewById(R.id.btn_log_out);
 
-        image_profile = findViewById(R.id.image_profile);
-        fab = findViewById(R.id.fab_camera);
+        //image_profile = findViewById(R.id.image_profile);
+        //fab = findViewById(R.id.fab_camera);
         tv_username = findViewById(R.id.tv_username);
         tv_phone = findViewById(R.id.tv_phone);
         tv_id_card = findViewById(R.id.tv_id_card);
@@ -96,13 +96,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
             }
         });
-
+        /*
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //ImagePicker.create(EditProfileActivity.this).start();
             }
-        });
+        });*/
     }
 
     @Override

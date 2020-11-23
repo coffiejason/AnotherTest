@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
+import androidx.multidex.MultiDex;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -105,6 +106,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         Fresco.initialize(this);
+        MultiDex.install(this);
         setContentView(R.layout.activity_errand_map);
 
         new TPMessagingService();

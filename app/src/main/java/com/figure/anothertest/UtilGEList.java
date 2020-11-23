@@ -68,6 +68,8 @@ public class UtilGEList extends AppCompatActivity {
 
     int uploadCount = 0;
 
+    int year,month;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,14 +79,16 @@ public class UtilGEList extends AppCompatActivity {
         rv = findViewById(R.id.recyclerViewuer);
         parentLayout = findViewById(android.R.id.content);
 
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
 
         userDB = FirebaseDatabase.getInstance().getReference().child("MeterRequests");
         userDB.keepSynced(true);
 
         tasknum = getIntent().getStringExtra("tasknum");
         posterID = getIntent().getStringExtra("posterID");
-        date = "2020/10";/*getIntent().getStringExtra("Date");*/
+        date = year+"/"+month;
 
         Toast.makeText(this, ""+date, Toast.LENGTH_SHORT).show();
 
@@ -135,6 +139,10 @@ public class UtilGEList extends AppCompatActivity {
                 isComplete();
             }
         });
+
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
     }
 
     public void checkUtilityErrands(DatabaseReference db, final Context c){
@@ -214,6 +222,7 @@ public class UtilGEList extends AppCompatActivity {
         h.put("meterNo",""+SharedPrefs.getMeternum("meternum"+i));
         h.put("l",""+SharedPrefs.getTipeeL("tipeeL"+i));
         h.put("g",""+SharedPrefs.getTipeeG("tipeeG"+i));
+        h.put("tipeeID",""+userID);
         h.put("integrity",""+SharedPrefs.getIntegrity("integrity"+i));
         h.put("date",""+date);
 
