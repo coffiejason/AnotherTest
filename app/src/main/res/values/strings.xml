@@ -8,7 +8,9 @@
     <string name="you_are_not_a_member_register">Are you new here ? <b><font fgcolor='#3CDA85'>Register.</font></b></string>
     <string name="nice_to_see_you">Nice to see you!</string>
     <string name="email_hint">Email</string>
+    <string name="phone_hint">24 000 0000</string>
     <string name="password_hint">Password</string>
+    <string name="confirm_password_hint">Confirm Password</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="post">POST</string>
     <string name="post2">Post</string>
@@ -36,7 +38,8 @@
     <string name="p_item_3">Minimum one number</string>
     <string name="p_item_4">Minimum one symbol</string>
     <string name="email_error_text">The field is required</string>
-    <string name="registration_title">REGISTRATION</string>
+    <string name="phone_error_text">The field is required</string>
+    <string name="registration_title">REGISTER</string>
     <string name="name_placeholder">NAME</string>
     <string name="username_placeholder">\@name</string>
     <string name="post_placeholder">THIS IS A POST</string>

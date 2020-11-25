@@ -32,7 +32,7 @@
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:src="@drawable/cwsalogo"/>
-    <!--
+
     <ImageView
         android:layout_marginTop="40dp"
         android:layout_marginRight="15dp"
@@ -42,7 +42,7 @@
         android:layout_width="100dp"
         android:padding="15dp"
         android:layout_height="50dp"
-        android:src="@drawable/tplogolarge"/>-->
+        android:src="@drawable/tplogolarge"/>
 
     <RelativeLayout
         android:id="@+id/imagerl"

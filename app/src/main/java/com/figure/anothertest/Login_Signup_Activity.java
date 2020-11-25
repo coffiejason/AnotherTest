@@ -21,18 +21,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 
 
 public class Login_Signup_Activity extends AppCompatActivity {
 
-    private EditText sEmail,sPassword;
-    private TextView email_error_text, password_error_text,registerbtn_tv;
+    private EditText sPhone,sEmail,sPassword,sConfirmPassword;
+    private TextView phone_error_text,email_error_text, password_error_text,registerbtn_tv;
     private CardView isAtLeast8Parent, hasUppercaseParent, hasNumberParent;
     private RelativeLayout registration_button;
     private CardView registration_button_parent;
@@ -64,26 +68,36 @@ public class Login_Signup_Activity extends AppCompatActivity {
 
     }
 
-    private void registerUser(String email, String password) {
-        if(TextUtils.isEmpty(email)){
-            Toast.makeText(Login_Signup_Activity.this," We need your email ", Toast.LENGTH_SHORT).show();
+    private void registerUser(String phone,String email, String password) {
+        String confirm = sConfirmPassword.getText().toString();
+        if(!confirm.equals(password)){
+            Toast.makeText(Login_Signup_Activity.this,sConfirmPassword.getText().toString()+" "+password, Toast.LENGTH_SHORT).show();
+            //registerbtn_tv.setText("REGISTER");
         }
-
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(Login_Signup_Activity.this," choose a password ", Toast.LENGTH_SHORT).show();
-        }
-
         else{
             //Add a load screen of some sort
+
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        Toast.makeText(Login_Signup_Activity.this,"Signup Successful ", Toast.LENGTH_SHORT).show();
+                        HashMap<String,Object> h = new HashMap<>();
+                        h.put("momo",phone);
+                        h.put("email",email);
+                        h.put("password",password);
+                        h.put("name","static_name");
 
-                        Intent intent = new Intent(Login_Signup_Activity.this,LoginActivity.class);
-                        startActivity(intent);
-                        //CustomIntent.customType(Login_Signup_Activity.this,"left-to-right");
+                        Toast.makeText(Login_Signup_Activity.this,"Signup Successful ", Toast.LENGTH_SHORT).show();
+                        FirebaseDatabase.getInstance().getReference().child("Customers available").child(phone).updateChildren(h).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Intent intent = new Intent(Login_Signup_Activity.this,LoginActivity.class);
+                                startActivity(intent);
+                                //CustomIntent.customType(Login_Signup_Activity.this,"left-to-right");
+                            }
+                        });
+
+
                     }
                     else{
                         FirebaseAuthException e = (FirebaseAuthException)task.getException();
@@ -92,7 +106,7 @@ public class Login_Signup_Activity extends AppCompatActivity {
 
                         isRegistrationClickable = true;
                         registration_button_parent.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
-                        registerbtn_tv.setText("REGISTRATION");
+                        registerbtn_tv.setText("REGISTER");
 
                     }
                 }
@@ -111,10 +125,13 @@ public class Login_Signup_Activity extends AppCompatActivity {
     }
 
     private void setType() {
+        sPhone = findViewById(R.id.phone_input_field);
         sEmail = findViewById(R.id.email_input_field);
         email_error_text = findViewById(R.id.email_error_text);
+        phone_error_text = findViewById(R.id.phone_error_text);
         password_error_text = findViewById(R.id.password_error_text);
         sPassword = findViewById(R.id.password_input_field);
+        sConfirmPassword = findViewById(R.id.confirm_password_input_field);
         isAtLeast8Parent = findViewById(R.id.p_item_1_icon_parent);
         hasUppercaseParent = findViewById(R.id.p_item_2_icon_parent);
         hasNumberParent = findViewById(R.id.p_item_3_icon_parent);
@@ -123,12 +140,15 @@ public class Login_Signup_Activity extends AppCompatActivity {
         registerbtn_tv = findViewById(R.id.registerbtn_tv);
     }
 
-    private void checkEmpty(String email, String password) {
+    private void checkEmpty(String phone,String email, String password) {
         if (password.length() > 0 && password_error_text.getVisibility() == View.VISIBLE) {
             password_error_text.setVisibility(View.GONE);
         }
         if (email.length() > 0 && email_error_text.getVisibility() == View.VISIBLE) {
             email_error_text.setVisibility(View.GONE);
+        }
+        if (phone.length() > 0 && phone_error_text.getVisibility() == View.VISIBLE) {
+            phone_error_text.setVisibility(View.GONE);
         }
     }
 
@@ -145,10 +165,10 @@ public class Login_Signup_Activity extends AppCompatActivity {
 
     @SuppressLint("ResourceType")
     private void registrationDataCheck() {
-        String password = sPassword.getText().toString(), email = sEmail.getText().toString();
+        String password = sPassword.getText().toString(), email = sEmail.getText().toString(), phone = sPhone.getText().toString();
 
-        checkEmpty(email, password);
-
+        checkEmpty(phone,email, password);
+        registerbtn_tv.setText("REGISTER");
         if (password.length() >= 8) {
             isAtLeast8 = true;
             isAtLeast8Parent.setCardBackgroundColor(Color.parseColor(getString(R.color.colorCheckOk)));
@@ -175,6 +195,23 @@ public class Login_Signup_Activity extends AppCompatActivity {
     }
 
     private void inputChange() {
+        sPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                registrationDataCheck();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         sEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -215,9 +252,9 @@ public class Login_Signup_Activity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                String email = sEmail.getText().toString().trim(), password = sPassword.getText().toString();
+                String email = sEmail.getText().toString().trim(), password = sPassword.getText().toString(), phone = sPhone.getText().toString();
 
-                if (email.length() > 0 && password.length() > 0) {
+                if (email.length() > 0 && password.length() > 0 && phone.length() > 0) {
                     if (isRegistrationClickable) {
 
                         if(!internet_connection()){
@@ -226,21 +263,25 @@ public class Login_Signup_Activity extends AppCompatActivity {
 
                         }
                         else{
-                            registerUser(email,password);
+                            registerUser(phone,email,password);
                             isRegistrationClickable = false;
                             registration_button_parent.setCardBackgroundColor(Color.parseColor(getString(R.color.colorCardViewBackground)));
-                            registerbtn_tv.setText("Please Wait ...");
+
 
 
 
                         }                    }
                 } else {
+                    if (phone.length() == 0) {
+                        phone_error_text.setVisibility(View.VISIBLE);
+                    }
                     if (email.length() == 0) {
                         email_error_text.setVisibility(View.VISIBLE);
                     }
                     if (password.length() == 0) {
                         password_error_text.setVisibility(View.VISIBLE);
                     }
+
                 }
             }
         });

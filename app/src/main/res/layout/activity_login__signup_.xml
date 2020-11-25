@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,15 +8,86 @@
     android:fillViewport="true"
     tools:context=".Login_Signup_Activity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true">
 
             <RelativeLayout
-                android:id="@+id/email_parent"
+                android:id="@+id/phone_parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/phone_input_box_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="15dp"
+                    app:cardBackgroundColor="@color/colorFormInputBackground"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorCardViewBackground">
+
+                        <com.rilixtech.widget.countrycodepicker.CountryCodePicker
+                            android:id="@+id/ccp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_centerVertical="true"/>
+
+                        <EditText
+                            android:id="@+id/phone_input_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_toRightOf="@+id/ccp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="15dp"
+                            android:background="@null"
+                            android:maxLength="9"
+                            android:hint="@string/phone_hint"
+                            android:inputType="number"
+                            android:imeOptions="actionNext"
+                            android:maxLines="1"
+                            android:textColor="@color/colorTitle"
+                            android:textSize="15dp"
+                            tools:ignore="TextFields"/>
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/phone_error_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/phone_input_box_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="15dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/phone_error_text"
+                    android:textColor="@color/colorError"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/email_parent"
+                android:layout_below="@+id/phone_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/email_input_box_parent"
@@ -129,10 +200,47 @@
                     android:textSize="13sp"
                     android:visibility="gone" />
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/confirm_password_input_box_parent"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/password_error_text"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="15dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardBackgroundColor="@color/colorFormInputBackground"
+                    app:cardElevation="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorCardViewBackground">
+
+                        <EditText
+                            android:id="@+id/confirm_password_input_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:background="@null"
+                            android:textColorHint="@color/colorFormText"
+                            android:hint="@string/confirm_password_hint"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColor="@color/colorHint"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:paddingLeft="10dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/password_error_text"
+                    android:layout_below="@+id/confirm_password_input_box_parent"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp">
 
@@ -321,4 +429,6 @@
 
         </RelativeLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>
