@@ -82,7 +82,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     DatabaseReference userAvailabilityRef;
     DatabaseReference userIndividual;
-    TPClusterRenderer renderer;
+
 
     LatLng defaultLocation;
     Bundle args;
