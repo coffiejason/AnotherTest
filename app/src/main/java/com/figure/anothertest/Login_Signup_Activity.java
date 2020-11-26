@@ -71,7 +71,7 @@ public class Login_Signup_Activity extends AppCompatActivity {
     private void registerUser(String phone,String email, String password) {
         String confirm = sConfirmPassword.getText().toString();
         if(!confirm.equals(password)){
-            Toast.makeText(Login_Signup_Activity.this,sConfirmPassword.getText().toString()+" "+password, Toast.LENGTH_SHORT).show();
+            Toast.makeText(Login_Signup_Activity.this,"Passwords do not match", Toast.LENGTH_SHORT).show();
             //registerbtn_tv.setText("REGISTER");
         }
         else{
@@ -88,16 +88,31 @@ public class Login_Signup_Activity extends AppCompatActivity {
                         h.put("name","static_name");
 
                         Toast.makeText(Login_Signup_Activity.this,"Signup Successful ", Toast.LENGTH_SHORT).show();
-                        FirebaseDatabase.getInstance().getReference().child("Customers available").child(phone).updateChildren(h).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
-                            public void onSuccess(Void aVoid) {
-                                Intent intent = new Intent(Login_Signup_Activity.this,LoginActivity.class);
-                                startActivity(intent);
-                                //CustomIntent.customType(Login_Signup_Activity.this,"left-to-right");
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    SharedPrefs.setDefaults(getApplication());
+
+                                    Toast.makeText(getApplicationContext(),"Please Wait",Toast.LENGTH_SHORT).show();
+
+                                    FirebaseDatabase.getInstance().getReference().child("Customers available").child(""+mAuth.getInstance().getCurrentUser().getUid()).updateChildren(h).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Intent intent = new Intent(Login_Signup_Activity.this,LoginActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                }
+                                else{
+
+                                    Intent intent = new Intent(Login_Signup_Activity.this,LoginActivity.class);
+                                    startActivity(intent);
+
+                                }
                             }
                         });
-
-
                     }
                     else{
                         FirebaseAuthException e = (FirebaseAuthException)task.getException();
@@ -230,6 +245,23 @@ public class Login_Signup_Activity extends AppCompatActivity {
         });
 
         sPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int count, int after) {
+                registrationDataCheck();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        sConfirmPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
 

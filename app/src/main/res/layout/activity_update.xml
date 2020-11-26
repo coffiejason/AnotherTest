@@ -64,7 +64,7 @@
                 android:layout_marginLeft="15dp">
 
                 <RelativeLayout
-                    android:id="@+id/login_button"
+                    android:id="@+id/update_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="?attr/selectableItemBackground"
