@@ -88,7 +88,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     Bundle args;
 
     public static Bundle coordsLoc = new Bundle();
-    public static String versionNum = "1.0.1";
+    public static String versionNum = "1.0.2";
 
     AutocompleteSupportFragment autocompleteFragment;
 
@@ -119,7 +119,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         getToken();
 
-        onpenTipBottoSheet();
+        //onpenTipBottoSheet();
 
         ref = FirebaseDatabase.getInstance().getReference().child("MeterRequests");
 

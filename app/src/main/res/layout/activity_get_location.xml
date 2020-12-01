@@ -151,7 +151,7 @@
                     >
 
                     <TextView
-                        android:id="@+id/nice_to_see_you_text_view"
+                        android:id="@+id/nice_to_see_you_text_view2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
@@ -196,7 +196,6 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="10dp"
-                        android:layout_toLeftOf="@+id/button_progress"
                         android:ellipsize="end"
                         android:lines="1"
                         android:text="Submit"

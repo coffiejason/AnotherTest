@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,39 +83,27 @@ public class NotificationsActivity extends AppCompatActivity {
 
         errandsNearBy2.clear();
 
-        db.child("MeterRequests").addChildEventListener(new ChildEventListener() {
+        Toast.makeText(getApplicationContext(),"function called",Toast.LENGTH_SHORT).show();
+
+        db.child("MeterRequests").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //get tiperID here and write to ErrandsCompleted node when errand is complete
 
                 Log.d("newErrandAvailable","You new errandss ohhhh");
                 Toast.makeText(c,"You Have a new Task",Toast.LENGTH_SHORT).show();
 
                 //Log.d("howmnytimes"," "+i);
-               // i++;
+                // i++;
+                Toast.makeText(getApplicationContext()," firebase function called",Toast.LENGTH_SHORT).show();
                 Log.d("howmnytimes", ""+dataSnapshot.child("Message").getValue());
 
                 errandsNearBy.add("");
-                errandsNearBy2.add(new ErrandItem("New Errands Available",""));
+                errandsNearBy2.add(new ErrandItem("New Errands Available","hhhhhhh"));
 
                 NotificationsAdapter adapter = new NotificationsAdapter(NotificationsActivity.this,errandsNearBy2);
                 rv.setAdapter(adapter);
                 rv.setLayoutManager(new LinearLayoutManager(NotificationsActivity.this));
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             }
 
             @Override
