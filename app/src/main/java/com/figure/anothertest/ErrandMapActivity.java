@@ -88,7 +88,7 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     Bundle args;
 
     public static Bundle coordsLoc = new Bundle();
-    public static String versionNum = "1.0.2";
+    public static String versionNum = "1.0.3";
 
     AutocompleteSupportFragment autocompleteFragment;
 

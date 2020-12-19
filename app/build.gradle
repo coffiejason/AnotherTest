@@ -9,11 +9,19 @@ android {
         applicationId "com.figure.anothertest"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 4
-        versionName "1.0.2"
+        versionCode 7
+        versionName "1.0.3"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        if (rootProject.file("local.properties").exists()) {
+            properties.load(rootProject.file("local.properties").newDataInputStream())
+        }
+
+        // Inject the Maps API key into the manifest
+        manifestPlaceholders = [mapsApiKey: properties.getProperty("MAPS_API_KEY", "")]
     }
 
     buildTypes {

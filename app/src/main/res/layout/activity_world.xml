@@ -113,6 +113,12 @@
             android:layout_height="match_parent"
              android:layout_above="@+id/BottomNavigation"/>
 
+        <ProgressBar
+            android:id="@+id/world_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
         <include
             android:id="@+id/BottomNavigation"
             layout="@layout/bottom_navigation"

@@ -26,7 +26,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
 
     private BadgeBottomNavigtion badgeBottomNavigtion;
 
-    private LinearLayout profile,myposts,notification,media,help,invites;
+    private LinearLayout profile,myearnings,notification,media,help,invites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +84,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
 
     private void init(){
         profile = findViewById(R.id.ln_profile);
-        myposts = findViewById(R.id.ln_chats);
+        myearnings = findViewById(R.id.ln_chats);
         notification = findViewById(R.id.ln_notification);
         media = findViewById(R.id.ln_data);
         help = findViewById(R.id.ln_help);
@@ -97,27 +97,28 @@ public class SettingsActivity extends AppCompatActivity implements BottomAdapter
                 startActivity(new Intent(SettingsActivity.this,EditProfileActivity.class));
             }
         });
-        /*
-        myposts.setOnClickListener(new View.OnClickListener() {
+
+        myearnings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SettingsActivity.this,MyPosts.class));
+                startActivity(new Intent(SettingsActivity.this,MyErrandsActivity.class));
             }
         });
 
+        /*
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SettingsActivity.this,NotificationOptions.class));
             }
-        });
+        });*/
 
         media.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SettingsActivity.this,SavedMediaActivity.class));
+                startActivity(new Intent(SettingsActivity.this,MapActivity.class));
             }
-        });*/
+        });
 
         help.setOnClickListener(new View.OnClickListener() {
             @Override

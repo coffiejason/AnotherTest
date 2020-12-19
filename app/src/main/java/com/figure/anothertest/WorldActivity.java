@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
     private final int CART = 4;
     private int selectedId = 0;
     RecyclerView rv;
+    ProgressBar pb;
 
     private BadgeBottomNavigtion badgeBottomNavigtion;
 
@@ -76,6 +78,8 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
         errands = new ArrayList<>();
         parentLayout = findViewById(android.R.id.content);
+
+        pb = findViewById(R.id.world_progress_bar);
 
         init();
 
@@ -152,7 +156,7 @@ public class WorldActivity extends AppCompatActivity implements BottomAdapter.Bo
 
     void showList(){
         if(errands.size() > 0){
-            adapter = new WorldAdapter(WorldActivity.this,errands,WorldActivity.this);
+            adapter = new WorldAdapter(WorldActivity.this,errands,WorldActivity.this,pb);
             rv.setAdapter(adapter);
             rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         }

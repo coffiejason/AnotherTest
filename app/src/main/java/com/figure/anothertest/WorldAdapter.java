@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,12 +25,14 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
     private Context context;
     List<UtilGenItem> list;
     Activity activity;
+    ProgressBar pb;
 
-    WorldAdapter(Context c, List<UtilGenItem> allposts,Activity activity){
+    WorldAdapter(Context c, List<UtilGenItem> allposts, Activity activity, ProgressBar pb){
         this.context = c;
         Collections.reverse(allposts);
         this.list = allposts;
         this.activity = activity;
+        this.pb = pb;
     }
 
     @NonNull
@@ -94,6 +97,8 @@ public class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.ViewHolder> 
                 return true;
             }
         });
+
+        pb.setVisibility(View.GONE);
     }
 
     @Override

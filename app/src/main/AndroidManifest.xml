@@ -29,15 +29,17 @@
         android:value="AIzaSyCd0eXAB84vssg2e59kGVBcQj60XZjeUSYy" />
 
     <application
+        android:name="androidx.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_tipy"
         android:label="@string/app_name"
-        android:name="androidx.multidex.MultiDexApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".UpdateActivity"></activity>
+        <activity android:name=".MapActivity"></activity>
+        <activity android:name=".MyErrandsActivity" />
+        <activity android:name=".UpdateActivity" />
         <activity android:name=".TPCertActivity" />
         <activity
             android:name=".GetLocationActivity"
@@ -72,7 +74,7 @@
             android:parentActivityName=".OpenPostsCluster"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MyReplies" />
-        <activity android:name=".MyPosts" />
+        <activity android:name=".MyEarnings" />
         <activity android:name=".Errands" />
         <activity
             android:name=".WorldActivity"
@@ -86,6 +88,9 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

@@ -87,7 +87,7 @@
                     android:layout_height="30dp"
                     android:tint="@color/colorPrimary"
                     android:layout_marginStart="10dp"
-                    android:src="@drawable/ic_chat_black_24dp"/>
+                    android:src="@drawable/ic_money"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/black"
-                        android:text="My Posts"/>
+                        android:text="My Earnings"/>
                 </LinearLayout>
             </LinearLayout>
 
