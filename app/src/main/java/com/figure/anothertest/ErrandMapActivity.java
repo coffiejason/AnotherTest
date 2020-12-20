@@ -209,7 +209,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         coordsLoc.putFloat("g", (float) location.getLongitude());
 
         new Functions().saveUser(userIndividual,location,userID);
-
     }
 
     protected synchronized void buildGoogleApiClient(){
