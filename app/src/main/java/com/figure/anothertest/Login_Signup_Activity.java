@@ -76,7 +76,8 @@ public class Login_Signup_Activity extends AppCompatActivity {
         }
         else{
             //Add a load screen of some sort
-
+            startActivity(new Intent(Login_Signup_Activity.this,NamesnIDSActivity.class));
+            /*
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -125,7 +126,7 @@ public class Login_Signup_Activity extends AppCompatActivity {
 
                     }
                 }
-            });
+            });*/
         }
 
 

@@ -37,7 +37,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".MapActivity"></activity>
+        <activity android:name=".QuizActivity"></activity>
+        <activity android:name=".PDFTutorialActivity" />
+        <activity
+            android:name=".NamesnIDSActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".MapActivity" />
         <activity android:name=".MyErrandsActivity" />
         <activity android:name=".UpdateActivity" />
         <activity android:name=".TPCertActivity" />

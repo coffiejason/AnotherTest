@@ -371,7 +371,7 @@ public class UtilTakeDataActivity extends AppCompatActivity {
                 //etLocation.setText("L:"+location.getLatitude()+" G:"+location.getLongitude());
                 tipeeL = ""+location.getLatitude();
                 tipeeG = ""+location.getLongitude();
-                integrity = ""+compareLGs(new LatLng(location.getLatitude(),location.getLongitude()));
+                integrity = ""+compareLG2(new LatLng(location.getLatitude(),location.getLongitude()));
 
             }
 

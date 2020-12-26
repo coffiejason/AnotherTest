@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QuizActivity">
+
+    <ScrollView
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15sp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#292727"
+                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton1a"
+                            android:checked="false" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton1b"
+                            android:checked="false" />
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15sp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#292727"
+                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton2a"
+                            android:checked="false" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton2b"
+                            android:checked="false" />
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15sp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#292727"
+                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton3a"/>
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton3b"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+
+            <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:id="@+id/ln_help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#292727"
+                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4a"/>
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4b"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+
+            <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:id="@+id/ln_help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#292727"
+                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4a"/>
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4b"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+
+            <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:id="@+id/ln_help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#292727"
+                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4a"/>
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4b"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+
+            <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:id="@+id/ln_help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#292727"
+                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4a"/>
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4b"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+
+            <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:id="@+id/ln_help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#292727"
+                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4a"/>
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4b"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#292727"
+                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4a"/>
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4b"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#292727"
+                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4a"/>
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Show Certification Page"
+                            android:id="@+id/radioButton4b"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+            </LinearLayout>
+            <Space
+                android:layout_height="10dp"
+                android:layout_width="50dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E6E6E6"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

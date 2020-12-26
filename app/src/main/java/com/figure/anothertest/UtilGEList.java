@@ -58,7 +58,7 @@ public class UtilGEList extends AppCompatActivity {
     ImageView uploadImg, doneImg;
 
     StorageReference storageReference = FirebaseStorage.getInstance().getReference("Watsan Demo");
-    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("readings");
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("readings2");
 
     HashMap<String, Object> h = new HashMap<>();
 
@@ -88,7 +88,7 @@ public class UtilGEList extends AppCompatActivity {
 
         tasknum = getIntent().getStringExtra("tasknum");
         posterID = getIntent().getStringExtra("posterID");
-        date = year+"/"+month;
+        date = "122020";
 
         Toast.makeText(this, ""+date, Toast.LENGTH_SHORT).show();
 
@@ -241,7 +241,7 @@ public class UtilGEList extends AppCompatActivity {
                                 Log.d("srwqsdxd","were here");
                                 Log.d("srwqsdxd",""+h.get("id"));
                                 h.put("imageUrl",""+uri2);
-                                ref.child(""+h.get("id")).updateChildren(h);
+                                ref.child(date).child(""+h.get("id")).updateChildren(h);
                                 //finish();
                                 pb.setProgress(pb.getProgress()+progressDiff);
                                 Log.d("agocatchyou","uploaded sucessfully");
