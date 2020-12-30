@@ -178,8 +178,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         locationRequest = new LocationRequest();
-        //locationRequest.setInterval(1000);  //update location every secend
-        //locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY); //change for better accuracy
         //noinspection deprecation
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
@@ -230,6 +228,8 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
     void init(){
 
+        isCertified();
+
 
         tb = findViewById(R.id.mapToolbar);
 
@@ -257,12 +257,13 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
 
         mapLayoutSub = findViewById(R.id.notifyer_space);
 
-        //new Functions().sideMenu(ErrandMapActivity.this,tb);
-
-        //get UserID from login and pass it as intent
-
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+        else{
+            Intent i = new Intent(ErrandMapActivity.this,HomeActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
         }
 
         FirebaseMessaging.getInstance().subscribeToTopic("topicsname");
@@ -271,10 +272,6 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
         userAvailabilityRef = FirebaseDatabase.getInstance().getReference().child("Customers available");
         userAvailabilityRef.keepSynced(true);
         userIndividual = userAvailabilityRef.child(userID);
-
-        //new Functions().checkforErrands(userIndividual,getApplicationContext());
-        //new Functions().checkUtilityErrands(userIndividual,getApplicationContext());
-
 
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -498,6 +495,33 @@ public class ErrandMapActivity extends FragmentActivity implements OnMapReadyCal
     private void onpenTipBottoSheet(){
         TipBSDialogue t = new TipBSDialogue();
         t.show(getSupportFragmentManager(),"hfhf");
+    }
+
+    private void isCertified(){
+
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            FirebaseDatabase.getInstance().getReference().child("Customers available").child(userID).child("isCertified").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Toast.makeText(getApplicationContext(),""+dataSnapshot.getValue(),Toast.LENGTH_SHORT).show();
+                    if(!dataSnapshot.getValue().equals("YES")){
+                        startActivity(new Intent(ErrandMapActivity.this,NamesnIDSActivity.class));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
+
+
+
     }
 
     @Override

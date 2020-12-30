@@ -29,24 +29,40 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true">
 
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/nice_to_see_you_text_view"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="Add ID Card"
-                android:textColor="@color/colorTitle"
-                android:textSize="30dp"
-                android:textStyle="bold" />
+                android:layout_margin="20dp"
+                android:id="@+id/profile_photo"
+                android:layout_centerHorizontal="true">
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/image_profile"
+                    android:transitionName="image"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_male_ph"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    android:elevation="1dp"
+                    android:src="@drawable/ic_photo_camera_black_24dp"
+                    android:layout_alignBottom="@id/image_profile"
+                    android:layout_alignEnd="@id/image_profile"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:tint="@android:color/white"/>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/login_input_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/nice_to_see_you_text_view"
+                android:layout_below="@+id/profile_photo"
                 android:layout_marginTop="30dp">
 
                 <androidx.cardview.widget.CardView
@@ -65,7 +81,7 @@
                         android:layout_height="match_parent">
 
                         <EditText
-                            android:id="@+id/lUsername"
+                            android:id="@+id/id_name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_centerVertical="true"
@@ -100,7 +116,7 @@
                         android:layout_height="match_parent">
 
                         <EditText
-                            android:id="@+id/lUsername"
+                            android:id="@+id/id_number"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_centerVertical="true"
@@ -222,20 +238,10 @@
                         android:layout_toLeftOf="@+id/button_progress"
                         android:ellipsize="end"
                         android:lines="1"
-                        android:text="Add"
+                        android:text="Next"
                         android:textColor="@color/colorWhite"
                         android:textSize="18dp"
                         android:textStyle="bold" />
-
-                    <ProgressBar
-                        android:id="@+id/button_progress"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dp"
-                        android:indeterminateTint="@color/colorLoadingTitle"
-                        android:visibility="gone" />
 
                     <ImageView
                         android:id="@+id/button_error_icon"

@@ -6,10 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".QuizActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/closebtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_close" />
+    <TextView
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="15dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:id="@+id/hint_take_action"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer the questions below"/>
+
     <ScrollView
+        android:layout_below="@+id/closebtn"
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +66,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
                             android:textColor="#292727"
-                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+                            android:text="@string/Q1"/>
 
                     </LinearLayout>
 
@@ -57,20 +76,21 @@
                         android:layout_height="5dp"/>
 
                     <RadioGroup
+                        android:id="@+id/radiogroup1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
+                            android:text="@string/Q1r"
                             android:id="@+id/radioButton1a"
                             android:checked="false" />
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
+                            android:text="@string/Q1w"
                             android:id="@+id/radioButton1b"
                             android:checked="false" />
                     </RadioGroup>
@@ -90,7 +110,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1."
+                    android:text="2."
                     android:textStyle="bold"
                     android:textSize="20sp"/>
 
@@ -111,7 +131,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
                             android:textColor="#292727"
-                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+                            android:text="@string/Q2"/>
 
                     </LinearLayout>
 
@@ -121,20 +141,21 @@
                         android:layout_height="5dp"/>
 
                     <RadioGroup
+                        android:id="@+id/radiogroup2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
+                            android:text="@string/Q2w"
                             android:id="@+id/radioButton2a"
                             android:checked="false" />
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
+                            android:text="@string/Q2r"
                             android:id="@+id/radioButton2b"
                             android:checked="false" />
                     </RadioGroup>
@@ -153,7 +174,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1."
+                    android:text="3."
                     android:textStyle="bold"
                     android:textSize="20sp"/>
 
@@ -174,7 +195,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
                             android:textColor="#292727"
-                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+                            android:text="@string/Q3"/>
 
                     </LinearLayout>
 
@@ -184,19 +205,20 @@
                         android:layout_height="5dp"/>
 
                     <RadioGroup
+                        android:id="@+id/radiogroup3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
+                            android:text="@string/Q3w"
                             android:id="@+id/radioButton3a"/>
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
+                            android:text="@string/Q3r"
                             android:id="@+id/radioButton3b"/>
                     </RadioGroup>
 
@@ -208,10 +230,6 @@
                 android:layout_width="50dp"/>
 
             <LinearLayout
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground"
-                android:id="@+id/ln_help"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15sp"
@@ -220,7 +238,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1."
+                    android:text="4."
                     android:textStyle="bold"
                     android:textSize="20sp"/>
 
@@ -241,7 +259,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
                             android:textColor="#292727"
-                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+                            android:text="@string/Q4"/>
 
                     </LinearLayout>
 
@@ -251,19 +269,20 @@
                         android:layout_height="5dp"/>
 
                     <RadioGroup
+                        android:id="@+id/radiogroup4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
+                            android:text="@string/Q4r"
                             android:id="@+id/radioButton4a"/>
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
+                            android:text="@string/Q4w"
                             android:id="@+id/radioButton4b"/>
                     </RadioGroup>
 
@@ -286,7 +305,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1."
+                    android:text="5."
                     android:textStyle="bold"
                     android:textSize="20sp"/>
 
@@ -307,7 +326,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
                             android:textColor="#292727"
-                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+                            android:text="@string/Q5"/>
 
                     </LinearLayout>
 
@@ -317,20 +336,21 @@
                         android:layout_height="5dp"/>
 
                     <RadioGroup
+                        android:id="@+id/radiogroup5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4a"/>
+                            android:text="@string/Q5r"
+                            android:id="@+id/radioButton5a"/>
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4b"/>
+                            android:text="@string/Q5w"
+                            android:id="@+id/radioButton5b"/>
                     </RadioGroup>
 
                 </LinearLayout>
@@ -352,7 +372,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1."
+                    android:text="6."
                     android:textStyle="bold"
                     android:textSize="20sp"/>
 
@@ -373,7 +393,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
                             android:textColor="#292727"
-                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+                            android:text="@string/Q6"/>
 
                     </LinearLayout>
 
@@ -383,20 +403,21 @@
                         android:layout_height="5dp"/>
 
                     <RadioGroup
+                        android:id="@+id/radiogroup6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4a"/>
+                            android:text="@string/Q6r"
+                            android:id="@+id/radioButton6a"/>
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4b"/>
+                            android:text="@string/Q6w"
+                            android:id="@+id/radioButton6b"/>
                     </RadioGroup>
 
                 </LinearLayout>
@@ -418,7 +439,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1."
+                    android:text="7."
                     android:textStyle="bold"
                     android:textSize="20sp"/>
 
@@ -439,7 +460,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
                             android:textColor="#292727"
-                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
+                            android:text="@string/Q7"/>
 
                     </LinearLayout>
 
@@ -449,214 +470,26 @@
                         android:layout_height="5dp"/>
 
                     <RadioGroup
+                        android:id="@+id/radiogroup7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4a"/>
+                            android:text="@string/Q7r"
+                            android:id="@+id/radioButton7a"/>
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4b"/>
+                            android:text="@string/Q7w"
+                            android:id="@+id/radioButton7b"/>
                     </RadioGroup>
 
                 </LinearLayout>
             </LinearLayout>
-            <Space
-                android:layout_height="10dp"
-                android:layout_width="50dp"/>
 
-            <LinearLayout
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground"
-                android:id="@+id/ln_help"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15sp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1."
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:textSize="15sp"
-                            android:textColor="#292727"
-                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
-
-                    </LinearLayout>
-
-
-                    <Space
-                        android:layout_width="5dp"
-                        android:layout_height="5dp"/>
-
-                    <RadioGroup
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4a"/>
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4b"/>
-                    </RadioGroup>
-
-                </LinearLayout>
-            </LinearLayout>
-            <Space
-                android:layout_height="10dp"
-                android:layout_width="50dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15sp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1."
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:textSize="15sp"
-                            android:textColor="#292727"
-                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
-
-                    </LinearLayout>
-
-
-                    <Space
-                        android:layout_width="5dp"
-                        android:layout_height="5dp"/>
-
-                    <RadioGroup
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4a"/>
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4b"/>
-                    </RadioGroup>
-
-                </LinearLayout>
-            </LinearLayout>
-            <Space
-                android:layout_height="10dp"
-                android:layout_width="50dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15sp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1."
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:textSize="15sp"
-                            android:textColor="#292727"
-                            android:text="How do you prove to a customer that you are authorized to read their meter"/>
-
-                    </LinearLayout>
-
-
-                    <Space
-                        android:layout_width="5dp"
-                        android:layout_height="5dp"/>
-
-                    <RadioGroup
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4a"/>
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Show Certification Page"
-                            android:id="@+id/radioButton4b"/>
-                    </RadioGroup>
-
-                </LinearLayout>
-            </LinearLayout>
             <Space
                 android:layout_height="10dp"
                 android:layout_width="50dp"/>
@@ -664,6 +497,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#E6E6E6"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15sp"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/registration_button_parent"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/password_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:elevation="0dp"
+                app:cardBackgroundColor="@color/tipeeGreen">
+
+                <RelativeLayout
+                    android:id="@+id/registration_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/registerbtn_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:text="Submit"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

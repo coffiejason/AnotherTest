@@ -77,4 +77,34 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Quiz Q&A -->
+    <string name="Q1">How do you prove to a customer that you are authorized to read their meter</string>
+    <string name="Q1r">Show the customer your Certification Page</string>
+    <string name="Q1w">Tell them you work with Tipy</string>
+
+    <string name="Q2">What is the first thing to do after taking readings</string>
+    <string name="Q2r">Close Meter Lid (if exists)</string>
+    <string name="Q2w">Walk away</string>
+
+    <string name="Q3">What do you do if you do not get access to an In-door meter to take data</string>
+    <string name="Q3r">Drop the task</string>
+    <string name="Q3w">Report reading as failed</string>
+
+    <string name="Q4">When should you report a reading as Failed</string>
+    <string name="Q4r">When the Water meter is physically damaged or is not at the GPS location</string>
+    <string name="Q4w">When you want to remove that task from the list</string>
+
+    <string name="Q5">The photo of the meter taken should contain :</string>
+    <string name="Q5r">A clear view of the reading and the Meter number on the meter</string>
+    <string name="Q5w">A picture of the meter</string>
+
+    <string name="Q6">What do you do when Google directions shows arriving but meter is still not in sight</string>
+    <string name="Q6r">Zoom into the follow your marker direction until you marker and location marker intersect</string>
+    <string name="Q6w">Report as failed</string>
+
+    <string name="Q7">what do you do when there are two meters at the same gps location</string>
+    <string name="Q7r">Check their meter number or Click the view meter image button to see which meter you need to read</string>
+    <string name="Q7w">Read any one of the two</string>
+
 </resources>
